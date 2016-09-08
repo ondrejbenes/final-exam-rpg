@@ -1,5 +1,5 @@
 // Hello :)
-// Espen was here now  
+// Espen was here but he didnt touch anything.
 
 #include <SFML/Graphics.hpp>
 
