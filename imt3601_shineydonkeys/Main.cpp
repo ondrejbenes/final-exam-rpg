@@ -7,7 +7,7 @@
 
 int main(int argc, char* argv[])
 {
-	enum Direction { Down, Left, Right, Up };
+	enum Direction { Down, Left, Right, Up, Still, DL,UL,UR,DR};
 	sf::Vector2i source(0, Down);
 
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Shiny donkeys!");
@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 
 	bool updateFrame = true;
 
-	if (!playerTexture.loadFromFile("Resources/Images/4X8girl (2).png"))
+	if (!playerTexture.loadFromFile("Resources/Images/4X8girl (5).png"))
 		std::cout << "Error: could not load player image" << std::endl;
 
 	playerImage.setTexture(playerTexture);
@@ -64,6 +64,8 @@ int main(int argc, char* argv[])
 		}
 		else {
 			keyPressed = false;
+			source.y = Still;
+			playerImage.move(0, 0);
 		}
 
 		if (keyPressed)
