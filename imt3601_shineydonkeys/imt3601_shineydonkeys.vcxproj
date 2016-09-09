@@ -157,7 +157,7 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\Images\4x8girl.png" />
+    <Image Include="Resources\Images\4x8girl (2).png" />
     <Image Include="Resources\Images\girl.png" />
     <Image Include="Resources\Images\Player.png" />
   </ItemGroup>

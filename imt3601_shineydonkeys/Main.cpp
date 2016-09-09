@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 	enum Direction { Down, Left, Right, Up };
 	sf::Vector2i source(0, Down);
 
-	sf::RenderWindow window(sf::VideoMode(400, 400), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "Shiny donkeys!");
 
 	sf::Texture playerTexture;
 	sf::Sprite playerImage;
@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 
 	bool updateFrame = true;
 
-	if (!playerTexture.loadFromFile("Resources/Images/4x8girl.png"))
+	if (!playerTexture.loadFromFile("Resources/Images/4X8girl (2).png"))
 		std::cout << "Error: could not load player image" << std::endl;
 
 	playerImage.setTexture(playerTexture);
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 		}
 
 		bool keyPressed = true;
-		float speed = 5;
+		float speed = 20;
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
