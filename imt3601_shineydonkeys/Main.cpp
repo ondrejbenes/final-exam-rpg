@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 
 	bool updateFrame = true;
 
-	if (!playerTexture.loadFromFile("Resources/Images/Player.png"))
+	if (!playerTexture.loadFromFile("Resources/Images/4x8girl.png"))
 		std::cout << "Error: could not load player image" << std::endl;
 
 	playerImage.setTexture(playerTexture);
@@ -69,11 +69,14 @@ int main(int argc, char* argv[])
 		if (keyPressed)
 		{
 			source.x++;
-			if (source.x * 32 >= playerTexture.getSize().x)
-				source.x = 0;
+			//if (source.x * 32 >= playerTexture.getSize().x)
+			//if (source.x >8)
+				//source.x = 0;
+			source.x = source.x *(source.x < 8);
+			//sets x to 0 if 8 or above :) because i generally prefer bool math over if statements.
 		}
 
-		playerImage.setTextureRect(sf::IntRect(source.x * 32, source.y * 48, 32, 48));
+		playerImage.setTextureRect(sf::IntRect(source.x * 240, source.y *240, 240, 240));
 
 		window.draw(playerImage);
 		window.display();
