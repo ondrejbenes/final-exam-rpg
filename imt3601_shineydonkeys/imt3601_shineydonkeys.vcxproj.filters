@@ -32,5 +32,8 @@
     <Image Include="Resources\Images\4x8girl.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\Images\profantasy-island.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

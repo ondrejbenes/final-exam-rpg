@@ -1,5 +1,5 @@
 // Hello :)
-// Espen was here but he didnt touch anything, YET.
+// Espen was here alot.
 
 #include <SFML/Graphics.hpp>
 
@@ -13,11 +13,18 @@ int main(int argc, char* argv[])
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Shiny donkeys!");
 
 	sf::Texture playerTexture;
+	sf::Texture bkgTexture;
 	sf::Sprite playerImage;
+	sf::Sprite bkgImage;
 
 	sf::Clock clock;
 
 	bool updateFrame = true;
+
+	if (!bkgTexture.loadFromFile("Resources/Images/profantasy-island.png"))
+		std::cout << "Error: could not load bkg image" << std::endl;
+
+	bkgImage.setTexture(bkgTexture);
 
 	if (!playerTexture.loadFromFile("Resources/Images/4X8girl (5).png"))
 		std::cout << "Error: could not load player image" << std::endl;
@@ -77,6 +84,10 @@ int main(int argc, char* argv[])
 			source.x = source.x *(source.x < 8);
 			//sets x to 0 if 8 or above :) because i generally prefer bool math over if statements.
 		}
+
+
+		playerImage.setTextureRect(sf::IntRect(0,0, 240, 240));
+		window.draw(bkgImage);
 
 		playerImage.setTextureRect(sf::IntRect(source.x * 240, source.y *240, 240, 240));
 

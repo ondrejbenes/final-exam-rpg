@@ -161,6 +161,7 @@
     <Image Include="Resources\Images\4x8girl.png" />
     <Image Include="Resources\Images\girl.png" />
     <Image Include="Resources\Images\Player.png" />
+    <Image Include="Resources\Images\profantasy-island.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
