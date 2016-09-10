@@ -1,7 +1,10 @@
 // Hello :)
 // Espen was here alot.
 
+
 #include <SFML/Graphics.hpp>
+//#include <SMFL/Audio.hpp>
+
 
 #include <iostream>
 
@@ -13,11 +16,21 @@ int main(int argc, char* argv[])
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Shiny donkeys!");
 
 	sf::Texture playerTexture;
-	sf::Texture bkgTexture;
 	sf::Sprite playerImage;
+
+	sf::Texture bkgTexture;
 	sf::Sprite bkgImage;
 
 	sf::Clock clock;
+
+	//sf::Soundbuffer bkgmusicbuffer;
+	//sf::Sound bkgmusic;
+
+	//if (!soundBuffer.LoadFromFile("Resources/Images/marchingbyriver_theme.ogg"))
+		//std::cout << "can't find sound file" << std::endl;
+
+	//sound.setBuffer(soundBuffer);
+	//sound.play();
 
 	bool updateFrame = true;
 
@@ -86,7 +99,7 @@ int main(int argc, char* argv[])
 		}
 
 
-		playerImage.setTextureRect(sf::IntRect(0,0, 240, 240));
+		playerImage.setTextureRect(sf::IntRect(0,0, 239, 239));
 		window.draw(bkgImage);
 
 		playerImage.setTextureRect(sf::IntRect(source.x * 240, source.y *240, 240, 240));
@@ -95,7 +108,7 @@ int main(int argc, char* argv[])
 		window.display();
 		window.clear();
 
-		sf::sleep(sf::milliseconds(75));
+		sf::sleep(sf::milliseconds(1000/30));//NTFS 30 FPS
 	}
 
 	return 0;
