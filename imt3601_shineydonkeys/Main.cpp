@@ -65,34 +65,32 @@ int main(int argc, char* argv[])
 
 		bool keyPressed = true;
 		float speed = 20;
-
+		playerImage.setTexture(playerTexture);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
-			playerImage.setTexture(playerTexture);
+			
 			source.y = Up;
 			playerImage.move(0, -1 * speed);
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-			playerImage.setTexture(playerTexture);
+		
 			source.y = Down;
 			playerImage.move(0, 1 * speed);
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
-			playerImage.setTexture(playerTexture);
+			
 			source.y = Right;
 			playerImage.move(1 * speed, 0);
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
-			playerImage.setTexture(playerTexture);
 			source.y = Left;
 			playerImage.move(-1 * speed, 0);
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
-			playerImage.setTexture(playerTexture);
 			source.y = Jump;
 			playerImage.move(0 * speed, 0);
 			playerImage.setTexture(playerTexture2);
