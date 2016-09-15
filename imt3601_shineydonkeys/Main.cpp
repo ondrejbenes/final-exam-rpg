@@ -31,6 +31,31 @@ int main(int argc, char* argv[])
 	sf::Vector2i source(0, Down);
 
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Shiny donkeys!");
+	sf::View view;
+
+	// Initialize the view to a rectangle located at (100, 100) and with a size of 400x200
+	view.reset(sf::FloatRect(0, 0, 1280,720));
+	// Rotate it by 45 degrees
+
+	// Set its target viewport to be half of the window
+	view.setViewport(sf::FloatRect(0.f, 0.f, 0.5f, 1.f));
+	// Apply it
+	window.setView(view);
+
+	sf::View view2;
+
+	// Initialize the view to a rectangle located at (100, 100) and with a size of 400x200
+	view2.reset(sf::FloatRect(0, 0, 1280, 720));
+	// Rotate it by 45 degrees
+
+	// Set its target viewport to be half of the window
+	view2.setViewport(sf::FloatRect(0.f, 0.f, 1, 1.f));
+	// Apply it
+	window.setView(view2);
+
+	sf::RenderTexture texture;
+	if (!texture.create(1280*1.1, 720*1.1))
+		return -1;
 
 	sf::Texture playerTexture;
 	sf::Texture playerTexture2;
@@ -134,22 +159,50 @@ int main(int argc, char* argv[])
 		}
 
 
-		playerImage.setTextureRect(sf::IntRect(0,0, 120, 120));
+
+		texture.draw(bkgImage);
+
+		//playerImage.setTextureRect(sf::IntRect(0,0, 120, 120));
 			
-		window.draw(bkgImage);
+		
 
 		playerImage.setTextureRect(sf::IntRect(source.x * 120, source.y *120, 120, 120));
 
-		window.draw(playerImage);
+		texture.draw(playerImage);
 
 		sf::RectangleShape rectangle(sf::Vector2f(120, 50));
 
 		
+		texture.draw(rectangle);
 
+	
+
+
+		// create an array of 3 vertices that define a triangle primitive
+		sf::VertexArray triangle(sf::Triangles, 3);
+
+		// define the position of the triangle's points
+		triangle[0].position = sf::Vector2f(10, 10);
+		triangle[1].position = sf::Vector2f(100, 10);
+		triangle[2].position = sf::Vector2f(100, 100);
+
+		// define the color of the triangle's points
+		triangle[0].color = sf::Color::Red;
+		triangle[1].color = sf::Color::Blue;
+		triangle[2].color = sf::Color::Green;
+
+		// no texture coordinates here, we'll see that later
+
+		window.draw(triangle);
+		texture.draw(triangle);
+
+		sf::Sprite sprite(texture.getTexture());
+		window.draw(sprite);
 	
 		window.display();
 	
 		window.clear();
+		texture.clear();
 
 	
 
