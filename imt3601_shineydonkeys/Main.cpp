@@ -222,7 +222,7 @@ int main(int argc, char* argv[])
 
 	
 
-		sf::sleep(sf::milliseconds(1000/60));//NTFS 30 FPS
+		sf::sleep(sf::milliseconds(1000/30));//NTFS 30 FPS
 	}
 
 	return 0;
