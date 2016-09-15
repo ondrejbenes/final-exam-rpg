@@ -7,7 +7,7 @@
 
 
 #include <iostream>
-//#include <vector>
+#include <vector>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -43,14 +43,14 @@ int main(int argc, char* argv[])
 
 	sf::Clock clock;
 
-	//sf::Soundbuffer bkgmusicbuffer;
-	//sf::Sound bkgmusic;
+	sf::SoundBuffer bkgmusicbuffer;
+	sf::Sound bkgmusic;
 
-	//if (!soundBuffer.LoadFromFile("Resources/Images/marchingbyriver_theme.ogg"))
-		//std::cout << "can't find sound file" << std::endl;
+	if (!bkgmusicbuffer.loadFromFile("Resources/Images/marchingbyriver_theme.ogg"))
+		std::cout << "can't find sound file" << std::endl;
 
-	//sound.setBuffer(soundBuffer);
-	//sound.play();
+	bkgmusic.setBuffer(bkgmusicbuffer);
+	bkgmusic.play();
 
 	bool updateFrame = true;
 
