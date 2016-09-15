@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 	sf::View view2;
 
 	// Initialize the view to a rectangle located at (100, 100) and with a size of 400x200
-	view2.reset(sf::FloatRect(0, 0, 1280, 720));
+	view2.reset(sf::FloatRect(0, 0, 1180, 760));
 	// Rotate it by 45 degrees
 
 	// Set its target viewport to be half of the window
@@ -160,20 +160,17 @@ int main(int argc, char* argv[])
 
 
 
-		texture.draw(bkgImage);
+		window.draw(bkgImage);
 
-		//playerImage.setTextureRect(sf::IntRect(0,0, 120, 120));
-			
-		
-
+		playerImage.setTextureRect(sf::IntRect(0,0, 120, 120));
 		playerImage.setTextureRect(sf::IntRect(source.x * 120, source.y *120, 120, 120));
 
-		texture.draw(playerImage);
+		window.draw(playerImage);
 
 		sf::RectangleShape rectangle(sf::Vector2f(120, 50));
 
 		
-		texture.draw(rectangle);
+		window.draw(rectangle);
 
 	
 
@@ -194,15 +191,27 @@ int main(int argc, char* argv[])
 		// no texture coordinates here, we'll see that later
 
 		window.draw(triangle);
-		texture.draw(triangle);
 
-		sf::Sprite sprite(texture.getTexture());
-		window.draw(sprite);
+
+
+		sf::Vector2f position = playerImage.getPosition(); // = (15, 55)
+
+		//sf::Sprite sprite(texture.getTexture());
+		//window.draw(sprite);
+
+		// Initialize the view to a rectangle located at (100, 100) and with a size of 400x200
+		view2.reset(sf::FloatRect(position.x- 1080 /2, position.y- 660 /2, 1180, 760));
+		// Rotate it by 45 degrees
+
+		// Set its target viewport to be half of the window
+		view2.setViewport(sf::FloatRect(0.f, 0.f, 1, 1.f));
+		// Apply it
+		window.setView(view2);
 	
 		window.display();
 	
 		window.clear();
-		texture.clear();
+
 
 	
 
