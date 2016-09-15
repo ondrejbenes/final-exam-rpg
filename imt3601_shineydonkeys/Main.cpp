@@ -135,14 +135,17 @@ int main(int argc, char* argv[])
 
 
 		playerImage.setTextureRect(sf::IntRect(0,0, 120, 120));
-		//bkgTexture.draw()
-		sf::RectangleShape line(sf::Vector2f(150, 5));
-		line.rotate(45);
+			
 		window.draw(bkgImage);
 
 		playerImage.setTextureRect(sf::IntRect(source.x * 120, source.y *120, 120, 120));
 
 		window.draw(playerImage);
+
+		sf::RectangleShape rectangle(sf::Vector2f(120, 50));
+
+		
+
 	
 		window.display();
 	

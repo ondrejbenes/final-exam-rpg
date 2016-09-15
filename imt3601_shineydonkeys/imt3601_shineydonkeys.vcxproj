@@ -170,6 +170,9 @@
   <ItemGroup>
     <ClInclude Include="Audio.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\Fonts\sans.ttf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
