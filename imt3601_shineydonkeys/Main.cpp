@@ -1,5 +1,6 @@
 // Hello :)
 // Espen was here alot.
+// THIS IS THE THING I CALL A MARK - G.d
 
 
 #include <SFML/Graphics.hpp>
