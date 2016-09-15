@@ -167,6 +167,9 @@
   <ItemGroup>
     <None Include="Resources\Images\marchingbyriver_theme.ogg" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Audio.hpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
