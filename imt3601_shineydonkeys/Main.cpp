@@ -22,6 +22,8 @@ int main(int argc, char* argv[])
 	sf::Texture bkgTexture;
 	sf::Sprite bkgImage;
 
+	
+
 	sf::Clock clock;
 
 	//sf::Soundbuffer bkgmusicbuffer;
@@ -40,7 +42,7 @@ int main(int argc, char* argv[])
 
 	bkgImage.setTexture(bkgTexture);
 
-	if (!playerTexture.loadFromFile("Resources/Images/4X8girl (5).png"))
+	if (!playerTexture.loadFromFile("Resources/Images/4X8girl (6).png"))
 		std::cout << "Error: could not load player image" << std::endl;
 
 	if (!playerTexture2.loadFromFile("Resources/Images/girljump16x4.png"))
@@ -91,7 +93,7 @@ int main(int argc, char* argv[])
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
-			source.y = Jump;
+ 			source.y = Jump;
 			playerImage.move(0 * speed, 0);
 			playerImage.setTexture(playerTexture2);
 		}
@@ -112,14 +114,18 @@ int main(int argc, char* argv[])
 		}
 
 
-		playerImage.setTextureRect(sf::IntRect(0,0, 239, 239));
+		playerImage.setTextureRect(sf::IntRect(0,0, 120, 120));
 		window.draw(bkgImage);
 
-		playerImage.setTextureRect(sf::IntRect(source.x * 240, source.y *240, 240, 240));
+		playerImage.setTextureRect(sf::IntRect(source.x * 120, source.y *120, 120, 120));
 
 		window.draw(playerImage);
+	
 		window.display();
+	
 		window.clear();
+
+	
 
 		sf::sleep(sf::milliseconds(1000/30));//NTFS 30 FPS
 	}
