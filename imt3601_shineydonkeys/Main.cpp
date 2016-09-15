@@ -27,6 +27,7 @@
 
 int main(int argc, char* argv[])
 {
+	int framecount=0;
 	enum Direction { Down, Left, Right, Up, Still, Jump, DL,UL,UR,DR};
 	sf::Vector2i source(0, Down);
 
@@ -94,6 +95,7 @@ int main(int argc, char* argv[])
 
 	while (window.isOpen())
 	{
+		framecount++;
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -110,6 +112,11 @@ int main(int argc, char* argv[])
 		bool keyPressed = true;
 		float speed = 20;
 		playerImage.setTexture(playerTexture);
+
+
+		/////////////////////////////////////////////////////GETTING KEYBOARD INPUT
+
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
 		{
 
@@ -160,6 +167,9 @@ int main(int argc, char* argv[])
 
 
 
+		////////////////////////////////DRAWING SCREEN
+
+
 		window.draw(bkgImage);
 
 		playerImage.setTextureRect(sf::IntRect(0,0, 120, 120));
@@ -167,10 +177,7 @@ int main(int argc, char* argv[])
 
 		window.draw(playerImage);
 
-		sf::RectangleShape rectangle(sf::Vector2f(120, 50));
-
 		
-		window.draw(rectangle);
 
 	
 
@@ -179,9 +186,9 @@ int main(int argc, char* argv[])
 		sf::VertexArray triangle(sf::Triangles, 3);
 
 		// define the position of the triangle's points
-		triangle[0].position = sf::Vector2f(10, 10);
+		triangle[0].position = sf::Vector2f(-100, 10);
 		triangle[1].position = sf::Vector2f(100, 10);
-		triangle[2].position = sf::Vector2f(100, 100);
+		triangle[2].position = sf::Vector2f(100, -300);
 
 		// define the color of the triangle's points
 		triangle[0].color = sf::Color::Red;
@@ -200,7 +207,7 @@ int main(int argc, char* argv[])
 		//window.draw(sprite);
 
 		// Initialize the view to a rectangle located at (100, 100) and with a size of 400x200
-		view2.reset(sf::FloatRect(position.x- 1080 /2, position.y- 660 /2, 1180, 760));
+		view2.reset(sf::FloatRect(position.x- 980 /2, position.y- 660 /2, 1180, 760));
 		// Rotate it by 45 degrees
 
 		// Set its target viewport to be half of the window
@@ -215,7 +222,7 @@ int main(int argc, char* argv[])
 
 	
 
-		sf::sleep(sf::milliseconds(1000/30));//NTFS 30 FPS
+		sf::sleep(sf::milliseconds(1000/60));//NTFS 30 FPS
 	}
 
 	return 0;
