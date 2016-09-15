@@ -3,11 +3,14 @@
 // THIS IS THE THING I CALL A MARK - G.d
 
 
-#include <SFML/Graphics.hpp>
-//#include <SMFL/Audio.hpp>
+
 
 
 #include <iostream>
+//#include <vector>
+
+#include <SFML/Graphics.hpp>
+//#include <SMFL/Audio.hpp>
 
 int main(int argc, char* argv[])
 {
@@ -107,11 +110,7 @@ int main(int argc, char* argv[])
 		if (keyPressed)
 		{
 			source.x++;
-			//if (source.x * 32 >= playerTexture.getSize().x)
-			//if (source.x >8)
-				//source.x = 0;
-			source.x = source.x *(source.x < 8);
-			//sets x to 0 if 8 or above :) because i generally prefer bool math over if statements.
+			source.x %= 8;
 		}
 
 
