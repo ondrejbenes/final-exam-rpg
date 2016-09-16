@@ -38,6 +38,12 @@
     <Image Include="Resources\Images\girljump16x4.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\..\..\..\Desktop\tilex7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Images\tilex7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\marchingbyriver_theme.ogg">

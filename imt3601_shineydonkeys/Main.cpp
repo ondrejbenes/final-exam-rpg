@@ -8,6 +8,13 @@
 
 #include <iostream>
 #include <vector>
+#include <stdlib.h> 
+
+#include <random>
+#include <algorithm>
+#include <iterator>
+
+#include <functional>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -25,8 +32,30 @@
 #include <SFML/Audio/SoundSource.hpp>
 #include <SFML/Audio/SoundStream.hpp>
 
+
+using namespace std;
+
+
 int main(int argc, char* argv[])
 {
+	//copied from http://stackoverflow.com/questions/21516575/fill-a-vector-with-random-numbers-c
+	// First create an instance of an engine.
+	random_device rnd_device;
+	// Specify the engine and distribution.
+	mt19937 mersenne_engine(rnd_device());
+	uniform_int_distribution<int> dist(1, 5);
+
+	auto gen = std::bind(dist, mersenne_engine);
+	std::vector<int> vec(44*44);
+	generate(begin(vec), end(vec), gen);
+
+	// Optional
+	for (auto i : vec) {
+		std::cout << i << " ";
+	}
+
+
+
 	int framecount=0;
 	enum Direction { Down, Left, Right, Up, Still, Jump, DL,UL,UR,DR};
 	sf::Vector2i source(0, Down);
@@ -62,6 +91,9 @@ int main(int argc, char* argv[])
 	sf::Texture playerTexture2;
 	sf::Sprite playerImage;
 
+	sf::Texture TileTexture;
+	sf::Sprite TileImage;
+
 	sf::Texture bkgTexture;
 	sf::Sprite bkgImage;
 
@@ -92,6 +124,10 @@ int main(int argc, char* argv[])
 		std::cout << "Error: could not load player image" << std::endl;
 
 	playerImage.setTexture(playerTexture);
+
+	if (!TileTexture.loadFromFile("Resources/Images/tilex7.png"))
+		std::cout << "Error: could not load tile image" << std::endl;
+	TileImage.setTexture(TileTexture);
 
 	while (window.isOpen())
 	{
@@ -172,13 +208,24 @@ int main(int argc, char* argv[])
 
 		window.draw(bkgImage);
 
-		playerImage.setTextureRect(sf::IntRect(0,0, 120, 120));
-		playerImage.setTextureRect(sf::IntRect(source.x * 120, source.y *120, 120, 120));
-
-		window.draw(playerImage);
-
 		
 
+		int x = 0;
+		for (auto i : vec)
+		{
+			x++;
+			TileImage.setTextureRect(sf::IntRect(i * 120, 0* 120, 120, 120));
+			window.draw(TileImage);
+			TileImage.setPosition(x%44*102+x/44%2*51,x/44*31);
+
+			
+		}
+		TileImage.setPosition(0, 0);
+
+		//playerImage.setTextureRect(sf::IntRect(0,0, 120, 120));
+		playerImage.setTextureRect(sf::IntRect(source.x * 120, source.y * 120, 120, 120));
+		
+		window.draw(playerImage);
 	
 
 
