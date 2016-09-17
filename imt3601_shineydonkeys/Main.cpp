@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 	uniform_int_distribution<int> dist(1, 5);
 
 	auto gen = std::bind(dist, mersenne_engine);
-	std::vector<int> vec(44*44);
+	std::vector<int> vec(44*87);//44 by 44 tiles
 	generate(begin(vec), end(vec), gen);
 
 	// Optional
@@ -146,7 +146,7 @@ int main(int argc, char* argv[])
 		}
 
 		bool keyPressed = true;
-		float speed = 20;
+		float speed = 5;
 		playerImage.setTexture(playerTexture);
 
 
@@ -197,7 +197,7 @@ int main(int argc, char* argv[])
 
 		if (keyPressed)
 		{
-			source.x++;
+			source.x+=(0==framecount%3);//slow down animation
 			source.x %= 8;
 		}
 
@@ -213,12 +213,10 @@ int main(int argc, char* argv[])
 		int x = 0;
 		for (auto i : vec)
 		{
-			x++;
+			x++; //counts tiles
 			TileImage.setTextureRect(sf::IntRect(i * 120, 0* 120, 120, 120));
 			window.draw(TileImage);
-			TileImage.setPosition(x%44*102+x/44%2*51,x/44*31);
-
-			
+			TileImage.setPosition(x%44*100+x/44%2*50,x/44*30); //draws all tiles	
 		}
 		TileImage.setPosition(0, 0);
 
@@ -254,7 +252,7 @@ int main(int argc, char* argv[])
 		//window.draw(sprite);
 
 		// Initialize the view to a rectangle located at (100, 100) and with a size of 400x200
-		view2.reset(sf::FloatRect(position.x- 980 /2, position.y- 660 /2, 1180, 760));
+		view2.reset(sf::FloatRect(position.x- 980 /2, position.y- 660 /2, 1280, 720));
 		// Rotate it by 45 degrees
 
 		// Set its target viewport to be half of the window
@@ -269,7 +267,7 @@ int main(int argc, char* argv[])
 
 	
 
-		sf::sleep(sf::milliseconds(1000/30));//NTFS 30 FPS
+		sf::sleep(sf::milliseconds(1000/60));//NTFS 60 FPS
 	}
 
 	return 0;
