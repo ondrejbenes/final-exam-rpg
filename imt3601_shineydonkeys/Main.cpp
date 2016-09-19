@@ -5,7 +5,7 @@
 
 
 
-
+#include <string> 
 #include <iostream>
 #include <vector>
 #include <stdlib.h> 
@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 	// Specify the engine and distribution.
 	mt19937 mersenne_engine(rnd_device());
 	mersenne_engine.seed(1);
-	uniform_int_distribution<int> dist(0, 6);
+	uniform_int_distribution<int> dist(12, 76);
 
 	auto gen = std::bind(dist, mersenne_engine);
 	std::vector<int> vec(44*87 );
@@ -53,11 +53,11 @@ int main(int argc, char* argv[])
 	// Optional
 	int x = 0;
 	for (auto i : vec) {
-		vec[x] = 3*(x<=88)+i*!(x <= 88);
+		
 		if ((x % 44 < 1) || (x>44 * 85)) { vec[x] = 3; };
 	
 		//if ((vec[x + 1] == 3) + (vec[x - 1] == 3) + (vec[x + 44] == 3) + (vec[x + 43] == 3)+(vec[x - 44] == 3) + (vec[x - 43] == 3)+ (vec[x - 88] == 3)+ (vec[x + 44] == 3) > 4) { vec[x] = 3; };
-		std::cout << i << " ";
+		std::cout << i << "  ";
 		x++;
 	}
 
@@ -65,12 +65,14 @@ int main(int argc, char* argv[])
 
 
 	int framecount = 0;
-	int fps = 50;
+	int fps = 60;
 	int animslowdown = 5;
 	enum Direction { Down, Left, Right, Up, Still, Jump, DL,UL,UR,DR};
 	sf::Vector2i source(0, Down);
 
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Shiny donkeys!");
+	//sf::RenderTexture rwindow;
+
 	sf::View view;
 
 	// Initialize the view to a rectangle located at (100, 100) and with a size of 400x200
@@ -93,9 +95,9 @@ int main(int argc, char* argv[])
 	// Apply it
 	window.setView(view2);
 
-	sf::RenderTexture texture;
-	if (!texture.create(1280*1.1, 720*1.1))
-		return -1;
+	
+	//if (!rwindow.create(1280, 720))
+		//return -1;
 
 	sf::Texture playerTexture;
 	sf::Texture playerTexture2;
@@ -138,6 +140,17 @@ int main(int argc, char* argv[])
 	if (!TileTexture.loadFromFile("Resources/Images/tilex7.png"))
 		std::cout << "Error: could not load tile image" << std::endl;
 	TileImage.setTexture(TileTexture);
+
+	// Declare a new font
+	sf::Font font;
+	// Load it from a file
+	if (!font.loadFromFile("Resources/Fonts/sans.ttf"))
+	{
+		// error...
+	}
+	// Create a text which uses our font
+	sf::Text text1,text2;
+
 
 	while (window.isOpen())
 	{
@@ -234,14 +247,30 @@ int main(int argc, char* argv[])
 		
 		int quake = true;
 		int x = 0;
+		
+		text1.setFont(font);
+		text1.setCharacterSize(14);
+		text1.setStyle(sf::Text::Regular);
+		
+		window.draw(text1);
 		for (auto i : vec)
 		{
 			x++; //counts tiles
-			TileImage.setTextureRect(sf::IntRect(i * 120, 0* 120, 120, 120));
+
+			TileImage.setTextureRect(sf::IntRect(i%7 * 120, 0* 120, 120, 120));
 			window.draw(TileImage);
-			TileImage.setPosition(x%44*100+x/44%2*50,x/44*30-((framecount<180)*quake*(i*(180-framecount%180)))); //draws all tiles	
+			TileImage.setPosition(x%44*100+x/44%2*50,x/44*30-((framecount<180)*quake*(i%7*(180-framecount%180)))); //draws all tiles	
+			text1.setPosition(-50+x % 44 * 100 + x / 44 % 2 * 50, 50+x / 44 * 30 - ((framecount<180)*quake*(i % 7 * (180 - framecount % 180))));
+			if (framecount % 1000 < 100)
+			{
+				text1.setString(to_string(i));
+				window.draw(text1);
+			}
+			
 		}
-		TileImage.setPosition(0, 0);
+		
+		// set the color
+		
 
 		//playerImage.setTextureRect(sf::IntRect(0,0, 120, 120));
 		playerImage.setTextureRect(sf::IntRect(source.x * 120, source.y * 120, 120, 120));
@@ -300,11 +329,18 @@ int main(int argc, char* argv[])
 		
 	
 		
-		if (framecount>1000)window.setView(view);// minimap <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-----------------
-		else window.setView(view2);
+		//window.setView(view);// minimap <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-----------------
+
+
+		
+
+		window.setView(view2);
+
 		window.display();
-	
 		window.clear();
+		
+		
+
 
 
 	
