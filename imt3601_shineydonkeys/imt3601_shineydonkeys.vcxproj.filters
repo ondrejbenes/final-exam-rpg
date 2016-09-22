@@ -41,6 +41,15 @@
     <Image Include="Resources\Images\bruteaxe.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\Images\noaxereally.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Images\justaxe.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Images\axe_masked.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\marchingbyriver_theme.ogg">

@@ -158,8 +158,11 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\Desktop\tilex7.png" />
+    <Image Include="Resources\Images\axe_masked.png" />
     <Image Include="Resources\Images\bruteaxe.png" />
     <Image Include="Resources\Images\girljump16x4.png" />
+    <Image Include="Resources\Images\justaxe.png" />
+    <Image Include="Resources\Images\noaxereally.png" />
     <Image Include="Resources\Images\Player.png" />
     <Image Include="Resources\Images\profantasy-island.png" />
     <Image Include="Resources\Images\squaretiles.png" />

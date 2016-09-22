@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
 	int framecount = 0;
 	int getstatus = 99;
 	int fps = 60;
-	int animslowdown = 5;
+	int animslowdown = 8;
 	
 	enum Direction { Down, DL, Left, UL, Up,UR,Right, Still, Jump};
 	sf::Vector2i source(0, Down);
@@ -104,7 +104,10 @@ int main(int argc, char* argv[])
 
 	sf::Texture playerTexture;
 	sf::Texture playerTexture2;
+	sf::Texture playerTexture3;
+
 	sf::Sprite playerImage;
+	sf::Sprite weaponImage;
 
 	sf::Texture TileTexture;
 	sf::Sprite TileImage;
@@ -132,10 +135,13 @@ int main(int argc, char* argv[])
 
 	bkgImage.setTexture(bkgTexture);
 
-	if (!playerTexture.loadFromFile("Resources/Images/bruteaxe.png"))
+	if (!playerTexture.loadFromFile("Resources/Images/noaxereally.png"))
 		std::cout << "Error: could not load player image" << std::endl;
 
-	if (!playerTexture2.loadFromFile("Resources/Images/girljump16x4.png"))
+	if (!playerTexture3.loadFromFile("Resources/Images/axe_masked.png"))
+		std::cout << "Error: could not load player image" << std::endl;
+
+	if (!playerTexture2.loadFromFile("Resources/Images/bruteaxe.png"))
 		std::cout << "Error: could not load player image" << std::endl;
 
 	playerImage.setTexture(playerTexture);
@@ -172,8 +178,9 @@ int main(int argc, char* argv[])
 		}
 
 		bool keyPressed = true;
-		float speed = 100/20;
+		float speed = 100/10;
 		playerImage.setTexture(playerTexture);
+		weaponImage.setTexture(playerTexture3);
 
 		/////////////////////////////
 
@@ -232,12 +239,12 @@ int main(int argc, char* argv[])
 		else {
 			keyPressed = false;
 			sf::Vector2f position = playerImage.getPosition();
-			if (getstatus+1==(int(position.x)%80==45)+ (int(position.y) % 50 == 30))
+			if (getstatus+1==(int(position.x)%80==20)+ (int(position.y) % 50 == 30))
 			{
 				source.y = Still;
 				playerImage.move(0, 0);
 			}
-			getstatus = ((int(position.x) % 80 == 45) + (int(position.y) % 50 == 30));
+			getstatus = ((int(position.x) % 80 == 20) + (int(position.y) % 50 == 30));
 		}
 
 		if (source.y == Jump)
@@ -310,13 +317,12 @@ int main(int argc, char* argv[])
 			
 		}
 		
-		// set the color
 		
-
-		//playerImage.setTextureRect(sf::IntRect(0,0, 120, 120));
 		playerImage.setTextureRect(sf::IntRect(source.x%8 * 240, source.y%8 * 240, 240, 240));
-		
+		weaponImage.setTextureRect(sf::IntRect(source.x % 8 * 240, source.y % 8 * 240, 240, 240));
+		weaponImage.setPosition( playerImage.getPosition());
 		window.draw(playerImage);
+		if (framecount%100<50) window.draw(weaponImage);
 	
 
 
