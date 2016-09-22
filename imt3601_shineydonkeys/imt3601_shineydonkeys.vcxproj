@@ -164,6 +164,7 @@
     <Image Include="Resources\Images\girljump16x4.png" />
     <Image Include="Resources\Images\Player.png" />
     <Image Include="Resources\Images\profantasy-island.png" />
+    <Image Include="Resources\Images\squaretiles.png" />
     <Image Include="Resources\Images\tilex7.png" />
   </ItemGroup>
   <ItemGroup>

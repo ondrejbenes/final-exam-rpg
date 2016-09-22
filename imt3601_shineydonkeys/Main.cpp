@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
 	int x = 0;
 	for (auto i : vec) {
 		
-		if ((x % 44 < 1) || (x>44 * 85)) { vec[x] = 3; };
+		if ((x % 44 < 3) || (x<44 * 3) || (x>44 * 41)) { vec[x] = 0; };
 	
 		//if ((vec[x + 1] == 3) + (vec[x - 1] == 3) + (vec[x + 44] == 3) + (vec[x + 43] == 3)+(vec[x - 44] == 3) + (vec[x - 43] == 3)+ (vec[x - 88] == 3)+ (vec[x + 44] == 3) > 4) { vec[x] = 3; };
 		std::cout << i << "  ";
@@ -137,7 +137,7 @@ int main(int argc, char* argv[])
 
 	playerImage.setTexture(playerTexture);
 
-	if (!TileTexture.loadFromFile("Resources/Images/tilex7.png"))
+	if (!TileTexture.loadFromFile("Resources/Images/squaretiles.png"))
 		std::cout << "Error: could not load tile image" << std::endl;
 	TileImage.setTexture(TileTexture);
 
@@ -169,7 +169,7 @@ int main(int argc, char* argv[])
 		}
 
 		bool keyPressed = true;
-		float speed = 100/16;
+		float speed = 100/20;
 		playerImage.setTexture(playerTexture);
 
 		/////////////////////////////
@@ -198,44 +198,80 @@ int main(int argc, char* argv[])
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
-
+			source.x *= (source.y == Up);//zero if new direction
 			source.y = Up;
-			playerImage.move(0, -1 * speed);
+		
 		}
 	
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
+		source.x*= (source.y == Down) ;//zero if new direction
+		source.y = Down;
+	
 		
-			source.y = Down;
-			playerImage.move(0, 1 * speed);
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
-			
-			source.y = Right;
-			playerImage.move(1 * speed, 0);
+			source.x *= (source.y == Right);
+		source.y = Right;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
+			source.x *= (source.y == Left);
 			source.y = Left;
-			playerImage.move(-1 * speed, 0);
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
+			source.x *= (source.y == Jump);
  			source.y = Jump;
-			playerImage.move(0 * speed, 0);
-			playerImage.setTexture(playerTexture2);
 		}
 		else {
 			keyPressed = false;
-			source.y = Still;
-			playerImage.move(0, 0);
+			sf::Vector2f position = playerImage.getPosition();
+			if ((int(position.x)%80==35)&& (int(position.y) % 50 == 20))
+			{
+				source.y = Still;
+				playerImage.move(0, 0);
+			}
+		
 		}
 
-		if (keyPressed)
+		if (source.y == Jump)
+		{
+			playerImage.move(0 * speed, 0);
+			playerImage.setTexture(playerTexture2);
+		}
+
+		if (source.y == Left)
+		{
+			playerImage.move(-1 * speed, 0);
+		
+		}
+
+		if (source.y == Right)
+		{
+		
+			playerImage.move(1 * speed, 0);
+
+		}
+
+		if (source.y == Down)
+		{
+			playerImage.move(0, 1 * speed);
+
+		}
+
+
+		if (source.y == Up)
+		{
+			playerImage.move(0, -1 * speed);
+
+		}
+
+
 		{
 			source.x+=(0==framecount%animslowdown);//slow down animation
-			source.x %= 8;
+			source.x %= 64;
 		}
 
 
@@ -247,6 +283,11 @@ int main(int argc, char* argv[])
 		
 		int quake = true;
 		int x = 0;
+		int tile_x = 80;
+		int tile_y = 50;
+		int rows_x = 44;
+		int rows_y = 44;;
+
 		
 		text1.setFont(font);
 		text1.setCharacterSize(14);
@@ -259,13 +300,9 @@ int main(int argc, char* argv[])
 
 			TileImage.setTextureRect(sf::IntRect(i%7 * 120, 0* 120, 120, 120));
 			window.draw(TileImage);
-			TileImage.setPosition(x%44*100+x/44%2*50,x/44*30-((framecount<180)*quake*(i%7*(180-framecount%180)))); //draws all tiles	
-			text1.setPosition(-50+x % 44 * 100 + x / 44 % 2 * 50, 50+x / 44 * 30 - ((framecount<180)*quake*(i % 7 * (180 - framecount % 180))));
-			if (framecount % 1000 < 100)
-			{
-				text1.setString(to_string(i));
-				window.draw(text1);
-			}
+			//TileImage.setPosition(x%44*100+x/44%2*50,x/44*30-((framecount<180)*quake*(i%7*(180-framecount%180)))); //draws all tiles	
+			TileImage.setPosition(x % rows_x * tile_x, x / rows_y * tile_y); //draws all tiles	
+			
 			
 		}
 		
@@ -273,7 +310,7 @@ int main(int argc, char* argv[])
 		
 
 		//playerImage.setTextureRect(sf::IntRect(0,0, 120, 120));
-		playerImage.setTextureRect(sf::IntRect(source.x * 120, source.y * 120, 120, 120));
+		playerImage.setTextureRect(sf::IntRect(source.x%8 * 120, source.y%8 * 120, 120, 120));
 		
 		window.draw(playerImage);
 	
