@@ -20,16 +20,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\Images\girl.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="Resources\Images\Player.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\Images\4x8girl (2).png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\Images\4x8girl.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Resources\Images\profantasy-island.png">
@@ -45,6 +36,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Resources\Images\squaretiles.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Images\bruteaxe.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

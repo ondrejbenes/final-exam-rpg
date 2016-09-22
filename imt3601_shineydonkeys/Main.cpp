@@ -65,10 +65,13 @@ int main(int argc, char* argv[])
 
 
 	int framecount = 0;
+	int getstatus = 99;
 	int fps = 60;
 	int animslowdown = 5;
-	enum Direction { Down, Left, Right, Up, Still, Jump, DL,UL,UR,DR};
+	
+	enum Direction { Down, DL, Left, UL, Up,UR,Right, Still, Jump};
 	sf::Vector2i source(0, Down);
+	source.y = Still;
 
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Shiny donkeys!");
 	//sf::RenderTexture rwindow;
@@ -129,7 +132,7 @@ int main(int argc, char* argv[])
 
 	bkgImage.setTexture(bkgTexture);
 
-	if (!playerTexture.loadFromFile("Resources/Images/4X8girl (6).png"))
+	if (!playerTexture.loadFromFile("Resources/Images/bruteaxe.png"))
 		std::cout << "Error: could not load player image" << std::endl;
 
 	if (!playerTexture2.loadFromFile("Resources/Images/girljump16x4.png"))
@@ -196,6 +199,7 @@ int main(int argc, char* argv[])
 
 		}
 
+		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			source.x *= (source.y == Up);//zero if new direction
@@ -228,12 +232,12 @@ int main(int argc, char* argv[])
 		else {
 			keyPressed = false;
 			sf::Vector2f position = playerImage.getPosition();
-			if ((int(position.x)%80==35)&& (int(position.y) % 50 == 20))
+			if (getstatus+1==(int(position.x)%80==45)+ (int(position.y) % 50 == 30))
 			{
 				source.y = Still;
 				playerImage.move(0, 0);
 			}
-		
+			getstatus = ((int(position.x) % 80 == 45) + (int(position.y) % 50 == 30));
 		}
 
 		if (source.y == Jump)
@@ -310,7 +314,7 @@ int main(int argc, char* argv[])
 		
 
 		//playerImage.setTextureRect(sf::IntRect(0,0, 120, 120));
-		playerImage.setTextureRect(sf::IntRect(source.x%8 * 120, source.y%8 * 120, 120, 120));
+		playerImage.setTextureRect(sf::IntRect(source.x%8 * 240, source.y%8 * 240, 240, 240));
 		
 		window.draw(playerImage);
 	
