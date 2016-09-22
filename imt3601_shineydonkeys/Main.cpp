@@ -13,24 +13,12 @@
 #include <random>
 #include <algorithm>
 #include <iterator>
-
 #include <functional>
-
+#include <SFML/Window/Joystick.hpp>
+#include <SFML\Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-#include <SFML/Audio/InputSoundFile.hpp>
-#include <SFML/Audio/Listener.hpp>
-#include <SFML/Audio/Music.hpp>
-#include <SFML/Audio/OutputSoundFile.hpp>
-#include <SFML/Audio/Sound.hpp>
-#include <SFML/Audio/SoundBuffer.hpp>
-#include <SFML/Audio/SoundBufferRecorder.hpp>
-#include <SFML/Audio/SoundFileFactory.hpp>
-#include <SFML/Audio/SoundFileReader.hpp>
-#include <SFML/Audio/SoundFileWriter.hpp>
-#include <SFML/Audio/SoundRecorder.hpp>
-#include <SFML/Audio/SoundSource.hpp>
-#include <SFML/Audio/SoundStream.hpp>
+
 
 
 using namespace std;
@@ -185,7 +173,32 @@ int main(int argc, char* argv[])
 		/////////////////////////////
 
 		/////////////////////////////////////////////////////GETTING KEYBOARD INPUT
+		bool testingjoystick = false;
+		if (testingjoystick)
+		{
+			// Is joystick #0 connected?
+			bool jconnected = sf::Joystick::isConnected(0);
+			// How many buttons does joystick #0 support?
+			unsigned int buttons = sf::Joystick::getButtonCount(0);
+			// Does joystick #0 define a X axis?
+			bool jhasX = sf::Joystick::hasAxis(0, sf::Joystick::X);
+			// Is button #2 pressed on joystick #0?
+			bool jpressed = sf::Joystick::isButtonPressed(0, 2);
+			// What's the current position of the Y axis on joystick #0?
+			float jpositiony = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
+			float jpositionx = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
+			float jpositiony1 = sf::Joystick::getAxisPosition(1, sf::Joystick::Y);
+			float jpositionx1 = sf::Joystick::getAxisPosition(1, sf::Joystick::X);
 
+			if (0 == framecount % 10)
+				if (jconnected)
+				{
+					cout << "joystick has" << buttons << "jpressed" << jpressed << "jpx" << jpositiony << "jpy" << jpositionx;
+					cout << "\n";
+					cout << "joystick has" << buttons << "jpressed" << jpressed << "jpx" << jpositiony1 << "jpy" << jpositionx1;
+					cout << "\n";
+				}
+		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
 		{
@@ -207,31 +220,31 @@ int main(int argc, char* argv[])
 		}
 
 		
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) || sf::Joystick::getAxisPosition(0, sf::Joystick::Y) <- 50)
 		{
 			source.x *= (source.y == Up);//zero if new direction
 			source.y = Up;
 		
 		}
 	
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) || sf::Joystick::getAxisPosition(0, sf::Joystick::Y) >50)
 		{
 		source.x*= (source.y == Down) ;//zero if new direction
 		source.y = Down;
 	
 		
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) || sf::Joystick::getAxisPosition(0, sf::Joystick::X) > 50)
 		{
 			source.x *= (source.y == Right);
 		source.y = Right;
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) ||  sf::Joystick::getAxisPosition(0, sf::Joystick::X) <-50)
 		{
 			source.x *= (source.y == Left);
 			source.y = Left;
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) || sf::Joystick::isButtonPressed(0, 2))
 		{
 			source.x *= (source.y == Jump);
  			source.y = Jump;

@@ -173,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.hpp" />
+    <ClInclude Include="D:\Program Files\SFML\SFML-2.4.0\include\SFML\Window\Joystick.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\sans.ttf" />
