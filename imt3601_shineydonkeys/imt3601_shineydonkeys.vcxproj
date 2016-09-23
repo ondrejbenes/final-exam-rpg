@@ -178,6 +178,11 @@
   <ItemGroup>
     <Font Include="Resources\Fonts\sans.ttf" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="level01.txt" />
+    <Text Include="level02.txt" />
+    <Text Include="Resources\levels\level00.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

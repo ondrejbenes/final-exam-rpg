@@ -1,12 +1,22 @@
-// Hello :)
-// Espen was here alot.
-// THIS IS THE THING I CALL A MARK - G.d
 
+/*
+Tiles 
 
+1.Water			- blocks movement, but you can jump in it
+2.Wet stone		- Slippery
+3.Dry stone
+4.Sand
+5.Forest
+6.Thick Forest	- You can hide, but only move back where you came from
+7.Mud			- You will get stuck her 
+8.Blocker		- You cant go here for some reason
 
+Theese are the basic tiles, they can be replaced with overlays that look different but have same function as underlaying tiles.
+*/
 
 #include <string> 
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <stdlib.h> 
 #include <math.h>
@@ -18,7 +28,7 @@
 #include <SFML\Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-
+#include <SFML/Window/Mouse.hpp>
 
 
 using namespace std;
@@ -35,29 +45,51 @@ int main(int argc, char* argv[])
 	uniform_int_distribution<int> dist(12, 76);
 
 	auto gen = std::bind(dist, mersenne_engine);
-	std::vector<int> vec(44*87 );
+	std::vector<int> vec(44 * 87);
 	generate(begin(vec), end(vec), gen);
 
-	// Optional
 	int x = 0;
-	for (auto i : vec) {
+	ofstream myfile;
+	bool savelevel = false;
+		if (savelevel)
+
+		{
 		
-		if ((x % 44 < 3) || (x<44 * 3) || (x>44 * 41)) { vec[x] = 0; };
 	
-		//if ((vec[x + 1] == 3) + (vec[x - 1] == 3) + (vec[x + 44] == 3) + (vec[x + 43] == 3)+(vec[x - 44] == 3) + (vec[x - 43] == 3)+ (vec[x - 88] == 3)+ (vec[x + 44] == 3) > 4) { vec[x] = 3; };
-		std::cout << i << "  ";
+	myfile.open("level02.txt");
+	for (auto i : vec) {
+
+		//if ((x % 44 < 3) || (x<44 * 3) || (x>44 * 41)) { vec[x] = 0; };//add border of water
+		myfile << i << "  ";
+		myfile << endl;
 		x++;
 	}
+	myfile.close();
+}
 
 
+	
+
+	bool loadlevelfromfile = true;
+		if (loadlevelfromfile)
+		{
+			std::ifstream input("level02.txt");
+			x = 0;
+			for (std::string line; getline(input, line); )
+			{
+				vec[x++] = stoi(line);
+			}
+			cout << x << " map ints loaded";
+			input.close();
+		}
 
 
 	int framecount = 0;
 	int getstatus = 99;
 	int fps = 60;
-	int animslowdown = 8;
+	int animslowdown = 8;//to 60/8 fps
 	
-	enum Direction { Down, DL, Left, UL, Up,UR,Right, Still, Jump};
+	enum Direction { Down, DL, Left, UL, Up,UR,Right, RL, Still, Jump};
 	sf::Vector2i source(0, Down);
 	source.y = Still;
 
@@ -200,6 +232,22 @@ int main(int argc, char* argv[])
 				}
 		}
 
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		{
+			int x = 0;
+			myfile.open("level02.txt");
+			for (auto i : vec) {
+
+				//if ((x % 44 < 3) || (x<44 * 3) || (x>44 * 41)) { vec[x] = 0; };//add border of water
+				myfile << i << "  ";
+				myfile << endl;
+				x++;
+			}
+			myfile.close();
+			cout << "File saved";
+		} 
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
 		{
 
@@ -256,6 +304,8 @@ int main(int argc, char* argv[])
 			{
 				source.y = Still;
 				playerImage.move(0, 0);
+				vec[(position.x - 20) / 80 + 1 + ((position.y - 30) / 50 + 3) * 44+1] = 0;
+				cout << endl<<"x:"<<(position.x-20)/80+1<<"y:"<<(position.y-30)/50+3<<"tile:"<<(position.x - 20) / 80 + 1+ ((position.y - 30) / 50 + 3)*44;
 			}
 			getstatus = ((int(position.x) % 80 == 20) + (int(position.y) % 50 == 30));
 		}
@@ -320,13 +370,13 @@ int main(int argc, char* argv[])
 		window.draw(text1);
 		for (auto i : vec)
 		{
-			x++; //counts tiles
+			
 
 			TileImage.setTextureRect(sf::IntRect(i%7 * 120, 0* 120, 120, 120));
 			window.draw(TileImage);
 			//TileImage.setPosition(x%44*100+x/44%2*50,x/44*30-((framecount<180)*quake*(i%7*(180-framecount%180)))); //draws all tiles	
 			TileImage.setPosition(x % rows_x * tile_x, x / rows_y * tile_y); //draws all tiles	
-			
+			x++; //counts tiles
 			
 		}
 		
@@ -408,5 +458,8 @@ int main(int argc, char* argv[])
 		sf::sleep(sf::milliseconds(1000/fps));//NTFS 60 FPS
 	}
 
+
 	return 0;
+
+
 }

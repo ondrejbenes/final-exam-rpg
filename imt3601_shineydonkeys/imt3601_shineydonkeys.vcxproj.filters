@@ -69,4 +69,15 @@
       <Filter>Resource Files</Filter>
     </Font>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\levels\level00.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="level01.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="level02.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
