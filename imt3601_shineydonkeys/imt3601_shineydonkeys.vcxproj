@@ -169,6 +169,7 @@
     <Image Include="Resources\Images\tilex7.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="easy.py" />
     <None Include="Resources\Images\marchingbyriver_theme.ogg" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +182,7 @@
   <ItemGroup>
     <Text Include="level01.txt" />
     <Text Include="level02.txt" />
+    <Text Include="level02new.txt" />
     <Text Include="Resources\levels\level00.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

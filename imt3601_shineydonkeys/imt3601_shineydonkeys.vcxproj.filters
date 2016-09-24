@@ -55,6 +55,9 @@
     <None Include="Resources\Images\marchingbyriver_theme.ogg">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="easy.py">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.hpp">
@@ -77,6 +80,9 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="level02.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="level02new.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

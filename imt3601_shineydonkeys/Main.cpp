@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 
 	int x = 0;
 	ofstream myfile;
-	bool savelevel = false;
+	bool savelevel = true;
 		if (savelevel)
 
 		{
@@ -95,7 +95,8 @@ int main(int argc, char* argv[])
 			x = 0;
 			for (std::string line; getline(input, line); )
 			{
-				vec[x++] = stoi(line);
+				vec[x] = stoi(line);
+				x++;
 				if ((x % 44 < 3) || (x<44 * 3) || (x>44 * 41)) { vec[x] = 0; };//add border of water
 			}
 			cout << x << " map ints loaded";
