@@ -78,6 +78,7 @@ int main(int argc, char* argv[])
 			for (std::string line; getline(input, line); )
 			{
 				vec[x++] = stoi(line);
+				if ((x % 44 < 3) || (x<44 * 3) || (x>44 * 41)) { vec[x] = 0; };//add border of water
 			}
 			cout << x << " map ints loaded";
 			input.close();
@@ -92,8 +93,13 @@ int main(int argc, char* argv[])
 	enum Direction { Down, DL, Left, UL, Up,UR,Right, RL, Still, Jump};
 	sf::Vector2i source(0, Down);
 	source.y = Still;
+	
+	auto style = sf::Style::Fullscreen;
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "Shiny donkeys!", style);
+	
+	
 
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "Shiny donkeys!");
+
 	//sf::RenderTexture rwindow;
 
 	sf::View view;
@@ -247,6 +253,21 @@ int main(int argc, char* argv[])
 			myfile.close();
 			cout << "File saved";
 		} 
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		{
+
+			window.create(sf::VideoMode(1280, 720), "Shiny donkeys!");
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+		{
+
+			auto style = sf::Style::Fullscreen;
+			sf::RenderWindow window(sf::VideoMode(1280, 720), "Shiny donkeys!", style);
+		}
+
+	
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
 		{
