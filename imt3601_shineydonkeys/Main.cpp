@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 
 	int x = 0;
 	ofstream myfile;
-	bool savelevel = true;
+	bool savelevel = false;
 		if (savelevel)
 
 		{
