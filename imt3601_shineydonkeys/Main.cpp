@@ -14,6 +14,8 @@ Tiles
 Theese are the basic tiles, they can be replaced with overlays that look different but have same function as underlaying tiles.
 */
 
+//#include <windows.h>
+//#include "multimon.h"    
 #include <string> 
 #include <iostream>
 #include <fstream>
@@ -34,8 +36,24 @@ Theese are the basic tiles, they can be replaced with overlays that look differe
 using namespace std;
 
 
+
+
+
+
 int main(int argc, char* argv[])
 {
+
+
+
+
+
+
+
+
+
+
+
+
 	//copied from http://stackoverflow.com/questions/21516575/fill-a-vector-with-random-numbers-c
 	// First create an instance of an engine.
 	random_device rnd_device;
@@ -94,8 +112,12 @@ int main(int argc, char* argv[])
 	sf::Vector2i source(0, Down);
 	source.y = Still;
 	
+
+
 	auto style = sf::Style::Fullscreen;
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Shiny donkeys!", style);
+	window.setVerticalSyncEnabled(true); // call it once, after creating the window
+	// as specified in http://www.sfml-dev.org/tutorials/2.0/window-window.php
 	
 	
 
@@ -258,16 +280,27 @@ int main(int argc, char* argv[])
 		{
 
 			window.create(sf::VideoMode(1280, 720), "Shiny donkeys!");
+			window.setVerticalSyncEnabled(true); // call it once, after creating the window
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
 		{
 
 			auto style = sf::Style::Fullscreen;
-			sf::RenderWindow window(sf::VideoMode(1280, 720), "Shiny donkeys!", style);
+			window.create(sf::VideoMode(1280, 720), "Shiny donkeys!", style);
+			window.setVerticalSyncEnabled(true); // call it once, after creating the window
 		}
 
-	
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::N))
+		{
+
+			auto style = sf::Style::None;
+			window.create(sf::VideoMode(sf::VideoMode::getDesktopMode()), "Shiny donkeys!", style);
+			window.setVerticalSyncEnabled(true); // call it once, after creating the window
+			
+		}
+		
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
 		{
