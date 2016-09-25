@@ -55,7 +55,7 @@ while 1:
 			if event.type == QUIT:
 				pygame.quit()
 
-				f = open('level02.txt', 'w')
+				f = open('level03.txt', 'w')
 				print f
 				vecindex=0
 				for tile in vec:
