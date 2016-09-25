@@ -96,8 +96,8 @@ int main(int argc, char* argv[])
 			for (std::string line; getline(input, line); )
 			{
 				vec[x] = stoi(line);
-				x++;
 				if ((x % 44 < 3) || (x<44 * 3) || (x>44 * 41)) { vec[x] = 0; };//add border of water
+				x++;
 			}
 			cout << x << " map ints loaded";
 			input.close();
