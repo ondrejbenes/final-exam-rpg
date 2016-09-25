@@ -4,14 +4,14 @@ Tiles
 
 1.Water			- blocks movement, but you can jump in it
 2.Wet stone		- Slippery
-3.Dry stone
+3.nnnnwnnnnnnnnnnnnnnnnnnnnnDry stone
 4.Sand
 5.Forest
 6.Thick Forest	- You can hide, but only move back where you came from
 7.Mud			- You will get stuck her 
 8.Blocker		- You cant go here for some reason
 
-Theese are the basic tiles, they can be replaced with overlays that look different but have same function as underlaying tiles.
+Theese are the basic tiles, they can be replaced with overlays that look different but have same function as underlaying tilens.
 */
 
 //#include <windows.h>
@@ -359,7 +359,6 @@ int main(int argc, char* argv[])
 			{
 				source.y = Still;
 				playerImage.move(0, 0);
-				vec[(position.x - 20) / 80 + 1 + ((position.y - 30) / 50 + 3) * 44+1] = 0;
 				cout << endl<<"x:"<<(position.x-20)/80+1<<"y:"<<(position.y-30)/50+3<<"tile:"<<(position.x - 20) / 80 + 1+ ((position.y - 30) / 50 + 3)*44;
 			}
 			getstatus = ((int(position.x) % 80 == 20) + (int(position.y) % 50 == 30));
