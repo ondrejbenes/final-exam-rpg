@@ -166,6 +166,8 @@
     <Image Include="Resources\Images\Player.png" />
     <Image Include="Resources\Images\profantasy-island.png" />
     <Image Include="Resources\Images\squaretiles.png" />
+    <Image Include="Resources\Images\squaretiles3.png" />
+    <Image Include="Resources\Images\squaretiles_v2.png" />
     <Image Include="Resources\Images\tilex7.png" />
   </ItemGroup>
   <ItemGroup>

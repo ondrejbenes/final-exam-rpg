@@ -4,7 +4,7 @@ Tiles
 
 1.Water			- blocks movement, but you can jump in it
 2.Wet stone		- Slippery
-3.nnnnwnnnnnnnnnnnnnnnnnnnnnDry stone
+3.Dry stone
 4.Sand
 5.Forest
 6.Thick Forest	- You can hide, but only move back where you came from
@@ -96,7 +96,6 @@ int main(int argc, char* argv[])
 			for (std::string line; getline(input, line); )
 			{
 				vec[x] = stoi(line);
-				if ((x % 44 < 3) || (x<44 * 3) || (x>44 * 41)) { vec[x] = 0; };//add border of water
 				x++;
 			}
 			cout << x << " map ints loaded";
@@ -195,7 +194,7 @@ int main(int argc, char* argv[])
 
 	playerImage.setTexture(playerTexture);
 
-	if (!TileTexture.loadFromFile("Resources/Images/squaretiles.png"))
+	if (!TileTexture.loadFromFile("Resources/Images/squaretiles3.png"))
 		std::cout << "Error: could not load tile image" << std::endl;
 	TileImage.setTexture(TileTexture);
 

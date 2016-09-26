@@ -50,6 +50,12 @@
     <Image Include="Resources\Images\axe_masked.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\Images\squaretiles_v2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Images\squaretiles3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\marchingbyriver_theme.ogg">
