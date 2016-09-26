@@ -13,10 +13,28 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Entity">
+      <UniqueIdentifier>{9e14023c-e6be-4ac9-8efe-2eabe3204cca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entity\Component">
+      <UniqueIdentifier>{a8784f64-3361-4d75-89c5-b60acde27c73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entity">
+      <UniqueIdentifier>{a7a366ee-778f-402d-aa9a-10cec8f41edb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entity\Component">
+      <UniqueIdentifier>{d40e5c16-917a-4472-a301-fffbc61a0dcb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityComponent.cpp">
+      <Filter>Source Files\Entity\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +83,12 @@
     </ClInclude>
     <ClInclude Include="D:\Program Files\SFML\SFML-2.4.0\include\SFML\Window\Joystick.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityComponent.h">
+      <Filter>Header Files\Entity\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

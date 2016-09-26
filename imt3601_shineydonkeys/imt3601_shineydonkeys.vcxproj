@@ -154,6 +154,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityComponent.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +177,8 @@
   <ItemGroup>
     <ClInclude Include="Audio.hpp" />
     <ClInclude Include="D:\Program Files\SFML\SFML-2.4.0\include\SFML\Window\Joystick.hpp" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\sans.ttf" />
