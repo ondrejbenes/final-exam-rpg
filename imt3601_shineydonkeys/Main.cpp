@@ -262,7 +262,7 @@ int main(int argc, char* argv[])
 		}
 
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::S))&&0)//disabled
 		{
 			int x = 0;
 			myfile.open("level02.txt");
@@ -442,12 +442,15 @@ int main(int argc, char* argv[])
 		if (framecount%100<50) window.draw(weaponImage);
 	
 
+		bool wewanttriangles = false;
 
-		// create an array of 3 vertices that define a triangle primitive
-		sf::VertexArray triangle(sf::Triangles, 3);
+		if (wewanttriangles)
+		{
+			// create an array of 3 vertices that define a triangle primitive
+			sf::VertexArray triangle(sf::Triangles, 3);
 
 		// define the position of the triangle's points
-		triangle[0].position = sf::Vector2f(-100*sin(framecount*.05), 10);
+		triangle[0].position = sf::Vector2f(-100 * sin(framecount*.05), 10);
 		triangle[1].position = sf::Vector2f(000, 10);
 		triangle[2].position = sf::Vector2f(000, -300);
 
@@ -461,7 +464,7 @@ int main(int argc, char* argv[])
 		window.draw(triangle);
 
 		// define the position of the triangle's points
-		triangle[0].position = sf::Vector2f(200+100 * sin(framecount*.05), 10);
+		triangle[0].position = sf::Vector2f(200 + 100 * sin(framecount*.05), 10);
 		triangle[1].position = sf::Vector2f(200, 10);
 		triangle[2].position = sf::Vector2f(200, -300);
 
@@ -473,7 +476,7 @@ int main(int argc, char* argv[])
 		// no texture coordinates here, we'll see that later
 
 		window.draw(triangle);
-
+		}
 
 
 		sf::Vector2f position = playerImage.getPosition(); // = (15, 55)
