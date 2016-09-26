@@ -25,6 +25,18 @@
     <Filter Include="Source Files\Entity\Component">
       <UniqueIdentifier>{d40e5c16-917a-4472-a301-fffbc61a0dcb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entity\Character">
+      <UniqueIdentifier>{b0ff24e6-2e2c-46d3-ba0a-32de97f64747}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entity\Character">
+      <UniqueIdentifier>{f46a2e09-0c54-4ac7-a0bb-a798dc006055}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Exception">
+      <UniqueIdentifier>{9f27251e-d3ac-456c-bf89-daac8f5beb22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exception">
+      <UniqueIdentifier>{9a136569-9b3d-4360-a6b4-30d02a7e5613}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -35,6 +47,39 @@
     </ClCompile>
     <ClCompile Include="EntityComponent.cpp">
       <Filter>Source Files\Entity\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityFactory.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsComponent.cpp">
+      <Filter>Source Files\Entity\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkInputComponent.cpp">
+      <Filter>Source Files\Entity\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsComponent.cpp">
+      <Filter>Source Files\Entity\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerInputComponent.cpp">
+      <Filter>Source Files\Entity\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundComponent.cpp">
+      <Filter>Source Files\Entity\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="AiComponent.cpp">
+      <Filter>Source Files\Entity\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>Source Files\Entity\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Npc.cpp">
+      <Filter>Source Files\Entity\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Entity\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="UnsopportedEntityException.cpp">
+      <Filter>Source Files\Exception</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +134,42 @@
     </ClInclude>
     <ClInclude Include="EntityComponent.h">
       <Filter>Header Files\Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="AiComponent.h">
+      <Filter>Header Files\Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsComponent.h">
+      <Filter>Header Files\Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkInputComponent.h">
+      <Filter>Header Files\Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsComponent.h">
+      <Filter>Header Files\Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInputComponent.h">
+      <Filter>Header Files\Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundComponent.h">
+      <Filter>Header Files\Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityFactory.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Npc.h">
+      <Filter>Header Files\Entity\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcActivity.h">
+      <Filter>Header Files\Entity\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Entity\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Header Files\Entity\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="UnsopportedEntityException.h">
+      <Filter>Header Files\Exception</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

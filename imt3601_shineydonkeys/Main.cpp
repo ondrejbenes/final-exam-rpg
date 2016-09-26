@@ -31,6 +31,10 @@ Theese are the basic tiles, they can be replaced with overlays that look differe
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window/Mouse.hpp>
+#include "Entity.h"
+#include "Player.h"
+#include "Npc.h"
+#include "EntityFactory.h"
 
 
 using namespace std;
@@ -42,17 +46,21 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+	EntityFactory factory;
+	auto npc = factory.create<Npc>();
+	std::cout << npc->id << "\n";
 
+	auto player = factory.create<Player>();
+	std::cout << player->id << "\n";
 
-
-
-
-
-
-
-
-
-
+	try
+	{
+		factory.create<int>();
+	} 
+	catch(UnsopportedEntityException ex)
+	{
+		std::cout << ex.what() << "\n";
+	}
 
 	//copied from http://stackoverflow.com/questions/21516575/fill-a-vector-with-random-numbers-c
 	// First create an instance of an engine.

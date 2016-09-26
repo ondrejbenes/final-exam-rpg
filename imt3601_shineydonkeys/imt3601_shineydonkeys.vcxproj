@@ -154,9 +154,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AiComponent.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityComponent.cpp" />
+    <ClCompile Include="EntityFactory.cpp" />
+    <ClCompile Include="GraphicsComponent.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="NetworkInputComponent.cpp" />
+    <ClCompile Include="Npc.cpp" />
+    <ClCompile Include="PhysicsComponent.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerInputComponent.cpp" />
+    <ClCompile Include="SoundComponent.cpp" />
+    <ClCompile Include="UnsopportedEntityException.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\Desktop\tilex7.png" />
@@ -175,10 +186,22 @@
     <None Include="Resources\Images\marchingbyriver_theme.ogg" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AiComponent.h" />
     <ClInclude Include="Audio.hpp" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="D:\Program Files\SFML\SFML-2.4.0\include\SFML\Window\Joystick.hpp" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityComponent.h" />
+    <ClInclude Include="EntityFactory.h" />
+    <ClInclude Include="GraphicsComponent.h" />
+    <ClInclude Include="NetworkInputComponent.h" />
+    <ClInclude Include="Npc.h" />
+    <ClInclude Include="NpcActivity.h" />
+    <ClInclude Include="PhysicsComponent.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerInputComponent.h" />
+    <ClInclude Include="SoundComponent.h" />
+    <ClInclude Include="UnsopportedEntityException.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\sans.ttf" />
