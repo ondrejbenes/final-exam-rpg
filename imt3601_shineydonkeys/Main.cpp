@@ -35,6 +35,7 @@ Theese are the basic tiles, they can be replaced with overlays that look differe
 #include "Player.h"
 #include "Npc.h"
 #include "EntityFactory.h"
+#include "Logger.h"
 
 
 using namespace std;
@@ -46,6 +47,8 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+	LOG_D("Starting MAIN function");
+
 	EntityFactory factory;
 	auto npc = factory.create<Npc>();
 	std::cout << npc->id << "\n";
@@ -57,9 +60,9 @@ int main(int argc, char* argv[])
 	{
 		factory.create<int>();
 	} 
-	catch(UnsopportedEntityException ex)
+	catch(UnsopportedEntityException& ex)
 	{
-		std::cout << ex.what() << "\n";
+		LOG_E(ex.what());
 	}
 
 	//copied from http://stackoverflow.com/questions/21516575/fill-a-vector-with-random-numbers-c

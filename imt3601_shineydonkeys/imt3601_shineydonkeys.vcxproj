@@ -160,6 +160,7 @@
     <ClCompile Include="EntityComponent.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="GraphicsComponent.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="NetworkInputComponent.cpp" />
     <ClCompile Include="Npc.cpp" />
@@ -167,6 +168,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerInputComponent.cpp" />
     <ClCompile Include="SoundComponent.cpp" />
+    <ClCompile Include="TimeUtilities.cpp" />
     <ClCompile Include="UnsopportedEntityException.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +198,7 @@
     <ClInclude Include="EntityComponent.h" />
     <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="GraphicsComponent.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="NetworkInputComponent.h" />
     <ClInclude Include="Npc.h" />
     <ClInclude Include="NpcActivity.h" />
@@ -203,6 +206,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerInputComponent.h" />
     <ClInclude Include="SoundComponent.h" />
+    <ClInclude Include="TimeUtilities.h" />
     <ClInclude Include="UnsopportedEntityException.h" />
   </ItemGroup>
   <ItemGroup>

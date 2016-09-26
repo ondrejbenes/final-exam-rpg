@@ -11,9 +11,6 @@ public:
 
 	template <typename T> 
 	T* create();
-
-	template <>
-	Npc* create();
 };
 
 template <typename T>
