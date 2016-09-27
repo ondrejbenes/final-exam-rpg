@@ -1,8 +1,6 @@
 #pragma once
 
-#include <iostream>
-
-#pragma warning( disable : 4996 )
+#include <string>
 
 #define __SHORT_FILE__ std::string(__FILE__).substr(std::string(__FILE__).rfind("\\") + 1)
 #define LOG_I(message) Logger::log('I', __SHORT_FILE__, __func__, __LINE__, message)
@@ -12,7 +10,6 @@
 
 class Logger
 {
-	static std::ostream& os;
 public:
 	/**
 	 * \brief Should not be called directly. Use one of the macros instead.
