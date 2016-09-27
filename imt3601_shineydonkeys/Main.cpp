@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
 			x = 0;
 			for (std::string line; getline(input, line); )
 			{
-				vec[x] = stoi(line);
+				vec[x] = stoi(line)+ 7*(rand() % 7 + 1);;
 				x++;
 			}
 			cout << x << " map ints loaded";
@@ -205,7 +205,7 @@ int main(int argc, char* argv[])
 
 	playerImage.setTexture(playerTexture);
 
-	if (!TileTexture.loadFromFile("Resources/Images/squaretiles3.png"))
+	if (!TileTexture.loadFromFile("Resources/Images/180tiles (3).png"))
 		std::cout << "Error: could not load tile image" << std::endl;
 	TileImage.setTexture(TileTexture);
 
@@ -244,6 +244,11 @@ int main(int argc, char* argv[])
 		/////////////////////////////
 
 		/////////////////////////////////////////////////////GETTING KEYBOARD INPUT
+		int x = 0;
+		int tile_x = 110;
+		int tile_y = 75;
+		int rows_x = 44;
+		int rows_y = 44;;
 		bool testingjoystick = false;
 		if (testingjoystick)
 		{
@@ -365,11 +370,10 @@ int main(int argc, char* argv[])
 		else {
 			keyPressed = false;
 			sf::Vector2f position = playerImage.getPosition();
-			if (getstatus+1==(int(position.x)%80==20)+ (int(position.y) % 50 == 30))
+			if (getstatus+1==(int(position.x)% tile_x == tile_x/2)+ (int(position.y) % tile_y == tile_y/2))
 			{
 				source.y = Still;
 				playerImage.move(0, 0);
-				cout << endl<<"x:"<<(position.x-20)/80+1<<"y:"<<(position.y-30)/50+3<<"tile:"<<(position.x - 20) / 80 + 1+ ((position.y - 30) / 50 + 3)*44;
 			}
 			getstatus = ((int(position.x) % 80 == 20) + (int(position.y) % 50 == 30));
 		}
@@ -419,12 +423,8 @@ int main(int argc, char* argv[])
 
 
 		
-		int quake = true;
-		int x = 0;
-		int tile_x = 80;
-		int tile_y = 50;
-		int rows_x = 44;
-		int rows_y = 44;;
+		
+		
 
 		
 		text1.setFont(font);
@@ -436,7 +436,7 @@ int main(int argc, char* argv[])
 		{
 			
 
-			TileImage.setTextureRect(sf::IntRect(i%7 * 120, 0* 120, 120, 120));
+			TileImage.setTextureRect(sf::IntRect(i/7 * 180+1, i%7* 180+1, 180-1, 180-1));
 			window.draw(TileImage);
 			//TileImage.setPosition(x%44*100+x/44%2*50,x/44*30-((framecount<180)*quake*(i%7*(180-framecount%180)))); //draws all tiles	
 			TileImage.setPosition(x % rows_x * tile_x, x / rows_y * tile_y); //draws all tiles	
@@ -452,41 +452,6 @@ int main(int argc, char* argv[])
 		if (framecount%100<50) window.draw(weaponImage);
 	
 
-		bool wewanttriangles = false;
-
-		if (wewanttriangles)
-		{
-			// create an array of 3 vertices that define a triangle primitive
-			sf::VertexArray triangle(sf::Triangles, 3);
-
-		// define the position of the triangle's points
-		triangle[0].position = sf::Vector2f(-100 * sin(framecount*.05), 10);
-		triangle[1].position = sf::Vector2f(000, 10);
-		triangle[2].position = sf::Vector2f(000, -300);
-
-		// define the color of the triangle's points
-		triangle[0].color = sf::Color::Red;
-		triangle[1].color = sf::Color::Blue;
-		triangle[2].color = sf::Color::Green;
-
-		// no texture coordinates here, we'll see that later
-
-		window.draw(triangle);
-
-		// define the position of the triangle's points
-		triangle[0].position = sf::Vector2f(200 + 100 * sin(framecount*.05), 10);
-		triangle[1].position = sf::Vector2f(200, 10);
-		triangle[2].position = sf::Vector2f(200, -300);
-
-		// define the color of the triangle's points
-		triangle[0].color = sf::Color::Red;
-		triangle[1].color = sf::Color::Blue;
-		triangle[2].color = sf::Color::Green;
-
-		// no texture coordinates here, we'll see that later
-
-		window.draw(triangle);
-		}
 
 
 		sf::Vector2f position = playerImage.getPosition(); // = (15, 55)

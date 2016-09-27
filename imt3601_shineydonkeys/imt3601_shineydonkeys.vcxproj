@@ -173,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\Desktop\tilex7.png" />
+    <Image Include="Resources\Images\180tiles (3).png" />
     <Image Include="Resources\Images\axe_masked.png" />
     <Image Include="Resources\Images\bruteaxe.png" />
     <Image Include="Resources\Images\girljump16x4.png" />
