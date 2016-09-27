@@ -17,6 +17,7 @@ void Logger::log(const char severity, std::string callerClass, const char* calle
 	std::ofstream ofs;
 	ofs.open("log.txt", std::ofstream::app);
 	ofs << ss.str();
+	ofs.close();
 
 	#ifdef _DEBUG
 		std::cout << ss.str();
