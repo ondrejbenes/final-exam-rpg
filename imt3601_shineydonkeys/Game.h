@@ -10,15 +10,16 @@ class Game : public Module
 {
 
 public:
+	Level currentLevel;
+	GameLogic gameLogic;
+	GameState gameState;
+	GamePhase* gamePhase;
+
 	Game();
 	virtual ~Game();
 	bool initialize() override;
+	void update() override;
 
-	Level *m_Level;
-	GameLogic *m_GameLogic;
-	GameState *m_GameState;
-	GamePhase *m_GamePhase;
-
-	int loadLevel(std::string levelDefinition);
+	bool loadLevel(std::string levelDefinition);
 
 };

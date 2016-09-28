@@ -19,7 +19,7 @@ Engine::~Engine()
 
 bool Engine::initialize()
 {
-	LOG_I("Initializing engine");
+	LOG_I("Initializing Engine");
 	engineState = INITIALIZING;
 
 	// TODO Load from config file
@@ -27,17 +27,17 @@ bool Engine::initialize()
 	mainWindow = new sf::RenderWindow(sf::VideoMode(1280, 720), "Final Exam", style);
 	mainWindow->setVerticalSyncEnabled(true);
 
-	modules.push_back(new Renderer(mainWindow));
+	modules[RENDERER] = new Renderer(mainWindow);
 
-	modules.push_back(new Game());
+	modules[GAME] = new Game();
 
-	modules.push_back(new Audio());
+	modules[AUDIO] = new Audio();
 
-	modules.push_back(new Network());
+	modules[NETWORK] = new Network();
 
 	auto success = true;
 	for (auto it = modules.begin(); it != modules.end(); ++it)
-		success = success && (*it)->initialize();
+		success = success && (*it).second->initialize();
 
 	if(success)
 		engineState = INITIALIZED;
@@ -45,14 +45,26 @@ bool Engine::initialize()
 	return success;
 }
 
-int Engine::startGameLoop()
+int Engine::runGameLoop()
 {
+	LOG_I("Running game loop");
+
 	if (engineState != INITIALIZED)
 		throw InvalidEngineStateException();
 
 	engineState = RUNNING;
 
-	// Game loop here
+	while(mainWindow->isOpen())
+	{
+		// handle inputs
+
+		for (auto it = modules.begin(); it != modules.end(); ++it)
+			it->second->update();
+
+		dynamic_cast<Renderer*>(modules[RENDERER])->render();
+
+		sf::sleep(sf::seconds(1));
+	}
 
 
 	return NORMAL_EXIT;
@@ -65,7 +77,7 @@ bool Engine::shutOff()
 	engineState = SHUTTING_OFF;
 
 	for (auto it = modules.begin(); it != modules.end(); ++it)
-		delete *it;
+		delete it->second;
 
 	delete mainWindow;
 

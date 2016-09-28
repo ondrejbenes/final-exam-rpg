@@ -8,7 +8,5 @@ class Level
 public:
 	Level();
 	virtual ~Level();
-	UI *m_UI;
-	Tilemap *m_Tilemap;
-
+	Tilemap* tilemap;
 };

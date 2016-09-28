@@ -66,13 +66,13 @@ int main(int argc, char* argv[])
 		LOG_E(ex.what());
 	}
 
+	/*
 	Engine engine;
-
 	if (!engine.initialize())
 		return FAILED_TO_INITIALIZE;
 	try
 	{
-		auto exitCode = engine.startGameLoop();
+		// auto exitCode = engine.runGameLoop();
 	}
 	catch (std::exception& ex)
 	{
@@ -84,6 +84,7 @@ int main(int argc, char* argv[])
 		return FAILED_TO_SHUT_OFF;
 
 	// return exitCode;
+	*/
 
 	//copied from http://stackoverflow.com/questions/21516575/fill-a-vector-with-random-numbers-c
 	// First create an instance of an engine.

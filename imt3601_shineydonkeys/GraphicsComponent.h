@@ -9,7 +9,7 @@ public:
 	explicit GraphicsComponent(Entity& parent);
 	virtual ~GraphicsComponent();
 
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow* window) const;
 	void update() override;
 
 private:

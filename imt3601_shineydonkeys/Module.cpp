@@ -1,6 +1,6 @@
 #include "Module.h"
 
-Module::Module()
+Module::Module(ModuleType moduleType) : moduleType(moduleType)
 {
 
 }

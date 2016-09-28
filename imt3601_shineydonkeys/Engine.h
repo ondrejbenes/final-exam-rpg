@@ -4,9 +4,9 @@
 #define FAILED_TO_INITIALIZE 1
 #define FAILED_TO_SHUT_OFF 2
 
-#include "Entity.h"
 #include "Module.h"
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <map>
 
 enum EngineState
 {
@@ -20,15 +20,14 @@ enum EngineState
 class Engine
 {
 	sf::RenderWindow* mainWindow;
-	std::vector<Entity*> entities;
-	std::vector<Module*> modules;
+	std::map<ModuleType, Module*> modules;
 	EngineState engineState;
 public:
 	Engine();
 	virtual ~Engine();
 
 	bool initialize();
-	int startGameLoop();
+	int runGameLoop();
 	bool shutOff();
 	EngineState getEngineState();
 };

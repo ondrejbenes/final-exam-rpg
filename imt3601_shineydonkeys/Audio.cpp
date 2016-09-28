@@ -1,7 +1,8 @@
 #include "Audio.h"
 
 
-Audio::Audio(){
+Audio::Audio() : Module(AUDIO)
+{
 
 }
 

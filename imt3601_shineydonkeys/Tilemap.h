@@ -5,11 +5,12 @@ class Tilemap
 {
 
 public:
+	std::vector<Tile> tiles;
+
 	Tilemap();
 	virtual ~Tilemap();
-	Tile *m_Tile;
 
 	int generate();
-	int loadFromFile();
+	bool loadFromFile(std::string fileName);
 
 };

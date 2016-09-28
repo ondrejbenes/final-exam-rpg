@@ -1,25 +1,21 @@
 #include "GraphicsComponent.h"
 
-
-GraphicsComponent::GraphicsComponent(Entity& parent) : EntityComponent(parent) {
-
-}
-
-
-
-GraphicsComponent::~GraphicsComponent(){
+GraphicsComponent::GraphicsComponent(Entity& parent) : EntityComponent(parent) 
+{
 
 }
 
-
-
-
-
-void GraphicsComponent::draw(sf::RenderWindow& window){
+GraphicsComponent::~GraphicsComponent()
+{
 
 }
 
+void GraphicsComponent::draw(sf::RenderWindow* window) const
+{
+	window->draw(sprite);
+}
 
-void GraphicsComponent::update(){
+void GraphicsComponent::update()
+{
 
 }
