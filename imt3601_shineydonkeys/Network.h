@@ -9,6 +9,7 @@ class Network : public Module
 public:
 	Network();
 	virtual ~Network();
+	bool initialize() override;
 
 	int broadcast(sf::Packet& packet);
 	sf::Packet receive();

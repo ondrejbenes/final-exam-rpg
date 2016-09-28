@@ -216,6 +216,9 @@
     <ClCompile Include="GameLogic.cpp">
       <Filter>Source Files\Core\Module\Game</Filter>
     </ClCompile>
+    <ClCompile Include="InvalidEngineStateException.cpp">
+      <Filter>Source Files\Exception</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\Player.png">
@@ -395,6 +398,9 @@
     </ClInclude>
     <ClInclude Include="GameLogic.h">
       <Filter>Header Files\Core\Module\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="InvalidEngineStateException.h">
+      <Filter>Header Files\Exception</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

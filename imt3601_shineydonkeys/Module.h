@@ -6,7 +6,7 @@ public:
 	Module();
 	virtual ~Module();
 
-	void initialize();
+	virtual bool initialize() = 0;
 	virtual void update();
 
 };

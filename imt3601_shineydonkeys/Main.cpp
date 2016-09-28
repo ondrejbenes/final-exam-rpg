@@ -36,6 +36,7 @@ Theese are the basic tiles, they can be replaced with overlays that look differe
 #include "Npc.h"
 #include "EntityFactory.h"
 #include "Logger.h"
+#include "Engine.h"
 
 
 using namespace std;
@@ -64,6 +65,25 @@ int main(int argc, char* argv[])
 	{
 		LOG_E(ex.what());
 	}
+
+	Engine engine;
+
+	if (!engine.initialize())
+		return FAILED_TO_INITIALIZE;
+	try
+	{
+		auto exitCode = engine.startGameLoop();
+	}
+	catch (std::exception& ex)
+	{
+		std::string message = "Exception propagated to top level: ";
+		message.append(ex.what());
+		LOG_E(message);
+	}
+	if (!engine.shutOff())
+		return FAILED_TO_SHUT_OFF;
+
+	// return exitCode;
 
 	//copied from http://stackoverflow.com/questions/21516575/fill-a-vector-with-random-numbers-c
 	// First create an instance of an engine.

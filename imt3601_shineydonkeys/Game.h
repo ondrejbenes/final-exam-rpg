@@ -12,7 +12,8 @@ class Game : public Module
 public:
 	Game();
 	virtual ~Game();
-	static const std::string NAME;
+	bool initialize() override;
+
 	Level *m_Level;
 	GameLogic *m_GameLogic;
 	GameState *m_GameState;

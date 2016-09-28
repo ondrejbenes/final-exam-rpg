@@ -1,24 +1,14 @@
 #include "Module.h"
 
-
-Module::Module(){
-
-}
-
-
-
-Module::~Module(){
+Module::Module()
+{
 
 }
 
-
-
-
-
-void Module::initialize(){
+Module::~Module()
+{
 
 }
-
 
 void Module::update(){
 

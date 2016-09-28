@@ -11,8 +11,11 @@ Audio::~Audio(){
 
 }
 
+bool Audio::initialize()
+{
 
-
+	return true;
+}
 
 
 void Audio::playSound(sf::SoundBuffer soundName){

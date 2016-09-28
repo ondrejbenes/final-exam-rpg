@@ -6,12 +6,14 @@
 
 class Renderer : public Module
 {
-	sf::RenderWindow mainWindow;
+	sf::RenderWindow* mainWindow;
+	Camera camera;
 public:
-	Renderer();
+	explicit Renderer(sf::RenderWindow* mainWindow);
 	virtual ~Renderer();
-	Camera *m_Camera;
+	bool initialize() override;
 
 	void render();
+
 
 };
