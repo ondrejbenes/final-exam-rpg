@@ -229,7 +229,6 @@ int main(int argc, char* argv[])
 
 	if (!TileTexture.loadFromFile("Resources/Images/180tiles (3).png"))
 		std::cout << "Error: could not load tile image" << std::endl;
-	//TileTexture.setSmooth(false);
 	TileImage.setTexture(TileTexture);
 
 	// Declare a new font
@@ -504,7 +503,7 @@ int main(int argc, char* argv[])
 
 	
 
-		//window.setView(view2);
+		window.setView(view2);
 
 		sf::Vector2i wpos(0, 0);
 		window.setPosition(wpos);
