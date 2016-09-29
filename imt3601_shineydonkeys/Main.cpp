@@ -49,24 +49,7 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	LOG_D("Starting MAIN function");
-
-	EntityFactory factory;
-	auto npc = factory.create<Npc>();
-	std::cout << npc->id << "\n";
-
-	auto player = factory.create<Player>();
-	std::cout << player->id << "\n";
-
-	try
-	{
-		factory.create<int>();
-	} 
-	catch(UnsopportedEntityException& ex)
-	{
-		LOG_E(ex.what());
-	}
-
-	/*
+	/*	
 	Engine engine;
 	if (!engine.initialize())
 		return FAILED_TO_INITIALIZE;

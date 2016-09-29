@@ -56,7 +56,22 @@ int Engine::runGameLoop()
 
 	while(mainWindow->isOpen())
 	{
-		// handle inputs
+		sf::Event event;
+		while (mainWindow->pollEvent(event))
+		{
+			switch (event.type)
+			{
+			case sf::Event::Closed:
+				mainWindow->close();
+				break;
+			case sf::Event::KeyPressed:
+				if(event.key.code == sf::Keyboard::Escape)
+					mainWindow->close();
+				break;
+			default:
+				break;
+			}
+		}
 
 		for (auto it = modules.begin(); it != modules.end(); ++it)
 			it->second->update();

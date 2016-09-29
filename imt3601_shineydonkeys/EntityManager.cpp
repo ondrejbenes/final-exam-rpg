@@ -22,3 +22,4 @@ EntityManager::~EntityManager()
 std::vector<Entity*> EntityManager::gameEntities = std::vector<Entity*>();
 std::vector<Entity*> EntityManager::currentLevelEntities = std::vector<Entity*>();
 std::vector<Entity*> EntityManager::currentLevelTiles = std::vector<Entity*>();
+Entity* EntityManager::localPlayer = nullptr;

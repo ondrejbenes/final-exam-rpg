@@ -1,15 +1,14 @@
 #include "Renderer.h"
 #include "EntityManager.h"
-#include "Logger.h"
 #include "GraphicsComponent.h"
 #include "Tile.h"
 
-Renderer::Renderer(sf::RenderWindow* mainWindow) : Module(RENDERER), mainWindow(mainWindow)
+Renderer::Renderer(sf::RenderWindow* mainWindow) : 
+Module(RENDERER), 
+mainWindow(mainWindow),
+camera(0)
 {
 
-	if (!TileTexture.loadFromFile("Resources/Images/180tiles (3).png"))
-		LOG_E("Error: could not load tile image");
-	TileImage.setTexture(TileTexture);
 }
 
 Renderer::~Renderer()
@@ -25,18 +24,11 @@ bool Renderer::initialize()
 
 void Renderer::render()
 {
-		
-	auto x = 0;	
-
 	for (auto it = EntityManager::currentLevelTiles.begin(); it != EntityManager::currentLevelTiles.end(); ++it)
 	{
-		auto tile = static_cast<Tile*>(*it);
-		TileImage.setTextureRect(sf::IntRect(tile->tileType / 7 * 180 + 1, tile->tileType % 7 * 180 + 1, 180 - 1, 180 - 1));
-		mainWindow->draw(TileImage);
-		//TileImage.setPosition(x%44*100+x/44%2*50,x/44*30-((framecount<180)*quake*(i%7*(180-framecount%180)))); //draws all tiles	
-		TileImage.setPosition(x % rows_x * tile_x, x / rows_y * tile_y); //draws all tiles	
-		x++; //counts tiles
-
+		auto graphicsComponent = (*it)->getComponent<GraphicsComponent>();
+		if (graphicsComponent != nullptr)
+			graphicsComponent->draw(mainWindow);
 	}
 
 	for (auto it = EntityManager::gameEntities.begin(); it != EntityManager::gameEntities.end(); ++it)
@@ -52,4 +44,10 @@ void Renderer::render()
 		if (graphicsComponent != nullptr)
 			graphicsComponent->draw(mainWindow);
 	}
+
+	auto position = EntityManager::localPlayer->getComponent<GraphicsComponent>()->getSprite().getPosition();
+
+	camera.reset(sf::FloatRect(position.x - 980 / 2, position.y - 660 / 2, 1280, 720));
+	camera.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
+	mainWindow->setView(camera);
 }
