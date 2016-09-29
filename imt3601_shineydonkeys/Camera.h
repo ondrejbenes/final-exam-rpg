@@ -1,17 +1,17 @@
 #pragma once
 
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/View.hpp>
 
-class Camera
+class Camera : public sf::View
 {
 
 public:
-	Camera();
+	explicit Camera(int zoom_level);
+
 	virtual ~Camera();
 
 private:
-	sf::Vector2f bottomRight;
-	sf::Vector2f topLeft;
 	int zoomLevel;
 
 };

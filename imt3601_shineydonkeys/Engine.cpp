@@ -47,23 +47,41 @@ bool Engine::initialize()
 
 int Engine::runGameLoop()
 {
-	LOG_I("Running game loop");
-
 	if (engineState != INITIALIZED)
 		throw InvalidEngineStateException();
+
+	LOG_I("Running game loop");
 
 	engineState = RUNNING;
 
 	while(mainWindow->isOpen())
 	{
-		// handle inputs
+		sf::Event event;
+		while (mainWindow->pollEvent(event))
+		{
+			switch (event.type)
+			{
+			case sf::Event::Closed:
+				mainWindow->close();
+				break;
+			case sf::Event::KeyPressed:
+				if(event.key.code == sf::Keyboard::Escape)
+					mainWindow->close();
+				break;
+			default:
+				break;
+			}
+		}
 
 		for (auto it = modules.begin(); it != modules.end(); ++it)
 			it->second->update();
 
 		dynamic_cast<Renderer*>(modules[RENDERER])->render();
 
-		sf::sleep(sf::seconds(1));
+		mainWindow->display();
+		mainWindow->clear();
+
+		//sf::sleep(sf::milliseconds(1000/60));
 	}
 
 

@@ -22,12 +22,13 @@ bool Game::initialize()
 	EntityFactory factory;
 	auto player = factory.create<Player>();
 	EntityManager::gameEntities.push_back(player);
+	EntityManager::localPlayer = player;
 	
 	// TODO change to mainMentu when it is
 	gamePhase = new MainGame();
 
 	// TODO Use ResourceLoader
-	// success = success && loadLevel("level02.txt");
+	success = success && loadLevel("level02.txt");
 
 	return success;
 }

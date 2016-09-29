@@ -19,7 +19,7 @@ public:
 	virtual void update();
 
 	template <typename T>
-	const T* getComponent();
+	T* getComponent();
 protected:
 	Entity();
 	void addComponent(EntityComponent* component);
@@ -31,7 +31,7 @@ private:
 };
 
 template <typename T>
-const T* Entity::getComponent()
+T* Entity::getComponent()
 {
 	// TODO use cache so that we don't have to cycle during each frame
 
