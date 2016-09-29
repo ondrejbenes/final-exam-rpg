@@ -147,14 +147,23 @@ int main(int argc, char* argv[])
 
 
 	auto style = sf::Style::Fullscreen;
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "Shiny donkeys!", style);
-	window.setVerticalSyncEnabled(true); // call it once, after creating the window
+	//sf::RenderWindow window(sf::VideoMode(1280, 720), "Shiny donkeys!", style);
+
+	std::vector<sf::RenderWindow> vecwindows(2);//for multiple donkey monitors
+	vecwindows[0].create(sf::VideoMode(1280, 720), "Mini donkey!");
+	vecwindows[1].create(sf::VideoMode(1280, 1024), "Mini donkey!");
+
+	vecwindows[0].setVerticalSyncEnabled(true); // call it once, after creating the window
+	
 	
 	// as specified in http://www.sfml-dev.org/tutorials/2.0/window-window.php
 	
 	
 
-
+	sf::Vector2i wpos(0, 0);
+	sf::Vector2i wpos2(1920, 0);
+	vecwindows[0].setPosition(wpos);
+	vecwindows[1].setPosition(wpos2);
 	//sf::RenderTexture rwindow;
 
 	sf::View view;
@@ -166,7 +175,7 @@ int main(int argc, char* argv[])
 	// Set its target viewport to be half of the window
 	view.setViewport(sf::FloatRect(0.f, 0.f, 0.5f, 1.f));
 	// Apply it
-	window.setView(view);
+	vecwindows[0].setView(view);
 
 	sf::View view2;
 
@@ -177,7 +186,7 @@ int main(int argc, char* argv[])
 	// Set its target viewport to be half of the window
 	view2.setViewport(sf::FloatRect(0.f, 0.f, 1, 1.f));
 	// Apply it
-	window.setView(view2);
+	vecwindows[0].setView(view2);
 
 	
 	//if (!rwindow.create(1280, 720))
@@ -242,16 +251,16 @@ int main(int argc, char* argv[])
 	sf::Text text1,text2;
 
 
-	while (window.isOpen())
+	while (vecwindows[0].isOpen())
 	{
 		framecount++;
 		sf::Event event;
-		while (window.pollEvent(event))
+		while (vecwindows[0].pollEvent(event))
 		{
 			switch (event.type)
 			{
 			case sf::Event::Closed:
-				window.close();
+				vecwindows[0].close();
 				break;
 			default:
 				break;
@@ -317,16 +326,16 @@ int main(int argc, char* argv[])
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
 
-			window.create(sf::VideoMode(1280, 720), "Shiny donkeys!");
-			window.setVerticalSyncEnabled(true); // call it once, after creating the window
+			vecwindows[0].create(sf::VideoMode(1280, 720), "Shiny donkeys!");
+			vecwindows[0].setVerticalSyncEnabled(true); // call it once, after creating the window
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
 		{
 
 			auto style = sf::Style::Fullscreen;
-			window.create(sf::VideoMode(1280, 720), "Shiny donkeys!", style);
-			window.setVerticalSyncEnabled(true); // call it once, after creating the window
+			vecwindows[0].create(sf::VideoMode(1280, 720), "Shiny donkeys!", style);
+			vecwindows[0].setVerticalSyncEnabled(true); // call it once, after creating the window
 		}
 
 
@@ -334,8 +343,12 @@ int main(int argc, char* argv[])
 		{
 
 			auto style = sf::Style::None;
-			window.create(sf::VideoMode(sf::VideoMode::getDesktopMode()), "Shiny donkeys!", style);
-			window.setVerticalSyncEnabled(true); // call it once, after creating the window
+	
+			vecwindows[0].create(sf::VideoMode(sf::VideoMode::getDesktopMode()), "Shiny donkeys!", style);
+			vecwindows[0].setVerticalSyncEnabled(true); // call it once, after creating the window
+			vecwindows[1].create(sf::VideoMode(1280,1024), "Shiny donkeys!", style);
+			vecwindows[1].setPosition(wpos2);
+			vecwindows[1].setVerticalSyncEnabled(true); // call it once, after creating the window
 			
 		}
 		
@@ -453,7 +466,7 @@ int main(int argc, char* argv[])
 		text1.setCharacterSize(14);
 		text1.setStyle(sf::Text::Regular);
 		
-		window.draw(text1);
+		vecwindows[0].draw(text1);
 		for (auto i : vec)
 		{
 			
@@ -463,7 +476,7 @@ int main(int argc, char* argv[])
 			
 			{
 				TileImage.setPosition(x % rows_x * tile_x, x / rows_y * tile_y); //draws all tiles				
-				window.draw(TileImage);
+				vecwindows[0].draw(TileImage);
 			}
 			x++; //counts tiles
 			
@@ -473,8 +486,8 @@ int main(int argc, char* argv[])
 		playerImage.setTextureRect(sf::IntRect(source.x%8 * 240, source.y%8 * 240, 240, 240));
 		weaponImage.setTextureRect(sf::IntRect(source.x % 8 * 240, source.y % 8 * 240, 240, 240));
 		weaponImage.setPosition( playerImage.getPosition());
-		window.draw(playerImage);
-		if (framecount%100<50) window.draw(weaponImage);
+		vecwindows[0].draw(playerImage);
+		if (framecount%100<50) vecwindows[0].draw(weaponImage);
 	
 
 
@@ -501,12 +514,13 @@ int main(int argc, char* argv[])
 
 	
 
-		window.setView(view2);
+		vecwindows[0].setView(view2);
 
-		sf::Vector2i wpos(0, 0);
-		window.setPosition(wpos);
-		window.display();
-		window.clear();
+		
+		//sf::Vector2i ipos(int(position[0]),int(position[1]));
+		
+		vecwindows[0].display();
+		vecwindows[0].clear();
 		
 		
 
