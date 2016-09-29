@@ -27,7 +27,7 @@ bool Game::initialize()
 	gamePhase = new MainGame();
 
 	// TODO Use ResourceLoader
-	// success = success && loadLevel("level02.txt");
+	success = success && loadLevel("level02.txt");
 
 	return success;
 }

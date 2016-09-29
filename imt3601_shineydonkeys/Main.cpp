@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 		return FAILED_TO_INITIALIZE;
 	try
 	{
-		// auto exitCode = engine.runGameLoop();
+		auto exitCode = engine.runGameLoop();
 	}
 	catch (std::exception& ex)
 	{
@@ -228,6 +228,7 @@ int main(int argc, char* argv[])
 
 	if (!TileTexture.loadFromFile("Resources/Images/180tiles (3).png"))
 		std::cout << "Error: could not load tile image" << std::endl;
+	//TileTexture.setSmooth(false);
 	TileImage.setTexture(TileTexture);
 
 	// Declare a new font
@@ -452,6 +453,8 @@ int main(int argc, char* argv[])
 		text1.setCharacterSize(14);
 		text1.setStyle(sf::Text::Regular);
 		
+		
+
 		window.draw(text1);
 		for (auto i : vec)
 		{
@@ -497,7 +500,7 @@ int main(int argc, char* argv[])
 
 		
 
-		window.setView(view2);
+		//window.setView(view2);
 
 		window.display();
 		window.clear();

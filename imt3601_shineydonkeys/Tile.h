@@ -5,7 +5,9 @@ class Tile : public Entity
 {
 
 public:
-	Tile();
+	int tileType;
+
+	explicit Tile(int tileType);
 	virtual ~Tile();
 
 };

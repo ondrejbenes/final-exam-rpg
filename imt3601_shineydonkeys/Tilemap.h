@@ -5,7 +5,7 @@ class Tilemap
 {
 
 public:
-	std::vector<Tile> tiles;
+	std::vector<Tile*> tiles;
 
 	Tilemap();
 	virtual ~Tilemap();

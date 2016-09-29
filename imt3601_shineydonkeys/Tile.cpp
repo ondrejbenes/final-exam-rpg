@@ -1,11 +1,8 @@
 #include "Tile.h"
 
-
-Tile::Tile(){
-
+Tile::Tile(int tileType) : tileType(tileType)
+{
 }
-
-
 
 Tile::~Tile(){
 

@@ -15,5 +15,11 @@ public:
 
 	void render();
 
+	sf::Texture TileTexture;
+	sf::Sprite TileImage;
 
+	int tile_x = 110;
+	int tile_y = 75;
+	int rows_x = 44;
+	int rows_y = 44;
 };

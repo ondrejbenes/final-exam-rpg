@@ -47,10 +47,10 @@ bool Engine::initialize()
 
 int Engine::runGameLoop()
 {
-	LOG_I("Running game loop");
-
 	if (engineState != INITIALIZED)
 		throw InvalidEngineStateException();
+
+	LOG_I("Running game loop");
 
 	engineState = RUNNING;
 
@@ -63,7 +63,10 @@ int Engine::runGameLoop()
 
 		dynamic_cast<Renderer*>(modules[RENDERER])->render();
 
-		sf::sleep(sf::seconds(1));
+		mainWindow->display();
+		mainWindow->clear();
+
+		//sf::sleep(sf::milliseconds(1000/60));
 	}
 
 

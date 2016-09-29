@@ -6,6 +6,8 @@ class GraphicsComponent : public EntityComponent
 {
 
 public:
+	sf::Vector2i* spriteSheetCell;
+
 	explicit GraphicsComponent(Entity& parent);
 	virtual ~GraphicsComponent();
 
@@ -13,6 +15,7 @@ public:
 	void update() override;
 
 private:
-	sf::Sprite sprite;
+	sf::Sprite spriteSheet;
+	sf::Texture playerTexture;
 
 };
