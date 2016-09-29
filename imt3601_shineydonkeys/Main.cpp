@@ -128,6 +128,7 @@ int main(int argc, char* argv[])
 	auto style = sf::Style::Fullscreen;
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Shiny donkeys!", style);
 	window.setVerticalSyncEnabled(true); // call it once, after creating the window
+	
 	// as specified in http://www.sfml-dev.org/tutorials/2.0/window-window.php
 	
 	
@@ -436,10 +437,13 @@ int main(int argc, char* argv[])
 		{
 			
 
-			TileImage.setTextureRect(sf::IntRect(i/7 * 180+1, i%7* 180+1, 180-1, 180-1));
-			window.draw(TileImage);
+			TileImage.setTextureRect(sf::IntRect(i/7 * 180, i%7* 180, 170, 170));
 			//TileImage.setPosition(x%44*100+x/44%2*50,x/44*30-((framecount<180)*quake*(i%7*(180-framecount%180)))); //draws all tiles	
-			TileImage.setPosition(x % rows_x * tile_x, x / rows_y * tile_y); //draws all tiles	
+			
+			{
+				TileImage.setPosition(x % rows_x * tile_x, x / rows_y * tile_y); //draws all tiles				
+				window.draw(TileImage);
+			}
 			x++; //counts tiles
 			
 		}
@@ -474,10 +478,12 @@ int main(int argc, char* argv[])
 		//window.setView(view);// minimap <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-----------------
 
 
-		
+	
 
 		window.setView(view2);
 
+		sf::Vector2i wpos(0, 0);
+		window.setPosition(wpos);
 		window.display();
 		window.clear();
 		
