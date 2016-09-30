@@ -2,13 +2,17 @@
 #include "Character.h"
 
 class Entity;
+class EntityFactory;
 
 class Player : public Character
 {
+	friend EntityFactory;
 
 public:
-	Player();
 	virtual ~Player();
+
+protected:
+	Player();
 
 private:
 	std::string name;

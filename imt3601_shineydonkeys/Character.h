@@ -9,11 +9,14 @@ struct CharacterStats
 	unsigned __int8 strength;
 };
 
+class EntityFactory;
+
 class Character : public Entity
 {
-
+	friend EntityFactory;
 public:
-	Character();
 	virtual ~Character();
+protected:
+	Character();
 
 };

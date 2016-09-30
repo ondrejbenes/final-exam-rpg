@@ -2,12 +2,15 @@
 #include "Character.h"
 #include "NpcActivity.h"
 
+class EntityFactory;
+
 class Npc : public Character
 {
-
+	friend EntityFactory;
 public:
-	Npc();
 	virtual ~Npc();
 	NpcActivity *m_NpcActivity;
+protected:
+	Npc();
 
 };

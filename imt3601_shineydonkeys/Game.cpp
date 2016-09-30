@@ -23,6 +23,9 @@ bool Game::initialize()
 	auto player = factory.create<Player>();
 	EntityManager::gameEntities.push_back(player);
 	EntityManager::localPlayer = player;
+
+	auto npc = factory.create<Npc>();
+	EntityManager::gameEntities.push_back(npc);
 	
 	// TODO change to mainMentu when it is
 	gamePhase = new MainGame();

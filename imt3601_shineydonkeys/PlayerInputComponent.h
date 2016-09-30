@@ -1,8 +1,6 @@
 #pragma once
 #include "EntityComponent.h"
 
-enum Direction { Down, DL, Left, UL, Up, UR, Right, RL, Still, Jump };
-
 class PlayerInputComponent : public EntityComponent
 {
 public:

@@ -8,6 +8,7 @@
 #include "SoundComponent.h"
 #include "Logger.h"
 #include "Tile.h"
+#include "AiComponent.h"
 
 class EntityFactory
 {
@@ -28,7 +29,25 @@ T* EntityFactory::create()
 template <>
 inline Npc* EntityFactory::create<Npc>()
 {
-	return new Npc;
+	auto npc = new Npc;
+
+	// TODO ResLoader
+	auto texture = new sf::Texture;
+	if (!texture->loadFromFile("Resources/Images/bruteaxe.png"))
+		LOG_E("Error: could not load player image");
+	sf::Sprite sprite;
+	sprite.setTexture(*texture);
+	sprite.move(200, 150);
+
+	auto gc = new GraphicsComponent(*npc);
+	gc->setSprite(sprite);
+
+	npc->addComponent(gc);
+	npc->addComponent(new AiComponent(*npc));
+	npc->addComponent(new PhysicsComponent(*npc));
+	npc->addComponent(new SoundComponent(*npc));
+
+	return npc;
 }
 
 template <>
