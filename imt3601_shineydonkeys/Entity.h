@@ -9,9 +9,6 @@
 class EntityComponent;
 class EntityFactory;
 
-// TODO consider making an animation component
-enum MovementDirection { Down, DL, Left, UL, Up, UR, Right, RL, Still, Jump };
-
 class Entity
 {
 	friend EntityFactory;

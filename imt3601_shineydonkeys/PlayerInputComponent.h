@@ -8,9 +8,4 @@ public:
 	virtual ~PlayerInputComponent();
 
 	void update() override;
-
-private:
-	sf::Vector2i* spriteSheetCell;
-	sf::Clock animationTimer;
-	static sf::Time ANIMATION_PERIOD_MS;
 };

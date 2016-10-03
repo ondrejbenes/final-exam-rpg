@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AiComponent.cpp" />
+    <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Blackboard.cpp" />
     <ClCompile Include="BlackboardCommand.cpp" />
@@ -219,6 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AiComponent.h" />
+    <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="Audio.hpp" />
     <ClInclude Include="Blackboard.h" />

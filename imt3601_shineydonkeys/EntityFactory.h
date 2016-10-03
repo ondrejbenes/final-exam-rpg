@@ -9,6 +9,7 @@
 #include "Logger.h"
 #include "Tile.h"
 #include "AiComponent.h"
+#include "AnimationComponent.h"
 
 class EntityFactory
 {
@@ -44,6 +45,7 @@ inline Npc* EntityFactory::create<Npc>()
 
 	npc->addComponent(gc);
 	npc->addComponent(new AiComponent(*npc));
+	npc->addComponent(new AnimationComponent(*npc));
 	npc->addComponent(new PhysicsComponent(*npc));
 	npc->addComponent(new SoundComponent(*npc));
 
@@ -67,6 +69,7 @@ inline Player* EntityFactory::create<Player>()
 	gc->setSprite(sprite);
 
 	player->addComponent(gc);
+	player->addComponent(new AnimationComponent(*player));
 	player->addComponent(new PhysicsComponent(*player));
 	player->addComponent(new SoundComponent(*player));
 
