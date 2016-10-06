@@ -13,10 +13,12 @@ class Entity
 {
 	friend EntityFactory;
 public:
-	virtual ~Entity();
 	const unsigned int id;
 
+	virtual ~Entity();
 	virtual void update();
+
+	sf::Vector2f getPosition();
 
 	template <typename T>
 	T* getComponent();

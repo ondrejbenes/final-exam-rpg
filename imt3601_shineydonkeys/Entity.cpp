@@ -30,3 +30,8 @@ void Entity::update()
 	for (auto it = components.begin(); it != components.end(); ++it)
 		(*it)->update();
 }
+
+sf::Vector2f Entity::getPosition()
+{
+	return position;
+}

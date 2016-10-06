@@ -20,6 +20,8 @@ public:
 	bool initialize() override;
 	void update() override;
 
+	void saveGame();
+	void loadGame();
 	bool loadLevel(std::string levelDefinition);
 
 };

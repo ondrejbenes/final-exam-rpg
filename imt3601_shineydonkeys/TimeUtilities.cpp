@@ -7,7 +7,7 @@
 std::string TimeUtilities::getCurrentTimeAndDate()
 {
 	SYSTEMTIME st;
-	GetSystemTime(&st);
+	GetLocalTime(&st);
 
 	std::stringstream ss;
 

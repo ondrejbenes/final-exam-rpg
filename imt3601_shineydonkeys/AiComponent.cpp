@@ -2,14 +2,11 @@
 #include "GraphicsComponent.h"
 #include "AnimationComponent.h"
 
-
 AiComponent::AiComponent(Entity& parent) : 
 EntityComponent(parent)
 {
 
 }
-
-
 
 AiComponent::~AiComponent()
 {

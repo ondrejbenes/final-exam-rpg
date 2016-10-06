@@ -8,4 +8,6 @@ public:
 	virtual ~PlayerInputComponent();
 
 	void update() override;
+private:
+	void handleMovement();
 };

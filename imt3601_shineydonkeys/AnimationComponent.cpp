@@ -31,9 +31,10 @@ void AnimationComponent::update()
 	sprite.setTextureRect(sf::IntRect(spriteSheetCell->x % 8 * 240, spriteSheetCell->y % 8 * 240, 240, 240));
 	
 	auto speed = 10.0f;
-	if (spriteSheetCell->y == Jump)
+	if (spriteSheetCell->y == Jump || spriteSheetCell->y == Still)
 	{
 		sprite.move(0 * speed, 0);
+		return;
 		//sprite.setTexture(playerTexture2);
 	}
 

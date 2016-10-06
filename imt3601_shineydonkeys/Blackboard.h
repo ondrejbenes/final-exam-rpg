@@ -1,22 +1,26 @@
 #pragma once
 
-#include "BlackboardCommand.h"
-
 #include <vector>
+#include <map>
+#include <functional>
 
-class Module;
+enum ModuleType;
 class Entity;
+class Module;
 
 class Blackboard
 {
 
 public:
-	Blackboard();
 	virtual ~Blackboard();
 
-	std::vector<BlackboardCommand*> checkForMessages(Entity& entity);
-	std::vector<BlackboardCommand*> checkForMessages(Module& module);
-	void leaveMessage(Entity& entity, BlackboardCommand* message);
-	void leaveMessage(Module& module, BlackboardCommand* message);
+	// TODO refactor singleton (http://stackoverflow.com/questions/1008019/c-singleton-design-pattern)
+	static Blackboard* Blackboard::getInstance();
 
+	void leaveCallback(ModuleType moduleType, std::function<void(Module*)> callback);
+	std::vector<std::function<void(Module*)>> getCallbacks(ModuleType moduleType);
+private:
+	Blackboard();
+	static Blackboard* instance;
+	std::map<ModuleType, std::vector<std::function<void(Module*)>>> allCallbacks;
 };
