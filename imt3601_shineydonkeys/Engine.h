@@ -7,6 +7,7 @@
 #include "Module.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <map>
+#include "ConfigFile.h"
 
 enum EngineState
 {
@@ -25,8 +26,8 @@ class Engine
 public:
 	Engine();
 	virtual ~Engine();
-
 	bool initialize();
+	void initializeMainWindow(ConfigFile config);
 	int runGameLoop();
 	bool shutOff();
 	EngineState getEngineState();

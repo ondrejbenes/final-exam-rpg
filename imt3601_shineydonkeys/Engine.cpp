@@ -6,6 +6,7 @@
 #include "Audio.h"
 #include "Network.h"
 #include "InvalidEngineStateException.h"
+#include "ConfigFile.h"
 
 Engine::Engine()
 {
@@ -23,9 +24,9 @@ bool Engine::initialize()
 	engineState = INITIALIZING;
 
 	// TODO Load from config file
-	auto style = sf::Style::None;
-	mainWindow = new sf::RenderWindow(sf::VideoMode(1280, 720), "Final Exam", style);
-	mainWindow->setVerticalSyncEnabled(true);
+
+	ConfigFile config;
+	initializeMainWindow(config);
 
 	modules[RENDERER] = new Renderer(mainWindow);
 
@@ -43,6 +44,16 @@ bool Engine::initialize()
 		engineState = INITIALIZED;
 
 	return success;
+}
+
+void Engine::initializeMainWindow(ConfigFile config)
+{
+	auto style = sf::Style::None;
+	if (config.fullscreen)
+		style = sf::Style::Fullscreen;
+	mainWindow = new sf::RenderWindow(sf::VideoMode(config.resolution_width, config.resolution_height), "Final Exam", style);
+	if (config.vSync)
+		mainWindow->setVerticalSyncEnabled(true);
 }
 
 int Engine::runGameLoop()

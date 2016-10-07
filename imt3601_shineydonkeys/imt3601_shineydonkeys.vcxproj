@@ -225,6 +225,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="ChatBoard.h" />
+    <ClInclude Include="ConfigFile.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
