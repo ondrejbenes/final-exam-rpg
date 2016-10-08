@@ -8,8 +8,9 @@ class Npc : public Character
 {
 	friend EntityFactory;
 public:
-	virtual ~Npc();
 	NpcActivity *m_NpcActivity;
+
+	virtual ~Npc();
 protected:
 	Npc();
 

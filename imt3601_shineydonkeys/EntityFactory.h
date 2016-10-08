@@ -38,7 +38,6 @@ inline Npc* EntityFactory::create<Npc>()
 		LOG_E("Error: could not load player image");
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
-	sprite.move(200, 150);
 
 	auto gc = new GraphicsComponent(*npc);
 	gc->setSprite(sprite);

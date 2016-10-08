@@ -13,7 +13,7 @@ struct ConfigFile
 		resolution_width = GetPrivateProfileInt(L"graphics", L"resolution_width", 640, fileName);
 		resolution_height = GetPrivateProfileInt(L"graphics", L"resolution_height", 320, fileName);
 		fullscreen = GetPrivateProfileInt(L"graphics", L"fullscreen", 0, fileName);
-		fullscreen = GetPrivateProfileInt(L"graphics", L"vSync", 0, fileName);
+		vSync = GetPrivateProfileInt(L"graphics", L"vSync", 0, fileName);
 
 		LPWSTR result = new TCHAR[100];;
 		GetPrivateProfileString(L"player", L"name", L"Unknown", result, 255, fileName);

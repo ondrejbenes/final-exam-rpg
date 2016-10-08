@@ -46,7 +46,6 @@ void Renderer::render()
 	}
 
 	auto position = EntityManager::localPlayer->getComponent<GraphicsComponent>()->getSprite().getPosition();
-
 	camera.reset(sf::FloatRect(position.x - 980 / 2, position.y - 660 / 2, 1280, 720));
 	camera.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
 	mainWindow->setView(camera);

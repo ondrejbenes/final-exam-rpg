@@ -28,35 +28,39 @@ void AnimationComponent::update()
 	auto graphicsComponent = parent.getComponent<GraphicsComponent>();
 	if (graphicsComponent == nullptr) return;
 	auto& sprite = graphicsComponent->getSprite();
+	// TODO remove magic constants
 	sprite.setTextureRect(sf::IntRect(spriteSheetCell->x % 8 * 240, spriteSheetCell->y % 8 * 240, 240, 240));
 	
-	auto speed = 10.0f;
+	auto speed = parent.getComponent<PhysicsComponent>()->getVelocity();
 	if (spriteSheetCell->y == Jump || spriteSheetCell->y == Still)
 	{
-		sprite.move(0 * speed, 0);
 		return;
 		//sprite.setTexture(playerTexture2);
 	}
 
+	sprite.move(speed);
+
+	/*
 	if (spriteSheetCell->y == Left)
 	{
-		sprite.move(-1 * speed, 0);
+		sprite.move(-1 * speed.x, 0);
 	}
 
 	if (spriteSheetCell->y == Right)
 	{
-		sprite.move(1 * speed, 0);
+		sprite.move(1 * speed.x, 0);
 	}
 
 	if (spriteSheetCell->y == Down)
 	{
-		sprite.move(0, 1 * speed);
+		sprite.move(0, 1 * speed.y);
 	}
 
 	if (spriteSheetCell->y == Up)
 	{
-		sprite.move(0, -1 * speed);
+		sprite.move(0, -1 * speed.y);
 	}
+	*/
 }
 
 void AnimationComponent::animate(MovementDirection directtion)

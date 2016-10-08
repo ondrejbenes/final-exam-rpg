@@ -28,6 +28,7 @@ bool Game::initialize()
 	EntityManager::localPlayer = player;
 
 	auto npc = factory.create<Npc>();
+	npc->setPosition(sf::Vector2f(200, 150));
 	EntityManager::gameEntities.push_back(npc);
 	
 	// TODO change to mainMentu when it is
@@ -41,13 +42,6 @@ bool Game::initialize()
 
 void Game::update()
 {
-	/*
-	auto messages = Blackboard::getInstance()->getMessages(moduleType);
-
-	for (auto it = messages.begin(); it != messages.end(); ++it)
-		(*it)->execute(dynamic_cast<Module*>(this));
-	*/
-
 	auto callbacks = Blackboard::getInstance()->getCallbacks(moduleType);
 	for (auto it = callbacks.begin(); it != callbacks.end(); ++it)
 		(*it)(this);

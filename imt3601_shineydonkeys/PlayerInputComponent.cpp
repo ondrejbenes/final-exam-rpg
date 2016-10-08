@@ -2,6 +2,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include "GraphicsComponent.h"
 #include "AnimationComponent.h"
+#include "PhysicsComponent.h"
 #include "Logger.h"
 #include "Blackboard.h"
 #include "Module.h"
@@ -40,29 +41,32 @@ void PlayerInputComponent::update()
 
 void PlayerInputComponent::handleMovement()
 {
-	auto ac = parent.getComponent<AnimationComponent>();
+	auto pc = parent.getComponent<PhysicsComponent>();
+	auto defaultVelocity = PhysicsComponent::defaultVelocity;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		ac->animate(Up);
+		pc->setVelocity(sf::Vector2f(0, -1 * defaultVelocity.y));
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		ac->animate(Down);
+		pc->setVelocity(sf::Vector2f(0, defaultVelocity.y));
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		ac->animate(Right);
+		pc->setVelocity(sf::Vector2f(defaultVelocity.x, 0));
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		ac->animate(Left);
+		pc->setVelocity(sf::Vector2f(-1 * defaultVelocity.x, 0));
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		ac->animate(Jump);
+		// TODO remove?
+		//pc->move(Jump);
 	} else
 	{
-		ac->animate(Still);
+		pc->setVelocity(sf::Vector2f(0, 0));
 	}
+	pc->move();
 }

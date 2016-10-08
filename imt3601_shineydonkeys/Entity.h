@@ -16,20 +16,23 @@ public:
 	const unsigned int id;
 
 	virtual ~Entity();
+
 	virtual void update();
 
 	sf::Vector2f getPosition();
+	void setPosition(sf::Vector2f position);
 
 	template <typename T>
 	T* getComponent();
 protected:
+	sf::Vector2f position;
+	std::vector<EntityComponent*> components;
+
 	Entity();
 	void addComponent(EntityComponent* component);
 	void removeComponent(EntityComponent* component);
 private:
 	static unsigned int nextId;
-	sf::Vector2f position;
-	std::vector<EntityComponent*> components;
 };
 
 template <typename T>

@@ -1,8 +1,14 @@
 #include "Entity.h"
+#include "AnimationComponent.h"
+#include "GraphicsComponent.h"
 
 unsigned int Entity::nextId = 0;
 
 Entity::Entity() : id(nextId++) {
+
+}
+
+Entity::~Entity() {
 
 }
 
@@ -21,10 +27,6 @@ void Entity::removeComponent(EntityComponent* component)
 	}
 }
 
-Entity::~Entity(){
-
-}
-
 void Entity::update()
 {
 	for (auto it = components.begin(); it != components.end(); ++it)
@@ -34,4 +36,11 @@ void Entity::update()
 sf::Vector2f Entity::getPosition()
 {
 	return position;
+}
+
+void Entity::setPosition(sf::Vector2f position)
+{
+	this->position = position;
+
+	getComponent<GraphicsComponent>()->getSprite().setPosition(position);
 }

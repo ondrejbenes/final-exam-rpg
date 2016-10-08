@@ -1,8 +1,6 @@
 #pragma once
 #include "EntityComponent.h"
-
-// TODO remove DL etc after we have changed spritesheets for 4 directions
-enum MovementDirection { Down, DL, Left, UL, Up, UR, Right, RL, Still, Jump };
+#include "PhysicsComponent.h"
 
 class AnimationComponent : public EntityComponent
 {
