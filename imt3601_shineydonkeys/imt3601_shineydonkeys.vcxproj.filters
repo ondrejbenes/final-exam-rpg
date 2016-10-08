@@ -222,6 +222,9 @@
     <ClCompile Include="Blackboard.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="StringUtilities.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\Player.png">
@@ -403,6 +406,9 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="ConfigFile.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="StringUtilities.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>

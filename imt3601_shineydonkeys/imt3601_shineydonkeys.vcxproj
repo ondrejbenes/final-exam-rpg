@@ -192,6 +192,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ReourceLoader.cpp" />
     <ClCompile Include="SoundComponent.cpp" />
+    <ClCompile Include="StringUtilities.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Tilemap.cpp" />
     <ClCompile Include="TimeUtilities.cpp" />
@@ -257,6 +258,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ReourceLoader.h" />
     <ClInclude Include="SoundComponent.h" />
+    <ClInclude Include="StringUtilities.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Tilemap.h" />
     <ClInclude Include="TimeUtilities.h" />

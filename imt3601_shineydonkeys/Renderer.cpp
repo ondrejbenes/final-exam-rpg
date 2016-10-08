@@ -2,6 +2,7 @@
 #include "EntityManager.h"
 #include "GraphicsComponent.h"
 #include "Tile.h"
+#include "Console.h"
 
 Renderer::Renderer(sf::RenderWindow* mainWindow) : 
 Module(RENDERER), 
@@ -44,6 +45,10 @@ void Renderer::render()
 		if (graphicsComponent != nullptr)
 			graphicsComponent->draw(mainWindow);
 	}
+
+	auto console = Console::getInstance();
+	if (console->isVisible())
+		console->draw(mainWindow);
 
 	auto position = EntityManager::localPlayer->getComponent<GraphicsComponent>()->getSprite().getPosition();
 	camera.reset(sf::FloatRect(position.x - 980 / 2, position.y - 660 / 2, 1280, 720));

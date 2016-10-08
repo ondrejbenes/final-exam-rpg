@@ -1,12 +1,12 @@
 #include "PlayerInputComponent.h"
 #include <SFML/Window/Keyboard.hpp>
 #include "GraphicsComponent.h"
-#include "AnimationComponent.h"
 #include "PhysicsComponent.h"
 #include "Logger.h"
 #include "Blackboard.h"
 #include "Module.h"
 #include "Game.h"
+#include "Console.h"
 
 PlayerInputComponent::PlayerInputComponent(Entity& parent) : 
 EntityComponent(parent)
@@ -21,21 +21,51 @@ PlayerInputComponent::~PlayerInputComponent()
 
 void PlayerInputComponent::update()
 {
-	handleMovement();
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F5))
+	auto blackboard = Blackboard::getInstance();
+	sf::Event event; 
+	while (blackboard->pollEvent(event))
 	{
-		LOG_I("Saving game");
-		auto blackboard = Blackboard::getInstance();
-		//blackboard->leaveMessage(GAME, new SaveGameCommand);
-		blackboard->leaveCallback(GAME, [](Module* target)
+		auto console = Console::getInstance();
+		switch (event.type)
 		{
-			dynamic_cast<Game*>(target)->saveGame();
-		});
+		case sf::Event::KeyPressed:
+			if (event.key.code == sf::Keyboard::Tilde)
+			{
+				console->setVisible(!console->isVisible());
+				input = "";
+			}
+
+			if (event.key.code == sf::Keyboard::Return)
+			{
+				if(console->isVisible())
+					console->handleInput();
+				input = "";
+			}
+			break;
+		case sf::Event::TextEntered:
+			if (event.text.unicode == ';') break;
+			if (event.text.unicode == '\r') break;
+			input += event.text.unicode;
+			if (console->isVisible())
+				console->setInput(input);
+			break;
+		default:
+			LOG_D("Unknown event");
+			break;
+		}
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F6))
+
+	// handleConsole();
+	handleMovement();
+	handleLoadAndSave();
+}
+
+void PlayerInputComponent::handleConsole()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tilde))
 	{
-		LOG_I("Loading game");
+		auto console = Console::getInstance();
+		console->setVisible(!console->isVisible());
 	}
 }
 
@@ -69,4 +99,22 @@ void PlayerInputComponent::handleMovement()
 		pc->setVelocity(sf::Vector2f(0, 0));
 	}
 	pc->move();
+}
+
+
+void PlayerInputComponent::handleLoadAndSave()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F5))
+	{
+		LOG_I("Saving game");
+		auto blackboard = Blackboard::getInstance();
+		blackboard->leaveCallback(GAME, [](Module* target)
+		{
+			dynamic_cast<Game*>(target)->saveGame();
+		});
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F6))
+	{
+		LOG_I("Loading game");
+	}
 }

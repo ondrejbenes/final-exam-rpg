@@ -7,6 +7,7 @@
 #include "Network.h"
 #include "InvalidEngineStateException.h"
 #include "ConfigFile.h"
+#include "Blackboard.h"
 
 Engine::Engine()
 {
@@ -76,9 +77,13 @@ int Engine::runGameLoop()
 				mainWindow->close();
 				break;
 			case sf::Event::KeyPressed:
-				if(event.key.code == sf::Keyboard::Escape)
+				if (event.key.code == sf::Keyboard::Escape)
 					mainWindow->close();
+				else
+					Blackboard::getInstance()->pushEvent(event);
 				break;
+			case sf::Event::TextEntered:
+				Blackboard::getInstance()->pushEvent(event);
 			default:
 				break;
 			}

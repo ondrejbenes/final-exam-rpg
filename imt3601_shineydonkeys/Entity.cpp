@@ -1,6 +1,7 @@
 #include "Entity.h"
 #include "AnimationComponent.h"
 #include "GraphicsComponent.h"
+#include <sstream>
 
 unsigned int Entity::nextId = 0;
 
@@ -43,4 +44,15 @@ void Entity::setPosition(sf::Vector2f position)
 	this->position = position;
 
 	getComponent<GraphicsComponent>()->getSprite().setPosition(position);
+}
+
+std::string Entity::toString() const
+{
+	std::string type = typeid(this).name();
+	std::stringstream ss;
+	ss << 
+		"Type: " << typeid(*this).name() << ", " << 
+		"Id: " << id << ", "
+		"Pos: (" << position.x << ";" << position.y << ")";
+	return ss.str();
 }

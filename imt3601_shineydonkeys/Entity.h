@@ -24,6 +24,8 @@ public:
 
 	template <typename T>
 	T* getComponent();
+
+	std::string toString() const;
 protected:
 	sf::Vector2f position;
 	std::vector<EntityComponent*> components;

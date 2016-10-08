@@ -20,6 +20,11 @@ Blackboard* Blackboard::getInstance()
 	return instance;
 }
 
+void Blackboard::leaveCallback(ModuleType moduleType, std::function<void(Module*)> callback)
+{
+	allCallbacks[moduleType].push_back(callback);
+}
+
 std::vector<std::function<void(Module*)>> Blackboard::getCallbacks(ModuleType moduleType)
 {
 	std::vector<std::function<void(Module*)>> callbacks;
@@ -29,9 +34,18 @@ std::vector<std::function<void(Module*)>> Blackboard::getCallbacks(ModuleType mo
 	return callbacks;
 }
 
-void Blackboard::leaveCallback(ModuleType moduleType, std::function<void(Module*)> callback)
+void Blackboard::pushEvent(const sf::Event& e)
 {
-	allCallbacks[moduleType].push_back(callback);
+	windowEvents.push(e);
+}
+
+bool Blackboard::pollEvent(sf::Event& e)
+{
+	if(windowEvents.empty())
+		return false;
+	e = windowEvents.front();
+	windowEvents.pop();
+	return true;
 }
 
 Blackboard* Blackboard::instance = nullptr;
