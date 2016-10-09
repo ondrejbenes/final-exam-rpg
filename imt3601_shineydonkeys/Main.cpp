@@ -17,6 +17,10 @@ Theese are the basic tiles, they can be replaced with overlays that look differe
 #include "Logger.h"
 #include "Engine.h"
 
+// TODO Check for memory leaks
+// TODO Use only necessary includes in header files
+// TODO Remove empty constructors and destructors
+
 int main(int argc, char* argv[])
 {
 	auto exitCode = 0;

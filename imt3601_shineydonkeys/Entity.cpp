@@ -53,6 +53,6 @@ std::string Entity::toString() const
 	ss << 
 		"Type: " << typeid(*this).name() << ", " << 
 		"Id: " << id << ", "
-		"Pos: (" << position.x << ";" << position.y << ")";
+		"Pos: " << position.x << ";" << position.y;
 	return ss.str();
 }

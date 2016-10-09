@@ -41,10 +41,28 @@ void PlayerInputComponent::update()
 					console->handleInput();
 				input = "";
 			}
+
+			if (event.key.code == sf::Keyboard::F5)
+			{
+				LOG_I("Saving game");
+				blackboard->leaveCallback(GAME, [](Module* target)
+				{
+					dynamic_cast<Game*>(target)->quickSave();
+				});
+			}
+
+			if (event.key.code == sf::Keyboard::F6)
+			{
+				LOG_I("Loading game");
+				blackboard->leaveCallback(GAME, [](Module* target)
+				{
+					dynamic_cast<Game*>(target)->quickLoad();
+				});
+			}
 			break;
 		case sf::Event::TextEntered:
-			if (event.text.unicode == ';') break;
-			if (event.text.unicode == '\r') break;
+			if (event.text.unicode == ';' || event.text.unicode == '\r') 
+				break;
 			input += event.text.unicode;
 			if (console->isVisible())
 				console->setInput(input);
@@ -57,7 +75,7 @@ void PlayerInputComponent::update()
 
 	// handleConsole();
 	handleMovement();
-	handleLoadAndSave();
+	// handleLoadAndSave();
 }
 
 void PlayerInputComponent::handleConsole()
@@ -110,7 +128,7 @@ void PlayerInputComponent::handleLoadAndSave()
 		auto blackboard = Blackboard::getInstance();
 		blackboard->leaveCallback(GAME, [](Module* target)
 		{
-			dynamic_cast<Game*>(target)->saveGame();
+			dynamic_cast<Game*>(target)->quickSave();
 		});
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F6))

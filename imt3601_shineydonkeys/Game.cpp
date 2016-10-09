@@ -29,7 +29,7 @@ bool Game::initialize()
 
 	auto npc = factory.create<Npc>();
 	npc->setPosition(sf::Vector2f(200, 150));
-	EntityManager::gameEntities.push_back(npc);
+	EntityManager::currentLevelEntities.push_back(npc);
 	
 	// TODO change to mainMentu when it is
 	gamePhase = new MainGame();
@@ -53,18 +53,16 @@ void Game::update()
 		(*it)->update();
 }
 
-void Game::saveGame()
+void Game::quickSave()
 {
 	GameStateSaver saver;
-	saver.saveGame();
+	saver.quickSave();
 }
 
-void Game::loadGame()
+void Game::quickLoad()
 {
-	/*
 	GameStateLoader loader;
-	loader.loadGame();
-	*/
+	loader.quickLoad();
 }
 
 bool Game::loadLevel(std::string levelDefinition)

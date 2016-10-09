@@ -5,5 +5,5 @@ public:
 	GameStateSaver();
 	virtual ~GameStateSaver();
 
-	void saveGame();
+	void quickSave();
 };

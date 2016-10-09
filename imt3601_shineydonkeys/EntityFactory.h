@@ -17,6 +17,8 @@ public:
 	EntityFactory();
 	virtual ~EntityFactory();
 
+	Entity* createFromToString(std::string str);
+
 	template <typename T> 
 	T* create();
 };

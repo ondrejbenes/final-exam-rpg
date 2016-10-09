@@ -1,0 +1,3 @@
+9. 10. 2016 10:34:02.826
+Type: class Player, Id: 3836, Pos: 1590;480
+Type: class Npc, Id: 3837, Pos: 2000;150

@@ -31,7 +31,7 @@ Console* Console::getInstance()
 bool Console::handleInput()
 {
 	history.push_back(input);
-	// TODO create map<str, callback>
+	// TODO create map<regex, callback>
 	if(input == "help")
 	{
 		history.push_back("Allowed commands:");

@@ -14,9 +14,11 @@ public:
 	// level entities, most notably NPCs
 	static std::vector<Entity*> currentLevelEntities;
 
-	// level entities, most notably NPCs
+	// level tiles
 	static std::vector<Entity*> currentLevelTiles;
 
 	EntityManager();
 	~EntityManager();
+
+	static void clearCharacters();
 };
