@@ -63,7 +63,12 @@ void PlayerInputComponent::update()
 		case sf::Event::TextEntered:
 			if (event.text.unicode == ';' || event.text.unicode == '\r') 
 				break;
-			input += event.text.unicode;
+
+			if (event.text.unicode == 8)
+				input = input.substr(0, input.length() - 1);
+			else
+				input += event.text.unicode;
+
 			if (console->isVisible())
 				console->setInput(input);
 			break;
