@@ -61,7 +61,7 @@ void PlayerInputComponent::update()
 			}
 			break;
 		case sf::Event::TextEntered:
-			if (event.text.unicode == ';' || event.text.unicode == '\r') 
+			if (event.text.unicode == ';' || event.text.unicode == '\r' || event.text.unicode == '`')
 				break;
 
 			if (event.text.unicode == 8)
