@@ -5,8 +5,7 @@
 class StringUtilities
 {
 public:
-	StringUtilities();
-	~StringUtilities();
+	static std::string doubleToBinaryStr(double value);
 
 	// Taken from http://stackoverflow.com/questions/236129/split-a-string-in-c
 	static std::vector<std::string> split(const std::string &s, char delim);

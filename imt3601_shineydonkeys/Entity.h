@@ -4,12 +4,13 @@
 #include <SFML/System.hpp>
 
 #include <vector>
+#include "QuadTreeNodeData.h"
 
 // Forward declaration
 class EntityComponent;
 class EntityFactory;
 
-class Entity
+class Entity : public QuadTreeNodeData
 {
 	friend EntityFactory;
 public:
@@ -26,6 +27,9 @@ public:
 	T* getComponent();
 
 	std::string toString() const;
+
+	double getX() const override { return position.x; }
+	double getY() const override { return position.y; }
 protected:
 	sf::Vector2f position;
 	std::vector<EntityComponent*> components;

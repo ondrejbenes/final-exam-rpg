@@ -91,6 +91,12 @@
     <Filter Include="Header Files\Core\Module\Game\Level">
       <UniqueIdentifier>{e28fe64f-b30d-4d85-8ab3-6917fc0a3b62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility\QuadTree">
+      <UniqueIdentifier>{9f95852c-509a-4146-99aa-b99f954e0b15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility\QuadTree">
+      <UniqueIdentifier>{47e94bd1-1ec8-4ce3-b2e1-6a4d99a34eda}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -224,6 +230,15 @@
     </ClCompile>
     <ClCompile Include="StringUtilities.cpp">
       <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTree.cpp">
+      <Filter>Source Files\Utility\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTreeBoundary.cpp">
+      <Filter>Source Files\Utility\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTreeNode.cpp">
+      <Filter>Source Files\Utility\QuadTree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -410,6 +425,18 @@
     </ClInclude>
     <ClInclude Include="StringUtilities.h">
       <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTreeNodeData.h">
+      <Filter>Header Files\Utility\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTree.h">
+      <Filter>Header Files\Utility\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTreeBoundary.h">
+      <Filter>Header Files\Utility\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTreeNode.h">
+      <Filter>Header Files\Utility\QuadTree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

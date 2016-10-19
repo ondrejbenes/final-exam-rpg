@@ -189,6 +189,9 @@
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerInputComponent.cpp" />
+    <ClCompile Include="QuadTree.cpp" />
+    <ClCompile Include="QuadTreeBoundary.cpp" />
+    <ClCompile Include="QuadTreeNode.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ReourceLoader.cpp" />
     <ClCompile Include="SoundComponent.cpp" />
@@ -255,6 +258,10 @@
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerInputComponent.h" />
+    <ClInclude Include="QuadTree.h" />
+    <ClInclude Include="QuadTreeBoundary.h" />
+    <ClInclude Include="QuadTreeNode.h" />
+    <ClInclude Include="QuadTreeNodeData.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ReourceLoader.h" />
     <ClInclude Include="SoundComponent.h" />

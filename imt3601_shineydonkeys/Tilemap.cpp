@@ -34,6 +34,7 @@ bool Tilemap::loadFromFile(std::string fileName)
 	{
 		auto tile = factory.create<Tile>();
 		tile->tileType = stoi(line) + 7 * (rand() % 7 + 1);
+		tile->setPosition(sf::Vector2f(x % rows_x * tile_x, x / rows_y * tile_y));
 
 		sf::Sprite tileImage;
 		tileImage.setTexture(*tileSheet);
@@ -44,7 +45,8 @@ bool Tilemap::loadFromFile(std::string fileName)
 		graphicsComponent->setSprite(tileImage);
 		
 		tiles.push_back(tile);
-		EntityManager::currentLevelTiles.push_back(tile);		
+		EntityManager::currentLevelTiles.push_back(tile);	
+		EntityManager::tiles.add(tile);
 	}
 
 	LOG_D(x + " line loaded");
