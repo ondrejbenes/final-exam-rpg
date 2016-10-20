@@ -20,12 +20,8 @@ void GameStateSaver::quickSave()
 	std::stringstream ss;
 	ss << TimeUtilities::getCurrentTimeAndDate() << "\n";
 
-	auto entities = EntityManager::gameEntities;
-	for (auto it = entities.begin(); it != entities.end(); ++it)
-		ss << (*it)->toString() << "\n";
-
-	entities = EntityManager::currentLevelEntities;
-	for (auto it = entities.begin(); it != entities.end(); ++it)
+	auto characters = EntityManager::getInstance()->getAllCharacters();
+	for (auto it = characters.begin(); it != characters.end(); ++it)
 		ss << (*it)->toString() << "\n";
 
 	auto str = ss.str();

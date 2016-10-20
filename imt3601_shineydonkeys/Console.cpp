@@ -46,12 +46,8 @@ bool Console::handleInput()
 	if (input == "list")
 	{
 		history.push_back("Game entities:");
-		auto entities = EntityManager::gameEntities;
+		auto entities = EntityManager::getInstance()->getAllCharacters();
 		for(auto it = entities.begin(); it != entities.end(); ++it)
-			history.push_back((*it)->toString());
-		history.push_back("Level entities:");
-		entities = EntityManager::currentLevelEntities;
-		for (auto it = entities.begin(); it != entities.end(); ++it)
 			history.push_back((*it)->toString());
 
 		input = "";
@@ -68,15 +64,10 @@ bool Console::handleInput()
 		auto y = stof(splitParams[2]);
 		sf::Vector2f newPos(x, y);
 
-		auto entities = EntityManager::gameEntities;
+		auto entities = EntityManager::getInstance()->getAllCharacters();
 		for (auto it = entities.begin(); it != entities.end(); ++it)
 			if ((*it)->id == id)
-				(*it)->setPosition(newPos);
-
-		entities = EntityManager::currentLevelEntities;
-		for (auto it = entities.begin(); it != entities.end(); ++it)
-			if ((*it)->id == id)
-				(*it)->setPosition(newPos);
+				(*it)->setPosition(newPos); // todo move in quad tree as well
 
 		input = "";
 		return true;

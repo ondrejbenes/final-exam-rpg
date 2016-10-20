@@ -24,7 +24,9 @@ int Tilemap::generate()
 bool Tilemap::loadFromFile(std::string fileName)
 {
 	tiles.clear();
-	EntityManager::currentLevelTiles.clear();
+	auto entityManager = EntityManager::getInstance();
+	entityManager->clearTiles();
+
 	EntityFactory factory;
 
 	// TODO handle file not found, use ResourceLoader
@@ -45,8 +47,7 @@ bool Tilemap::loadFromFile(std::string fileName)
 		graphicsComponent->setSprite(tileImage);
 		
 		tiles.push_back(tile);
-		EntityManager::currentLevelTiles.push_back(tile);	
-		EntityManager::tiles.add(tile);
+		entityManager->add(tile);
 	}
 
 	LOG_D(x + " line loaded");

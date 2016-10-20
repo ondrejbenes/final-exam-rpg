@@ -30,6 +30,8 @@ public:
 
 	double getX() const override { return position.x; }
 	double getY() const override { return position.y; }
+	void setX(double x) override { position.x = x; }
+	void setY(double y) override { position.y = y; }
 protected:
 	sf::Vector2f position;
 	std::vector<EntityComponent*> components;

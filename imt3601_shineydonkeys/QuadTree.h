@@ -9,8 +9,6 @@
 class QuadTree
 {
 public:
-	friend QuadTreeNode;
-
 	static const std::string DIR_NW;
 	static const std::string DIR_NE;
 	static const std::string DIR_SW;
@@ -20,18 +18,16 @@ public:
 	explicit QuadTree(QuadTreeBoundary* boundary);
 	~QuadTree();
 
+	QuadTreeBoundary getBoundaryCpy();
+
 	void add(QuadTreeNodeData* data);
+	void move(QuadTreeNodeData* data, double newX, double newY);
 	QuadTreeNodeData* get(double x, double y);
 	QuadTreeNodeData* remove(double x, double y);
 	std::vector<QuadTreeNodeData*> getInInterval(QuadTreeBoundary* boundary);
-	std::vector<QuadTreeBoundary*> getBoundaries();
 private:
 	QuadTreeBoundary* _boundary;
 	QuadTreeNode* _root;
 
 	QuadTreeNode* search(QuadTreeNode* root, std::string path, double x, double y);
-	// TODO move to quadNode?
-	bool hasOneSiblingWithData(QuadTreeNode* current);
-	bool hasSiblingWithChildren(QuadTreeNode* current);
-	QuadTreeNode* getSiblingWithData(QuadTreeNode* current);
 };

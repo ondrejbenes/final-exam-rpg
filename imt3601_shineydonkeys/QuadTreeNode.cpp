@@ -4,105 +4,166 @@
 
 
 QuadTreeNode::QuadTreeNode(int depth, QuadTreeBoundary* boundary, QuadTreeNode* parent) :
-Depth(depth),
-Boundary(boundary),
-Parent(parent)
+_depth(depth),
+_parent(parent),
+_boundary(boundary)
 {
-	Data = nullptr;
-	Children = nullptr;
-	NorthWest = nullptr;
-	NorthEast = nullptr;
-	SouthWest = nullptr;
-	SouthEast = nullptr;
+	_data = nullptr;
+	_children = nullptr;
+	_northWest = nullptr;
+	_northEast = nullptr;
+	_southWest = nullptr;
+	_southEast = nullptr;
 }
 
 
 QuadTreeNode::~QuadTreeNode()
 {
+	if (_boundary != nullptr)
+		delete _boundary;
+	if(_children != nullptr)
+	{
+		for (auto it = _children->begin(); it != _children->end(); ++it)
+			delete *it;
+	}
 }
 
-QuadTreeNode* QuadTreeNode::GetChildInDirection(std::string direction)
+QuadTreeNode* QuadTreeNode::getChildInDirection(std::string direction)
 {
 	if(direction == QuadTree::DIR_NW)
-		return NorthWest;
+		return _northWest;
 	if (direction == QuadTree::DIR_NE)
-		return NorthEast;
+		return _northEast;
 	if (direction == QuadTree::DIR_SW)
-		return SouthWest;
+		return _southWest;
 	if (direction == QuadTree::DIR_SE)
-		return SouthEast;
+		return _southEast;
 
 	return nullptr;
 }
 
-void QuadTreeNode::Insert(QuadTreeNodeData* data, std::string insertPath)
+void QuadTreeNode::insert(QuadTreeNodeData* data, std::string insertPath)
 {
-	if (Depth >= QuadTree::MAX_DEPTH)
+	if (_depth >= QuadTree::MAX_DEPTH)
 	{
 		LOG_E("Max depth reached");
 		return;
 	}
 
-	if (Data == nullptr && Children == nullptr)
+	if (_data == nullptr && _children == nullptr)
 	{
-		Data = data;
+		_data = data;
 		return;
 	}
 
-	if (Data != nullptr && Children == nullptr)
+	if (_data != nullptr && _children == nullptr)
 	{
-		if (Data->getX() == data->getX() && Data->getY() == data->getY())
+		if (_data->getX() == data->getX() && _data->getY() == data->getY())
 		{
 			LOG_E("Node with these coords already exists!");
 			return;
 		}
 
 		initChildren();
-		auto* originalData = Data;
-		Data = nullptr;
-		auto insertionPath = Boundary->insertionPath(originalData->getX(), originalData->getY(), QuadTree::MAX_DEPTH - Depth);
+		auto* originalData = _data;
+		_data = nullptr;
+		auto insertionPath = _boundary->insertionPath(originalData->getX(), originalData->getY(), QuadTree::MAX_DEPTH - _depth);
 		
 		QuadTreeNode* childForOriginal = nullptr;
 
-		for(auto it = Children->begin(); it != Children->end(); ++it)
+		for(auto it = _children->begin(); it != _children->end(); ++it)
 		{
-			if ((*it)->Boundary->contains(originalData->getX(), originalData->getY()))
+			if ((*it)->_boundary->contains(originalData->getX(), originalData->getY()))
 				childForOriginal = *it;
 		}
 
-		childForOriginal->Insert(originalData, insertionPath);
+		if (childForOriginal == nullptr)
+		{
+			LOG_E("Out of boundary!");
+			return;
+		}
+
+		childForOriginal->insert(originalData, insertionPath);
 	}
 
 	auto direction = insertPath.substr(0, 2);
 	auto newInsertPath = insertPath.substr(2);
 
-	GetChildInDirection(direction)->Insert(data, newInsertPath);
+	getChildInDirection(direction)->insert(data, newInsertPath);
+}
+
+QuadTreeNode* QuadTreeNode::getSiblingWithData()
+{
+	if (_parent == nullptr)
+		return nullptr;
+	auto siblings = _parent->_children;
+	QuadTreeNode* siblingWithData = nullptr;
+
+	for (auto it = siblings->begin(); it != siblings->end(); ++it)
+	{
+		if ((*it)->_data != nullptr)
+			siblingWithData = *it;
+	}
+
+	return siblingWithData;
+}
+
+bool QuadTreeNode::hasSiblingWithChildren()
+{
+	if (_parent == nullptr)
+		return false;
+	auto siblings = _parent->_children;
+	auto siblingsWithChildren = 0;
+
+	for (auto it = siblings->begin(); it != siblings->end(); ++it)
+	{
+		if ((*it)->_children != nullptr)
+			siblingsWithChildren++;
+	}
+
+	return siblingsWithChildren > 0;
+}
+
+bool QuadTreeNode::hasOneSiblingWithData()
+{
+	if (_parent == nullptr)
+		return false;
+	auto siblings = _parent->_children;
+	auto siblingsWithDataCount = 0;
+
+	for (auto it = siblings->begin(); it != siblings->end(); ++it)
+	{
+		if ((*it)->_data != nullptr)
+			siblingsWithDataCount++;
+	}
+
+	return siblingsWithDataCount == 1;
 }
 
 void QuadTreeNode::initChildren()
 {
-	NorthWest = new QuadTreeNode(Depth + 1, getQudrant(QuadTree::DIR_NW), this);
-	NorthEast = new QuadTreeNode(Depth + 1, getQudrant(QuadTree::DIR_NE), this);
-	SouthWest = new QuadTreeNode(Depth + 1, getQudrant(QuadTree::DIR_SW), this);
-	SouthEast = new QuadTreeNode(Depth + 1, getQudrant(QuadTree::DIR_SE), this);
+	_northWest = new QuadTreeNode(_depth + 1, getQudrant(QuadTree::DIR_NW), this);
+	_northEast = new QuadTreeNode(_depth + 1, getQudrant(QuadTree::DIR_NE), this);
+	_southWest = new QuadTreeNode(_depth + 1, getQudrant(QuadTree::DIR_SW), this);
+	_southEast = new QuadTreeNode(_depth + 1, getQudrant(QuadTree::DIR_SE), this);
 
-	Children = new std::vector<QuadTreeNode*>();
-	Children->push_back(NorthWest);
-	Children->push_back(NorthEast);
-	Children->push_back(SouthWest);
-	Children->push_back(SouthEast);
+	_children = new std::vector<QuadTreeNode*>();
+	_children->push_back(_northWest);
+	_children->push_back(_northEast);
+	_children->push_back(_southWest);
+	_children->push_back(_southEast);
 }
 
 QuadTreeBoundary* QuadTreeNode::getQudrant(std::string direction)
 {
 	if (direction == QuadTree::DIR_NW)
-		return new QuadTreeBoundary(Boundary->minX(), Boundary->minX() + Boundary->getWidth() / 2, Boundary->minY(), Boundary->minY() + Boundary->getHeight() / 2);
+		return new QuadTreeBoundary(_boundary->minX(), _boundary->minX() + _boundary->getWidth() / 2, _boundary->minY(), _boundary->minY() + _boundary->getHeight() / 2);
 	if (direction == QuadTree::DIR_NE)
-		return new QuadTreeBoundary(Boundary->minX() + Boundary->getWidth() / 2, Boundary->maxX(), Boundary->minY(), Boundary->minY() + Boundary->getHeight() / 2); ;
+		return new QuadTreeBoundary(_boundary->minX() + _boundary->getWidth() / 2, _boundary->maxX(), _boundary->minY(), _boundary->minY() + _boundary->getHeight() / 2); ;
 	if (direction == QuadTree::DIR_SW)
-		return  new QuadTreeBoundary(Boundary->minX(), Boundary->minX() + Boundary->getWidth() / 2, Boundary->minY() + Boundary->getHeight() / 2, Boundary->maxY());
+		return  new QuadTreeBoundary(_boundary->minX(), _boundary->minX() + _boundary->getWidth() / 2, _boundary->minY() + _boundary->getHeight() / 2, _boundary->maxY());
 	if (direction == QuadTree::DIR_SE)
-		return new QuadTreeBoundary(Boundary->minX() + Boundary->getWidth() / 2, Boundary->maxX(), Boundary->minY() + Boundary->getHeight() / 2, Boundary->maxY());
+		return new QuadTreeBoundary(_boundary->minX() + _boundary->getWidth() / 2, _boundary->maxX(), _boundary->minY() + _boundary->getHeight() / 2, _boundary->maxY());
 
 	return nullptr;
 }

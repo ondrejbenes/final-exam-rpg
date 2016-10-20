@@ -24,12 +24,14 @@ bool Game::initialize()
 
 	EntityFactory factory;
 	auto player = factory.create<Player>();
-	EntityManager::gameEntities.push_back(player);
-	EntityManager::localPlayer = player;
+
+	auto entityManager = EntityManager::getInstance();
+	entityManager->add(player);
+	entityManager->setLocalPlayer(player);
 
 	auto npc = factory.create<Npc>();
 	npc->setPosition(sf::Vector2f(200, 150));
-	EntityManager::currentLevelEntities.push_back(npc);
+	entityManager->add(npc);
 	
 	// TODO change to mainMentu when it is
 	gamePhase = new MainGame();
@@ -46,10 +48,9 @@ void Game::update()
 	for (auto it = callbacks.begin(); it != callbacks.end(); ++it)
 		(*it)(this);
 
-	for (auto it = EntityManager::gameEntities.begin(); it != EntityManager::gameEntities.end(); ++it)
-		(*it)->update();
+	auto characters = EntityManager::getInstance()->getAllCharacters();
 
-	for (auto it = EntityManager::currentLevelEntities.begin(); it != EntityManager::currentLevelEntities.end(); ++it)
+	for (auto it = characters.begin(); it != characters.end(); ++it)
 		(*it)->update();
 }
 

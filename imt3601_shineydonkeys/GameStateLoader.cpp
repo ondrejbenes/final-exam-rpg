@@ -24,15 +24,15 @@ void GameStateLoader::quickLoad()
 		LOG_W("QuickSave file not found");
 		return;
 	}
-
-	EntityFactory factory;
-	EntityManager::clearCharacters();
+	auto entityManager = EntityManager::getInstance();
+	entityManager->clearCharacters();
 
 	// Regex usage - http://stackoverflow.com/questions/11627440/regex-c-extract-substring
 	// TODO extract entity regex somewhere (duplication in entityfactory)
 	std::regex entityRegEx("Type: class (.*), Id: .*, Pos: (.*);(.*)");
 	std::smatch match;
 
+	EntityFactory factory;
 	std::string line;
 	while (getline(ifs, line))
 	{
@@ -45,13 +45,13 @@ void GameStateLoader::quickLoad()
 				if(typeid(*entity) == typeid(Player))
 				{
 					// TODO if we have multiplayer, we may have problems here (modifying save file structure may be easiest fix):
-					EntityManager::localPlayer = dynamic_cast<Player*>(entity);
-					EntityManager::gameEntities.push_back(entity);
+					entityManager->setLocalPlayer(dynamic_cast<Player*>(entity));
+					entityManager->add(entity);
 				}
 
 				if (typeid(*entity) == typeid(Npc))
 				{
-					EntityManager::gameEntities.push_back(entity);
+					entityManager->add(entity);
 				}
 			}
 		}

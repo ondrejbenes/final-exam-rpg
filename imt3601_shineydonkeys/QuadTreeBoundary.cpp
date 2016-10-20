@@ -1,7 +1,7 @@
 #include "QuadTreeBoundary.h"
 #include "StringUtilities.h"
+
 #include <sstream>
-#include "Logger.h"
 #include <algorithm>
 
 QuadTreeBoundary::QuadTreeBoundary(double minX, double maxX, double minY, double maxY) : 

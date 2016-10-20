@@ -10,7 +10,7 @@ std::string StringUtilities::doubleToBinaryStr(double value)
 
 	std::string afterDecimalPointStr = "";
 
-	double afterDecimalPoint = 2 * (abs(value) - abs((long)value));
+	double afterDecimalPoint = 2 * (abs(value) - abs(long(value)));
 	for (int i = 0; i < 15; i++)
 	{
 		if (afterDecimalPoint >= 1)

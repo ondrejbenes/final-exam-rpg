@@ -1,5 +1,6 @@
 #include "PhysicsComponent.h"
 #include "AnimationComponent.h"
+#include "EntityManager.h"
 
 PhysicsComponent::PhysicsComponent(Entity& parent) : 
 EntityComponent(parent) ,
@@ -30,10 +31,18 @@ sf::Vector2f PhysicsComponent::getVelocity()
 
 void PhysicsComponent::move()
 {
-	if(hasCollision()) 
-		return;
+	//auto previousPosition = parent.getPosition();
+	auto newPosition = parent.getPosition() + velocity;
 
-	parent.setPosition(sf::Vector2f(parent.getPosition() + velocity));
+	if(hasCollision(newPosition))
+	{
+		velocity = sf::Vector2f(0, 0);
+		return;
+	}
+
+	//parent.setPosition(newPosition);
+	EntityManager::getInstance()->move(&parent, newPosition);
+
 	auto direction = Still;
 	if (velocity.x > 0)
 		direction = Right;
@@ -47,9 +56,13 @@ void PhysicsComponent::move()
 	pc->animate(direction);
 }
 
-bool PhysicsComponent::hasCollision()
+bool PhysicsComponent::hasCollision(const sf::Vector2f& newPosition)
 {
 	// TODO implement
+
+	if (newPosition.x < 0 || newPosition.x > 8192.0 || newPosition.y < 0 || newPosition.y > 8192.0)
+		return true;
+
 	return false;
 }
 

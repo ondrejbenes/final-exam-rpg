@@ -32,10 +32,11 @@ void Renderer::render()
 		if (graphicsComponent != nullptr)
 			graphicsComponent->draw(mainWindow);
 	}*/
-	auto playerPos = EntityManager::localPlayer->getPosition();
+	auto entityManager = EntityManager::getInstance();
+	auto playerPos = entityManager->getLocalPlayer()->getPosition();
 
 	auto boundary = QuadTreeBoundary(playerPos.x - 800, playerPos.x + 800, playerPos.y - 500, playerPos.y + 500);
-	auto tiles = EntityManager::tiles.getInInterval(&boundary);
+	auto tiles = entityManager->getTilesInInterval(boundary);
 	for (auto it = tiles.begin(); it != tiles.end(); ++it)
 	{
 		auto graphicsComponent = dynamic_cast<Entity*>(*it)->getComponent<GraphicsComponent>();
@@ -43,14 +44,8 @@ void Renderer::render()
 			graphicsComponent->draw(mainWindow);
 	}
 
-	for (auto it = EntityManager::gameEntities.begin(); it != EntityManager::gameEntities.end(); ++it)
-	{
-		auto graphicsComponent = (*it)->getComponent<GraphicsComponent>();
-		if (graphicsComponent != nullptr)
-			graphicsComponent->draw(mainWindow);
-	}
-
-	for (auto it = EntityManager::currentLevelEntities.begin(); it != EntityManager::currentLevelEntities.end(); ++it)
+	auto characters = entityManager->getCharactersInInterval(boundary);
+	for (auto it = characters.begin(); it != characters.end(); ++it)
 	{
 		auto graphicsComponent = (*it)->getComponent<GraphicsComponent>();
 		if (graphicsComponent != nullptr)

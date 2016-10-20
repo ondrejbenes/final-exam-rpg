@@ -21,5 +21,5 @@ public:
 	void move();
 private:
 	sf::Vector2f velocity;
-	bool hasCollision();
+	bool hasCollision(const sf::Vector2f& newPosition);
 };
