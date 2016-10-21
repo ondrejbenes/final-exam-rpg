@@ -31,4 +31,6 @@ public:
 	int runGameLoop();
 	bool shutOff();
 	EngineState getEngineState();
+private:
+	void handleWindowEvents();
 };

@@ -8,6 +8,7 @@
 #include "InvalidEngineStateException.h"
 #include "ConfigFile.h"
 #include "Blackboard.h"
+#include "Console.h"
 
 Engine::Engine()
 {
@@ -68,26 +69,7 @@ int Engine::runGameLoop()
 
 	while(mainWindow->isOpen())
 	{
-		sf::Event event;
-		while (mainWindow->pollEvent(event))
-		{
-			switch (event.type)
-			{
-			case sf::Event::Closed:
-				mainWindow->close();
-				break;
-			case sf::Event::KeyPressed:
-				if (event.key.code == sf::Keyboard::Escape)
-					mainWindow->close();
-				else
-					Blackboard::getInstance()->pushEvent(event);
-				break;
-			case sf::Event::TextEntered:
-				Blackboard::getInstance()->pushEvent(event);
-			default:
-				break;
-			}
-		}
+		handleWindowEvents();
 
 		for (auto it = modules.begin(); it != modules.end(); ++it)
 			it->second->update();
@@ -122,4 +104,36 @@ bool Engine::shutOff()
 EngineState Engine::getEngineState()
 {
 	return engineState;
+}
+
+void Engine::handleWindowEvents()
+{
+	sf::Event event;
+	auto console = Console::getInstance();
+	while (mainWindow->pollEvent(event))
+	{
+		switch (event.type)
+		{
+		case sf::Event::Closed:
+			mainWindow->close();
+			break;
+		case sf::Event::KeyPressed:
+			if (event.key.code == sf::Keyboard::Escape)
+				mainWindow->close();
+			else if (event.key.code == sf::Keyboard::Tilde)
+				console->setVisible(!console->isVisible());
+			else if (console->isVisible())
+				console->handleEvent(event);
+			else
+				Blackboard::getInstance()->pushEvent(event);
+			break;
+		case sf::Event::TextEntered:
+			if (console->isVisible())
+				console->handleEvent(event);
+			else
+				Blackboard::getInstance()->pushEvent(event);
+		default:
+			break;
+		}
+	}
 }

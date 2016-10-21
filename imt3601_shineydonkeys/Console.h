@@ -3,25 +3,27 @@
 #include <vector>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Font.hpp>
+#include <regex>
+#include <functional>
 
 //TODO refactor singleton
 class Console
 {
 public:
 	virtual ~Console();
-
 	static Console* getInstance();
 	bool handleInput();
+	void handleEvent(const sf::Event& event);
 	void draw(sf::RenderWindow* window) const;
-
-	std::string getInput() { return input; }
-	void setInput(std::string input) { this->input = input; }
 
 	bool isVisible() const { return visible; }
 	void setVisible(bool visible) { this->visible = visible; }
 private:
 	Console();
 	static Console* instance;
+
+	std::regex _regexMove;
+	std::vector<std::pair<std::regex, std::function<void()>>> _commands;
 
 	sf::Font font;
 	unsigned int characterSize = 12U;
@@ -30,4 +32,8 @@ private:
 	std::vector<std::string> history;
 	std::string input;
 	bool visible;
+
+	void help();
+	void list();
+	void move();
 };

@@ -8,9 +8,5 @@ public:
 	virtual ~PlayerInputComponent();
 	void update() override;
 private:
-	std::string input;
-
-	void handleConsole();
 	void handleMovement();
-	void handleLoadAndSave();
 };

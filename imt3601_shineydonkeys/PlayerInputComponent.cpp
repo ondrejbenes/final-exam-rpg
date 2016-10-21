@@ -25,23 +25,9 @@ void PlayerInputComponent::update()
 	sf::Event event; 
 	while (blackboard->pollEvent(event))
 	{
-		auto console = Console::getInstance();
 		switch (event.type)
 		{
 		case sf::Event::KeyPressed:
-			if (event.key.code == sf::Keyboard::Tilde)
-			{
-				console->setVisible(!console->isVisible());
-				input = "";
-			}
-
-			if (event.key.code == sf::Keyboard::Return)
-			{
-				if(console->isVisible())
-					console->handleInput();
-				input = "";
-			}
-
 			if (event.key.code == sf::Keyboard::F5)
 			{
 				LOG_I("Saving game");
@@ -60,36 +46,13 @@ void PlayerInputComponent::update()
 				});
 			}
 			break;
-		case sf::Event::TextEntered:
-			if (event.text.unicode == ';' || event.text.unicode == '\r' || event.text.unicode == '`')
-				break;
-
-			if (event.text.unicode == 8)
-				input = input.substr(0, input.length() - 1);
-			else
-				input += event.text.unicode;
-
-			if (console->isVisible())
-				console->setInput(input);
-			break;
 		default:
 			LOG_D("Unknown event");
 			break;
 		}
 	}
 
-	// handleConsole();
 	handleMovement();
-	// handleLoadAndSave();
-}
-
-void PlayerInputComponent::handleConsole()
-{
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tilde))
-	{
-		auto console = Console::getInstance();
-		console->setVisible(!console->isVisible());
-	}
 }
 
 void PlayerInputComponent::handleMovement()
@@ -122,22 +85,4 @@ void PlayerInputComponent::handleMovement()
 		pc->setVelocity(sf::Vector2f(0, 0));
 	}
 	pc->move();
-}
-
-
-void PlayerInputComponent::handleLoadAndSave()
-{
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F5))
-	{
-		LOG_I("Saving game");
-		auto blackboard = Blackboard::getInstance();
-		blackboard->leaveCallback(GAME, [](Module* target)
-		{
-			dynamic_cast<Game*>(target)->quickSave();
-		});
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F6))
-	{
-		LOG_I("Loading game");
-	}
 }
