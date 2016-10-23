@@ -1,31 +1,14 @@
 #include "GamePhase.h"
 
+UI& GamePhase::getUi()
+{
+	return _ui;
+}
 
 GamePhase::GamePhase(){
 
 }
 
-
-
 GamePhase::~GamePhase(){
-
-}
-
-
-
-
-
-bool GamePhase::initialize(){
-
-	return false;
-}
-
-
-void GamePhase::render(){
-
-}
-
-
-void GamePhase::update(){
 
 }

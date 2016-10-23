@@ -1,6 +1,7 @@
 #pragma once
 #include "EntityComponent.h"
-#include "AI_State.h"
+
+class AiState;
 
 class AiComponent : public EntityComponent
 {

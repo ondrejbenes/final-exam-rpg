@@ -1,13 +1,18 @@
 #pragma once
+
 #include "GamePhase.h"
+
+#include <SFML/Graphics/RenderWindow.hpp>
 
 class Menu : public GamePhase
 {
-
+	friend GamePhaseFactory;
 public:
-	Menu();
 	virtual ~Menu();
 
-	int onClick(int index);
+	void update() override;
+	void render(sf::RenderWindow* window) override;
+protected:
+	Menu();
 
 };

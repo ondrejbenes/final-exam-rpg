@@ -1,6 +1,5 @@
 #include "Engine.h"
 #include "Logger.h"
-#include <SFML/Graphics/RenderWindow.hpp>
 #include "Renderer.h"
 #include "Game.h"
 #include "Audio.h"
@@ -9,6 +8,8 @@
 #include "ConfigFile.h"
 #include "Blackboard.h"
 #include "Console.h"
+
+#include <SFML/Graphics/RenderWindow.hpp>
 
 Engine::Engine()
 {

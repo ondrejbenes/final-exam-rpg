@@ -4,15 +4,12 @@
 #include "Level.h"
 #include "GameLogic.h"
 #include "GameState.h"
-#include "GamePhase.h"
 
 class Game : public Module
 {
 public:
-	Level currentLevel;
 	GameLogic gameLogic;
 	GameState gameState;
-	GamePhase* gamePhase;
 
 	Game();
 	virtual ~Game();
@@ -21,5 +18,4 @@ public:
 
 	void quickSave();
 	void quickLoad();
-	bool loadLevel(std::string levelDefinition);
 };
