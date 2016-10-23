@@ -1,5 +1,6 @@
 #pragma once
 #include "EntityComponent.h"
+#include "AI_State.h"
 
 class AiComponent : public EntityComponent
 {
@@ -7,9 +8,9 @@ class AiComponent : public EntityComponent
 public:
 	explicit AiComponent(Entity& parent);
 	virtual ~AiComponent();
+	void ChangeState(AiState* newState);
 
 	void update() override;
 private:
-	// TODO remove when we have smarter AI
-	int framesInOneDirection = 0;
+	AiState* CurrentState;
 };

@@ -13,6 +13,9 @@ public:
 
 	virtual void update();
 
+
+	Entity& getParent() const{return parent;} 
+
 protected:
 	Entity& parent;
 

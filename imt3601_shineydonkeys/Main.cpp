@@ -44,6 +44,7 @@ int main(int argc, char* argv[])
 		LOG_E(message);
 	}
 
+
 	if (!engine.shutOff())
 	{
 		LOG_E("Engine failed to shut off");

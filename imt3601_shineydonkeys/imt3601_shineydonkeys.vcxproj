@@ -155,6 +155,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AiComponent.cpp" />
+    <ClCompile Include="AI_Follow.cpp" />
+    <ClCompile Include="AI_Idle.cpp" />
+    <ClCompile Include="AI_Patrol.cpp" />
+    <ClCompile Include="AI_State.cpp" />
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Blackboard.cpp" />
@@ -223,6 +227,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AiComponent.h" />
+    <ClInclude Include="AI_Follow.h" />
+    <ClInclude Include="AI_Idle.h" />
+    <ClInclude Include="AI_Patrol.h" />
+    <ClInclude Include="AI_State.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="Blackboard.h" />
@@ -254,7 +262,6 @@
     <ClInclude Include="Network.h" />
     <ClInclude Include="NetworkInputComponent.h" />
     <ClInclude Include="Npc.h" />
-    <ClInclude Include="NpcActivity.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerInputComponent.h" />

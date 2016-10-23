@@ -97,6 +97,12 @@
     <Filter Include="Header Files\Utility\QuadTree">
       <UniqueIdentifier>{47e94bd1-1ec8-4ce3-b2e1-6a4d99a34eda}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entity\Component\Ai">
+      <UniqueIdentifier>{e79e462c-6c80-414f-89e5-e4165be5585e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entity\Component\Ai">
+      <UniqueIdentifier>{b8bc47b6-564c-47e5-b18b-fa2a4f35cb7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -124,9 +130,6 @@
       <Filter>Source Files\Entity\Component</Filter>
     </ClCompile>
     <ClCompile Include="SoundComponent.cpp">
-      <Filter>Source Files\Entity\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="AiComponent.cpp">
       <Filter>Source Files\Entity\Component</Filter>
     </ClCompile>
     <ClCompile Include="Character.cpp">
@@ -240,6 +243,21 @@
     <ClCompile Include="QuadTreeNode.cpp">
       <Filter>Source Files\Utility\QuadTree</Filter>
     </ClCompile>
+    <ClCompile Include="AiComponent.cpp">
+      <Filter>Source Files\Entity\Component\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="AI_State.cpp">
+      <Filter>Source Files\Entity\Component\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="AI_Patrol.cpp">
+      <Filter>Source Files\Entity\Component\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="AI_Idle.cpp">
+      <Filter>Source Files\Entity\Component\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="AI_Follow.cpp">
+      <Filter>Source Files\Entity\Component\Ai</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\Player.png">
@@ -297,9 +315,6 @@
     <ClInclude Include="EntityComponent.h">
       <Filter>Header Files\Entity\Component</Filter>
     </ClInclude>
-    <ClInclude Include="AiComponent.h">
-      <Filter>Header Files\Entity\Component</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicsComponent.h">
       <Filter>Header Files\Entity\Component</Filter>
     </ClInclude>
@@ -319,9 +334,6 @@
       <Filter>Header Files\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Npc.h">
-      <Filter>Header Files\Entity\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="NpcActivity.h">
       <Filter>Header Files\Entity\Character</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
@@ -437,6 +449,21 @@
     </ClInclude>
     <ClInclude Include="QuadTreeNode.h">
       <Filter>Header Files\Utility\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="AI_State.h">
+      <Filter>Header Files\Entity\Component\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="AI_Patrol.h">
+      <Filter>Header Files\Entity\Component\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="AI_Idle.h">
+      <Filter>Header Files\Entity\Component\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="AI_Follow.h">
+      <Filter>Header Files\Entity\Component\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="AiComponent.h">
+      <Filter>Header Files\Entity\Component\Ai</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
