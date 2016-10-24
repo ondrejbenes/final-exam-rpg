@@ -6,13 +6,15 @@
 
 class Renderer : public Module
 {
-	sf::RenderWindow* mainWindow;
-	Camera camera;
 public:
 	explicit Renderer(sf::RenderWindow* mainWindow);
 	virtual ~Renderer();
 	bool initialize() override;
+	void update() override;
 
 	void render();
-
+	void setZoom(float zoom) { _camera.setZoom(zoom); }
+private:
+	sf::RenderWindow* _mainWindow;
+	Camera _camera;
 };

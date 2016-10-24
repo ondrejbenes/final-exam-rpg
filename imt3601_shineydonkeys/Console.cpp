@@ -8,9 +8,13 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Event.hpp>
+#include "Blackboard.h"
+#include "Module.h"
+#include "Renderer.h"
 
 Console::Console() :
 _regexMove("move\\(([0-9]+),([0-9]+),([0-9]+)\\)"),
+_regexZoom("zoom\\(([0-9]+\\.?[0-9]*)\\)"),
 visible(false)
 {
 	if (!font.loadFromFile("Resources/Fonts/sans.ttf"))
@@ -21,6 +25,7 @@ visible(false)
 	_commands.push_back(std::make_pair(std::regex("help"), [&] { help(); }));
 	_commands.push_back(std::make_pair(std::regex("list"), [&] { list(); }));
 	_commands.push_back(std::make_pair(_regexMove, [&] { move(); }));
+	_commands.push_back(std::make_pair(_regexZoom, [&] { zoom(); }));
 }
 
 Console::~Console()
@@ -81,7 +86,7 @@ void Console::handleEvent(const sf::Event& event)
 
 void Console::draw(sf::RenderWindow* window) const
 {
-	auto linesCount = std::min(10, static_cast<int>(history.size()));
+	auto linesCount = std::min(VISIBLE_MESSAGES_COUNT, static_cast<int>(history.size()));
 	auto view = window->getView();
 	auto x = view.getCenter().x - view.getSize().x / 2.0f;
 	auto y = view.getCenter().y - view.getSize().y / 2.0f;
@@ -95,7 +100,7 @@ void Console::draw(sf::RenderWindow* window) const
 	bg.setPosition(x, y);
 	window->draw(bg);
 
-	auto firstMsgIdx = std::max(int(history.size()) - 10 - 1, 0);
+	auto firstMsgIdx = std::max(int(history.size()) - VISIBLE_MESSAGES_COUNT, 0);
 
 	for(auto i = 0; i < linesCount; i++)
 	{
@@ -117,7 +122,8 @@ void Console::help()
 	history.push_back("Allowed commands:");
 	history.push_back("\t help: what you are reading now, dummy");
 	history.push_back("\t list: lists all characters");
-	history.push_back("\t move(id,x,y): moves entity with given id to given coordinates");
+	history.push_back("\t move(uint id, uint x, uint y): moves entity with given id to given coordinates");
+	history.push_back("\t zoom(ufloat Zoom): zoom camera (0-1 zooms in, >1 zooms out)");
 }
 
 void Console::list()
@@ -148,4 +154,18 @@ void Console::move()
 		}
 }
 
+void Console::zoom()
+{
+	std::smatch match;
+	regex_search(input, match, _regexZoom);
+
+	auto zoomLevel = stof(match[1].str());
+
+	Blackboard::getInstance()->leaveCallback(RENDERER, [zoomLevel](Module* target)
+	{
+		dynamic_cast<Renderer*>(target)->setZoom(zoomLevel);
+	});
+}
+
 Console* Console::instance = nullptr;
+int Console::VISIBLE_MESSAGES_COUNT = 10;

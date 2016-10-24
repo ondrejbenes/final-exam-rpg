@@ -4,11 +4,12 @@
 #include "Tile.h"
 #include "Console.h"
 #include "GamePhaseManager.h"
+#include "Blackboard.h"
 
 Renderer::Renderer(sf::RenderWindow* mainWindow) : 
 Module(RENDERER), 
-mainWindow(mainWindow),
-camera(0)
+_mainWindow(mainWindow),
+_camera(1.0f)
 {
 
 }
@@ -24,6 +25,13 @@ bool Renderer::initialize()
 	return true;
 }
 
+void Renderer::update()
+{
+	auto callbacks = Blackboard::getInstance()->getCallbacks(moduleType);
+	for (auto it = callbacks.begin(); it != callbacks.end(); ++it)
+		(*it)(this);
+}
+
 void Renderer::render()
 {
 	/*
@@ -33,25 +41,24 @@ void Renderer::render()
 		if (graphicsComponent != nullptr)
 			graphicsComponent->draw(mainWindow);
 	}*/
-	GamePhaseManager::getInstance()->getCurrentPhase()->render(mainWindow);
+	GamePhaseManager::getInstance()->getCurrentPhase()->render(_mainWindow);
 
 
 	auto console = Console::getInstance();
 	if (console->isVisible())
-		console->draw(mainWindow);
-
+		console->draw(_mainWindow);
 
 	auto player = EntityManager::getInstance()->getLocalPlayer();
 
 	if (player != nullptr)
 	{
 		auto playerPos = player->getPosition();
-		camera.reset(sf::FloatRect(playerPos.x - 980 / 2, playerPos.y - 660 / 2, 1280, 720));
+		_camera.reset(sf::FloatRect(playerPos.x - 980 / 2, playerPos.y - 660 / 2, 1280, 720));
 	} else
 	{
-		camera.reset(sf::FloatRect(0, 0, 1280, 720));
+		_camera.reset(sf::FloatRect(0, 0, 1280, 720));
 	}
-	camera.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
-	// camera.zoom(2);
-	mainWindow->setView(camera);
+	_camera.zoom(_camera.getZoom());
+	_camera.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
+	_mainWindow->setView(_camera);
 }

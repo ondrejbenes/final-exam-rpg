@@ -1,10 +1,12 @@
 #include "Camera.h"
 
-Camera::Camera(int zoom_level): 
-zoomLevel(zoom_level)
+Camera::Camera(float zoom_level): 
+_zoomLevel(zoom_level)
 {
+
 }
 
-Camera::~Camera(){
+Camera::~Camera()
+{
 
 }

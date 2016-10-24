@@ -21,8 +21,10 @@ public:
 private:
 	Console();
 	static Console* instance;
+	static int VISIBLE_MESSAGES_COUNT;
 
 	std::regex _regexMove;
+	std::regex _regexZoom;
 	std::vector<std::pair<std::regex, std::function<void()>>> _commands;
 
 	sf::Font font;
@@ -36,4 +38,5 @@ private:
 	void help();
 	void list();
 	void move();
+	void zoom();
 };
