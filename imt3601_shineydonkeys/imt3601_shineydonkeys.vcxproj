@@ -194,7 +194,6 @@
     <ClCompile Include="Npc.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerInputComponent.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="QuadTreeBoundary.cpp" />
     <ClCompile Include="QuadTreeNode.cpp" />
@@ -206,6 +205,7 @@
     <ClCompile Include="Tilemap.cpp" />
     <ClCompile Include="TimeUtilities.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="UiElement.cpp" />
     <ClCompile Include="UnsopportedEntityException.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -268,7 +268,6 @@
     <ClInclude Include="Npc.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayerInputComponent.h" />
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="QuadTreeBoundary.h" />
     <ClInclude Include="QuadTreeNode.h" />
@@ -281,6 +280,7 @@
     <ClInclude Include="Tilemap.h" />
     <ClInclude Include="TimeUtilities.h" />
     <ClInclude Include="UI.h" />
+    <ClInclude Include="UiElement.h" />
     <ClInclude Include="UnsopportedEntityException.h" />
   </ItemGroup>
   <ItemGroup>

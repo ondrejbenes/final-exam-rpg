@@ -1,6 +1,4 @@
 #include "GraphicsComponent.h"
-#include "Logger.h"
-#include "PlayerInputComponent.h"
 
 GraphicsComponent::GraphicsComponent(Entity& parent) : EntityComponent(parent)
 {

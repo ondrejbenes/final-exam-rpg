@@ -12,6 +12,8 @@ public:
 	void update() override;
 	void render(sf::RenderWindow* window) override;
 
+	void handleInput();
+	void handleMovement();
 	bool loadLevel(std::string levelDefinition);
 
 protected:

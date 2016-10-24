@@ -12,6 +12,9 @@ public:
 
 	void update() override;
 	void render(sf::RenderWindow* window) override;
+
+	void handleInput();
+	void handleMouseReleased(const sf::Event& event);
 protected:
 	Menu();
 

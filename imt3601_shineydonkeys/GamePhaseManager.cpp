@@ -1,6 +1,6 @@
 #include "GamePhaseManager.h"
 
-GamePhaseManager::GamePhaseManager(): _currentPhase(nullptr)
+GamePhaseManager::GamePhaseManager()
 {
 
 }
@@ -17,11 +17,22 @@ GamePhaseManager* GamePhaseManager::getInstance()
 	return instance;
 }
 
-bool GamePhaseManager::changePhase(GamePhase* newPhase)
+void GamePhaseManager::pushPhase(GamePhase* phase)
 {
-	_currentPhase = newPhase;
-
-	return true;
+	_phases.push(phase);
 }
+
+void GamePhaseManager::popPhase()
+{
+	auto current = _phases.top();
+	delete current;
+	_phases.pop();
+}
+
+GamePhase* GamePhaseManager::getCurrentPhase() const
+{
+	return _phases.top();
+}
+
 
 GamePhaseManager* GamePhaseManager::instance = nullptr;

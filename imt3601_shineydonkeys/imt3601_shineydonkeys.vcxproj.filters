@@ -103,6 +103,12 @@
     <Filter Include="Source Files\Entity\Component\Ai">
       <UniqueIdentifier>{b8bc47b6-564c-47e5-b18b-fa2a4f35cb7e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Core\Module\Game\UI">
+      <UniqueIdentifier>{bd7410a4-faa7-4267-a0e4-7be244d2c1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Module\Game\UI">
+      <UniqueIdentifier>{725af30e-159f-47e0-bbfb-336707e97f12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -124,9 +130,6 @@
       <Filter>Source Files\Entity\Component</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsComponent.cpp">
-      <Filter>Source Files\Entity\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerInputComponent.cpp">
       <Filter>Source Files\Entity\Component</Filter>
     </ClCompile>
     <ClCompile Include="SoundComponent.cpp">
@@ -210,9 +213,6 @@
     <ClCompile Include="Level.cpp">
       <Filter>Source Files\Core\Module\Game\Level</Filter>
     </ClCompile>
-    <ClCompile Include="UI.cpp">
-      <Filter>Source Files\Core\Module\Game</Filter>
-    </ClCompile>
     <ClCompile Include="GameLogic.cpp">
       <Filter>Source Files\Core\Module\Game</Filter>
     </ClCompile>
@@ -263,6 +263,12 @@
     </ClCompile>
     <ClCompile Include="ResourceLoader.cpp">
       <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>Source Files\Core\Module\Game\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UiElement.cpp">
+      <Filter>Source Files\Core\Module\Game\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -328,9 +334,6 @@
       <Filter>Header Files\Entity\Component</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsComponent.h">
-      <Filter>Header Files\Entity\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerInputComponent.h">
       <Filter>Header Files\Entity\Component</Filter>
     </ClInclude>
     <ClInclude Include="SoundComponent.h">
@@ -408,9 +411,6 @@
     <ClInclude Include="GameStateSaver.h">
       <Filter>Header Files\Core\Module\Game\GameState</Filter>
     </ClInclude>
-    <ClInclude Include="UI.h">
-      <Filter>Header Files\Core\Module\Game</Filter>
-    </ClInclude>
     <ClInclude Include="Tilemap.h">
       <Filter>Header Files\Core\Module\Game\Level</Filter>
     </ClInclude>
@@ -476,6 +476,12 @@
     </ClInclude>
     <ClInclude Include="ResourceLoader.h">
       <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Header Files\Core\Module\Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UiElement.h">
+      <Filter>Header Files\Core\Module\Game\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,6 @@
 #include "Npc.h"
 #include "Player.h"
 #include "UnsopportedEntityException.h"
-#include "PlayerInputComponent.h"
 #include "GraphicsComponent.h"
 #include "PhysicsComponent.h"
 #include "SoundComponent.h"
@@ -57,7 +56,6 @@ template <>
 inline Player* EntityFactory::create<Player>()
 {
 	auto player = new Player;
-	player->addComponent(new PlayerInputComponent(*player));
 
 	// TODO ResLoader
 	auto texture = new sf::Texture;

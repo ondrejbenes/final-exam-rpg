@@ -119,9 +119,9 @@ void Engine::handleWindowEvents()
 			mainWindow->close();
 			break;
 		case sf::Event::KeyPressed:
-			if (event.key.code == sf::Keyboard::Escape)
+			/*if (event.key.code == sf::Keyboard::Escape)
 				mainWindow->close();
-			else if (event.key.code == sf::Keyboard::Tilde)
+			else */if (event.key.code == sf::Keyboard::Tilde)
 				console->setVisible(!console->isVisible());
 			else if (console->isVisible())
 				console->handleEvent(event);
@@ -134,6 +134,7 @@ void Engine::handleWindowEvents()
 			else
 				Blackboard::getInstance()->pushEvent(event);
 		default:
+			Blackboard::getInstance()->pushEvent(event);
 			break;
 		}
 	}

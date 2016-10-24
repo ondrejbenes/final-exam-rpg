@@ -2,6 +2,8 @@
 
 #include "GamePhase.h"
 
+#include <stack>
+
 class GamePhaseManager
 {
 public:
@@ -9,11 +11,12 @@ public:
 
 	static GamePhaseManager* getInstance();
 
-	bool changePhase(GamePhase* newPhase);
-	GamePhase* getCurrentPhase() const { return _currentPhase; };
+	void pushPhase(GamePhase* phase);
+	void popPhase();
+	GamePhase* getCurrentPhase() const;
 private:
 	GamePhaseManager();
 	static GamePhaseManager* instance;
 
-	GamePhase* _currentPhase;
+	std::stack<GamePhase*> _phases;
 };

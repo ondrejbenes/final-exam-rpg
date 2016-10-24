@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <SFML/Graphics/Drawable.hpp>
+#include "UiElement.h"
 
 class UI
 {
@@ -11,8 +11,8 @@ public:
 	UI();
 	virtual ~UI();
 
-	void addElement(sf::Drawable* element);
-	std::vector<sf::Drawable*> getElements() const;
+	void addElement(UiElement* element);
+	std::vector<UiElement*> getElements() const;
 private:
-	std::vector<sf::Drawable*> _elements;
+	std::vector<UiElement*> _elements;
 };

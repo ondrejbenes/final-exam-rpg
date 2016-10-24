@@ -1,8 +1,5 @@
 #include "Game.h"
-#include "EntityFactory.h"
 #include "Logger.h"
-#include "MainGame.h"
-#include "EntityManager.h"
 #include "GameStateSaver.h"
 #include "Blackboard.h"
 #include "GameStateLoader.h"
@@ -26,7 +23,7 @@ bool Game::initialize()
 
 	GamePhaseFactory factory;
 	// TODO change to MainMenu
-	GamePhaseManager::getInstance()->changePhase(factory.createMainGame());
+	GamePhaseManager::getInstance()->pushPhase(factory.createMainMenu());
 
 	return success;
 }
