@@ -4,6 +4,9 @@
 #include <SFML/Graphics/Text.hpp>
 #include "Logger.h"
 #include "GamePhaseManager.h"
+#include "Blackboard.h"
+#include "Module.h"
+#include "Game.h"
 
 
 GamePhaseFactory::GamePhaseFactory()
@@ -41,7 +44,14 @@ Menu* GamePhaseFactory::createMainMenu()
 
 	auto exit = new UiElement(exitText);
 	auto onClickExit = new std::function<void()>;
-	*onClickExit = []() { LOG_D("EXITING"); };
+	*onClickExit = []()
+	{
+		Blackboard::getInstance()->leaveCallback(GAME, [](Module* target)
+		{
+			dynamic_cast<Game*>(target)->stop();
+		});
+
+	};
 	exit->setOnClick(onClickExit);
 
 	auto menu = new Menu;

@@ -21,6 +21,8 @@ bool Game::initialize()
 	LOG_I("Initializing Game Module");
 	bool success = true;
 
+	_running = true;
+
 	GamePhaseFactory factory;
 	// TODO change to MainMenu
 	GamePhaseManager::getInstance()->pushPhase(factory.createMainMenu());
@@ -47,4 +49,11 @@ void Game::quickLoad()
 {
 	GameStateLoader loader;
 	loader.quickLoad();
+}
+
+void Game::stop()
+{
+	// TODO cleanup?
+
+	_running = false;
 }

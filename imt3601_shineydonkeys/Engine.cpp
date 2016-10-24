@@ -68,21 +68,23 @@ int Engine::runGameLoop()
 
 	engineState = RUNNING;
 
-	while(mainWindow->isOpen())
+	auto game = dynamic_cast<Game*>(modules[GAME]);
+	auto renderer = dynamic_cast<Renderer*>(modules[RENDERER]);
+
+	while(game->isRunning())
 	{
 		handleWindowEvents();
 
 		for (auto it = modules.begin(); it != modules.end(); ++it)
 			it->second->update();
 
-		dynamic_cast<Renderer*>(modules[RENDERER])->render();
+		renderer->render();
 
 		mainWindow->display();
 		mainWindow->clear();
 
 		//sf::sleep(sf::milliseconds(1000/60));
 	}
-
 
 	return NORMAL_EXIT;
 }
@@ -96,6 +98,7 @@ bool Engine::shutOff()
 	for (auto it = modules.begin(); it != modules.end(); ++it)
 		delete it->second;
 
+	mainWindow->close();
 	delete mainWindow;
 
 	engineState = SHUT_OFF;

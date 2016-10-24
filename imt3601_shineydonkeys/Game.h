@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Module.h"
-#include "Level.h"
 #include "GameLogic.h"
 #include "GameState.h"
 
@@ -18,4 +17,9 @@ public:
 
 	void quickSave();
 	void quickLoad();
+
+	void stop();
+	bool isRunning() const { return _running; }
+private:
+	bool _running;
 };
