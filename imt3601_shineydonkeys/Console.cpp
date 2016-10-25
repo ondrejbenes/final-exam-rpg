@@ -85,7 +85,7 @@ void Console::handleEvent(const sf::Event& event)
 
 void Console::draw(sf::RenderWindow* window) const
 {
-	auto linesCount = std::min(_visibleMessagesCount, _history.size());
+	auto linesCount = std::min(size_t(_visibleMessagesCount), _history.size());
 	auto view = window->getView();
 	auto x = view.getCenter().x - view.getSize().x / 2.0f;
 	auto y = view.getCenter().y - view.getSize().y / 2.0f;
