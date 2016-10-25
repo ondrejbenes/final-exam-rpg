@@ -2,7 +2,7 @@
 #include "PhysicsComponent.h"
 
 
-AiPatrol::AiPatrol(AiComponent& component): AiState(component)    // RENAME ALL OF THEM LIKE THIS
+AiPatrol::AiPatrol(AiComponent* component): AiState(component)    // RENAME ALL OF THEM LIKE THIS
 {
 	}
 
@@ -13,7 +13,7 @@ AiPatrol::~AiPatrol()
 
 void AiPatrol::update()
 {
-	auto pc = _AiComponent.getParent().getComponent<PhysicsComponent>();
+	auto pc = _AiComponent->getParent().getComponent<PhysicsComponent>();
 
 	if (framesInOneDirection > 60 * 1) // 60 FPS, 1 secs
 	{
@@ -28,6 +28,9 @@ void AiPatrol::update()
 		pc->setVelocity(velocity);
 		framesInOneDirection = 0;
 	}
+
+
+
 
 	pc->move();
 	framesInOneDirection++;

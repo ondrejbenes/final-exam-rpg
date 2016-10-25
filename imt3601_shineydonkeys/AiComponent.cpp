@@ -2,11 +2,12 @@
 #include "GraphicsComponent.h"
 #include "PhysicsComponent.h"
 #include "AI_Patrol.h"
+#include "AI_Idle.h"
 
 AiComponent::AiComponent(Entity& parent) : 
 EntityComponent(parent)
 {
-	CurrentState = new AiPatrol(*this);
+	CurrentState = new AiIdle(this);
 }
 
 AiComponent::~AiComponent()

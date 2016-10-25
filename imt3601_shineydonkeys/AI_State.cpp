@@ -2,7 +2,7 @@
 
 
 
-AiState::AiState(AiComponent& component): _AiComponent(component)
+AiState::AiState(AiComponent* component): _AiComponent(component)
 {
 
 }

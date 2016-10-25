@@ -4,7 +4,7 @@ class AiPatrol :
 	public AiState
 {
 public:
-	AiPatrol(AiComponent& component);
+	AiPatrol(AiComponent* component);
 	~AiPatrol();
 	void update() override;
 private:
