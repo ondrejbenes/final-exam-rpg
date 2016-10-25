@@ -15,10 +15,11 @@ MainGame::MainGame()
 
 	auto entityManager = EntityManager::getInstance();
 	entityManager->add(player);
+	player->setPosition(sf::Vector2f(4250, 2550));
 	entityManager->setLocalPlayer(player);
 
 	auto npc = factory.create<Npc>();
-	npc->setPosition(sf::Vector2f(200, 150));
+	npc->setPosition(sf::Vector2f(4120, 2310));
 	entityManager->add(npc);
 
 	loadLevel("level02.txt");
