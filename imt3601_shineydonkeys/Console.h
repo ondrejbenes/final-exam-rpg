@@ -16,24 +16,25 @@ public:
 	void handleEvent(const sf::Event& event);
 	void draw(sf::RenderWindow* window) const;
 
-	bool isVisible() const { return visible; }
-	void setVisible(bool visible) { this->visible = visible; }
+	bool isVisible() const { return _visible; }
+	void setVisible(bool visible) { this->_visible = visible; }
 private:
 	Console();
 	static Console* instance;
-	static int VISIBLE_MESSAGES_COUNT;
+	unsigned int _visibleMessagesCount;
 
 	std::regex _regexMove;
 	std::regex _regexZoom;
 	std::vector<std::pair<std::regex, std::function<void()>>> _commands;
 
+	// TODO Res loader
 	sf::Font font;
-	unsigned int characterSize = 12U;
-	std::string inputMarker = "> ";
+	unsigned int _characterSize = 12U;
+	std::string _inputMarker = "> ";
 
-	std::vector<std::string> history;
-	std::string input;
-	bool visible;
+	std::vector<std::string> _history;
+	std::string _input;
+	bool _visible;
 
 	void help();
 	void list();
