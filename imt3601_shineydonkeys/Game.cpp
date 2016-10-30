@@ -24,7 +24,7 @@ bool Game::initialize()
 	_running = true;
 
 	GamePhaseFactory factory;
-	// TODO change to MainMenu
+
 	GamePhaseManager::getInstance()->pushPhase(factory.createMainMenu());
 
 	return success;

@@ -5,7 +5,7 @@
 #include "Audio.h"
 #include "Network.h"
 #include "InvalidEngineStateException.h"
-#include "ConfigFile.h"
+#include "ConfigIO.h"
 #include "Blackboard.h"
 #include "Console.h"
 
@@ -28,7 +28,7 @@ bool Engine::initialize()
 
 	// TODO Load from config file
 
-	ConfigFile config;
+	ConfigIO config;
 	initializeMainWindow(config);
 
 	modules[RENDERER] = new Renderer(mainWindow);
@@ -49,14 +49,21 @@ bool Engine::initialize()
 	return success;
 }
 
-void Engine::initializeMainWindow(ConfigFile config)
+void Engine::initializeMainWindow(ConfigIO config)
 {
 	auto style = sf::Style::None;
-	if (config.fullscreen)
+	auto fullscreen = ConfigIO::readInt(L"graphics", L"fullscreen");
+	auto resolutionWidth = ConfigIO::readInt(L"graphics", L"resolutionWidth", 1280);
+	auto resolutionHeight = ConfigIO::readInt(L"graphics", L"resolutionHeight", 720);
+	auto vSync = ConfigIO::readInt(L"graphics", L"vSync");
+	
+	if (fullscreen)
 		style = sf::Style::Fullscreen;
-	mainWindow = new sf::RenderWindow(sf::VideoMode(config.resolution_width, config.resolution_height), "Final Exam", style);
-	if (config.vSync)
+	mainWindow = new sf::RenderWindow(sf::VideoMode(resolutionWidth, resolutionHeight), "Final Exam", style);
+	if (vSync)
 		mainWindow->setVerticalSyncEnabled(true);
+
+	ConfigIO::writeInt(L"graphics", L"fullscreen", 0);
 }
 
 int Engine::runGameLoop()

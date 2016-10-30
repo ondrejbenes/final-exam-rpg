@@ -270,6 +270,9 @@
     <ClCompile Include="UiElement.cpp">
       <Filter>Source Files\Core\Module\Game\UI</Filter>
     </ClCompile>
+    <ClCompile Include="ConfigIO.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\Player.png">
@@ -435,9 +438,6 @@
     <ClInclude Include="Blackboard.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="ConfigFile.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="StringUtilities.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -482,6 +482,9 @@
     </ClInclude>
     <ClInclude Include="UiElement.h">
       <Filter>Header Files\Core\Module\Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigIO.h">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
