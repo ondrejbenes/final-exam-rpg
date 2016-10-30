@@ -62,8 +62,6 @@ void Engine::initializeMainWindow(ConfigIO config)
 	mainWindow = new sf::RenderWindow(sf::VideoMode(resolutionWidth, resolutionHeight), "Final Exam", style);
 	if (vSync)
 		mainWindow->setVerticalSyncEnabled(true);
-
-	ConfigIO::writeInt(L"graphics", L"fullscreen", 0);
 }
 
 int Engine::runGameLoop()
