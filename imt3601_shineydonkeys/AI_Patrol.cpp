@@ -17,7 +17,7 @@ void AiPatrol::update()
 
 	if (framesInOneDirection > 60 * 1) // 60 FPS, 1 secs
 	{
-		int randVelocities[] = { -10, 0, 10 };
+		int randVelocities[] = { -PhysicsComponent::defaultVelocity.x, 0, PhysicsComponent::defaultVelocity.x };
 		sf::Vector2f velocity;
 		velocity.x = randVelocities[rand() % 3];
 		velocity.y = randVelocities[rand() % 3];
@@ -29,9 +29,5 @@ void AiPatrol::update()
 		framesInOneDirection = 0;
 	}
 
-
-
-
-	pc->move();
 	framesInOneDirection++;
 }

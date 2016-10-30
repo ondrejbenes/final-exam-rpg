@@ -135,7 +135,6 @@ void MainGame::handleMovement()
 	{
 		physicsComponent->setVelocity(sf::Vector2f(0, 0));
 	}
-	physicsComponent->move();
 }
 
 bool MainGame::loadLevel(std::string levelDefinition)

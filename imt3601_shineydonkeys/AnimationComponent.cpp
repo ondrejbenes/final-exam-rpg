@@ -1,7 +1,8 @@
 #include "AnimationComponent.h"
+#include "GraphicsComponent.h"
+
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include "GraphicsComponent.h"
 
 AnimationComponent::AnimationComponent(Entity& parent) : 
 EntityComponent(parent),
@@ -23,7 +24,7 @@ void AnimationComponent::update()
 		animationTimer.restart();
 	}
 	if (spriteSheetCell->x % 64 > 7)
-		spriteSheetCell->x == 0;
+		spriteSheetCell->x = 0;
 
 	auto graphicsComponent = parent.getComponent<GraphicsComponent>();
 	if (graphicsComponent == nullptr) return;
@@ -38,29 +39,7 @@ void AnimationComponent::update()
 		//sprite.setTexture(playerTexture2);
 	}
 
-	sprite.move(speed);
-
-	/*
-	if (spriteSheetCell->y == Left)
-	{
-		sprite.move(-1 * speed.x, 0);
-	}
-
-	if (spriteSheetCell->y == Right)
-	{
-		sprite.move(1 * speed.x, 0);
-	}
-
-	if (spriteSheetCell->y == Down)
-	{
-		sprite.move(0, 1 * speed.y);
-	}
-
-	if (spriteSheetCell->y == Up)
-	{
-		sprite.move(0, -1 * speed.y);
-	}
-	*/
+	sprite.setPosition(parent.getPosition());
 }
 
 void AnimationComponent::animate(MovementDirection directtion)
@@ -70,4 +49,4 @@ void AnimationComponent::animate(MovementDirection directtion)
 	spriteSheetCell->y = directtion;
 }
 
-sf::Time AnimationComponent::ANIMATION_PERIOD_MS = sf::milliseconds(150);
+sf::Time AnimationComponent::ANIMATION_PERIOD_MS = sf::milliseconds(100);

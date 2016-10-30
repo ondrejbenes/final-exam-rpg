@@ -20,9 +20,6 @@ enum EngineState
 
 class Engine
 {
-	sf::RenderWindow* mainWindow;
-	std::map<ModuleType, Module*> modules;
-	EngineState engineState;
 public:
 	Engine();
 	virtual ~Engine();
@@ -32,5 +29,10 @@ public:
 	bool shutOff();
 	EngineState getEngineState();
 private:
+	sf::RenderWindow* mainWindow;
+	std::map<ModuleType, Module*> modules;
+	EngineState engineState;
+	static sf::Time MICRO_SEC_PER_UPDATE;
+
 	void handleWindowEvents();
 };

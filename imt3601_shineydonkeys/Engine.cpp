@@ -71,19 +71,27 @@ int Engine::runGameLoop()
 	auto game = dynamic_cast<Game*>(modules[GAME]);
 	auto renderer = dynamic_cast<Renderer*>(modules[RENDERER]);
 
+	sf::Clock gameLoopClock;
+	sf::Time lag;
+
 	while(game->isRunning())
 	{
+		auto elapsedTime = gameLoopClock.restart();
+		lag += elapsedTime;
+
 		handleWindowEvents();
 
-		for (auto it = modules.begin(); it != modules.end(); ++it)
-			it->second->update();
+		while(lag >= MICRO_SEC_PER_UPDATE)
+		{
+			for (auto it = modules.begin(); it != modules.end(); ++it)
+				it->second->update();
+			lag -= MICRO_SEC_PER_UPDATE;
+		}
 
 		renderer->render();
 
 		mainWindow->display();
 		mainWindow->clear();
-
-		//sf::sleep(sf::milliseconds(1000/60));
 	}
 
 	return NORMAL_EXIT;
@@ -142,3 +150,5 @@ void Engine::handleWindowEvents()
 		}
 	}
 }
+
+sf::Time Engine::MICRO_SEC_PER_UPDATE = sf::microseconds(1000000 / 60); // 60 FPS

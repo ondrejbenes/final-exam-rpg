@@ -16,7 +16,7 @@ PhysicsComponent::~PhysicsComponent()
 
 void PhysicsComponent::update()
 {
-
+	move();
 }
 
 void PhysicsComponent::setVelocity(sf::Vector2f velocity)
@@ -31,8 +31,8 @@ sf::Vector2f PhysicsComponent::getVelocity()
 
 void PhysicsComponent::move()
 {
-	//auto previousPosition = parent.getPosition();
-	auto newPosition = parent.getPosition() + velocity;
+	auto ellapsed = sinceLastMove.restart().asSeconds();
+	auto newPosition = parent.getPosition() + velocity * ellapsed;
 
 	if(hasCollision(newPosition))
 	{
@@ -40,7 +40,6 @@ void PhysicsComponent::move()
 		return;
 	}
 
-	//parent.setPosition(newPosition);
 	EntityManager::getInstance()->move(&parent, newPosition);
 
 	auto direction = Still;
@@ -66,4 +65,4 @@ bool PhysicsComponent::hasCollision(const sf::Vector2f& newPosition)
 	return false;
 }
 
-const sf::Vector2f PhysicsComponent::defaultVelocity = sf::Vector2f(10, 10);
+const sf::Vector2f PhysicsComponent::defaultVelocity = sf::Vector2f(300, 300);
