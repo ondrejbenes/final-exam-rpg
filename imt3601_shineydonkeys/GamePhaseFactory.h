@@ -10,5 +10,7 @@ public:
 
 	MainGame* createMainGame();
 	Menu* createMainMenu();
+private:
+	UiElement* createMenuUiElement(const wchar_t* configFile, const wchar_t* configSectionName, std::function<void()> onClick);
 };
 
