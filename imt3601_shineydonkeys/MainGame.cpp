@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "Blackboard.h"
 #include "GamePhaseManager.h"
+#include "ConfigIO.h"
 
 MainGame::MainGame()
 {
@@ -23,6 +24,8 @@ MainGame::MainGame()
 	entityManager->add(npc);
 
 	loadLevel("level02.txt");
+
+	loadControls();
 }
 
 MainGame::~MainGame()
@@ -110,19 +113,19 @@ void MainGame::handleMovement()
 	auto physicsComponent = localPlayer->getComponent<PhysicsComponent>();
 	auto defaultVelocity = PhysicsComponent::defaultVelocity;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	if (sf::Keyboard::isKeyPressed(CONTROLS.up))
 	{
 		physicsComponent->setVelocity(sf::Vector2f(0, -1 * defaultVelocity.y));
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	else if (sf::Keyboard::isKeyPressed(CONTROLS.down))
 	{
 		physicsComponent->setVelocity(sf::Vector2f(0, defaultVelocity.y));
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	else if (sf::Keyboard::isKeyPressed(CONTROLS.right))
 	{
 		physicsComponent->setVelocity(sf::Vector2f(defaultVelocity.x, 0));
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	else if (sf::Keyboard::isKeyPressed(CONTROLS.left))
 	{
 		physicsComponent->setVelocity(sf::Vector2f(-1 * defaultVelocity.x, 0));
 	}
@@ -150,3 +153,14 @@ bool MainGame::loadLevel(std::string levelDefinition)
 
 	return true;;
 }
+
+
+void MainGame::loadControls()
+{
+	CONTROLS.up = sf::Keyboard::Key(ConfigIO::readInt(L"controls", L"up"));
+	CONTROLS.down = sf::Keyboard::Key(ConfigIO::readInt(L"controls", L"down"));
+	CONTROLS.left = sf::Keyboard::Key(ConfigIO::readInt(L"controls", L"left"));
+	CONTROLS.right = sf::Keyboard::Key(ConfigIO::readInt(L"controls", L"right"));
+}
+
+Controls MainGame::CONTROLS = Controls();

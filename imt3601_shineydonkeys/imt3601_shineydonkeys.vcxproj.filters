@@ -186,9 +186,6 @@
     <ClCompile Include="GamePhase.cpp">
       <Filter>Source Files\Core\Module\Game\GamePhase</Filter>
     </ClCompile>
-    <ClCompile Include="LoadingScreen.cpp">
-      <Filter>Source Files\Core\Module\Game\GamePhase</Filter>
-    </ClCompile>
     <ClCompile Include="MainGame.cpp">
       <Filter>Source Files\Core\Module\Game\GamePhase</Filter>
     </ClCompile>
@@ -272,6 +269,12 @@
     </ClCompile>
     <ClCompile Include="ConfigIO.cpp">
       <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Options.cpp">
+      <Filter>Source Files\Core\Module\Game\GamePhase</Filter>
+    </ClCompile>
+    <ClCompile Include="StartMultiPlayerGame.cpp">
+      <Filter>Source Files\Core\Module\Game\GamePhase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -393,9 +396,6 @@
     <ClInclude Include="Tile.h">
       <Filter>Header Files\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="LoadingScreen.h">
-      <Filter>Header Files\Core\Module\Game\GamePhase</Filter>
-    </ClInclude>
     <ClInclude Include="MainGame.h">
       <Filter>Header Files\Core\Module\Game\GamePhase</Filter>
     </ClInclude>
@@ -485,6 +485,12 @@
     </ClInclude>
     <ClInclude Include="ConfigIO.h">
       <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Options.h">
+      <Filter>Header Files\Core\Module\Game\GamePhase</Filter>
+    </ClInclude>
+    <ClInclude Include="StartMultiPlayerGame.h">
+      <Filter>Header Files\Core\Module\Game\GamePhase</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

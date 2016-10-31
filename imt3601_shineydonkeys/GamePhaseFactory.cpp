@@ -29,17 +29,30 @@ MainGame* GamePhaseFactory::createMainGame()
 
 Menu* GamePhaseFactory::createMainMenu()
 {
+	auto configFile = L"./Config/main_menu.ini";
+
 	auto singlePlayer = createMenuUiElement(
-		L"./Config/main_menu.ini", 
+		configFile, 
 		L"singleplayer", 
-		[]() { GamePhaseManager::getInstance()->pushPhase(new MainGame); });
+		[&]() { GamePhaseManager::getInstance()->pushPhase(createMainGame()); });
+
+	auto multiPlayer = createMenuUiElement(
+		configFile,
+		L"multiplayer",
+		[&]() { GamePhaseManager::getInstance()->pushPhase(createStartMultiPlayerGame()); });
+
+	auto options = createMenuUiElement(
+		configFile,
+		L"options",
+		[&]() { GamePhaseManager::getInstance()->pushPhase(createOptions()); });
 
 	auto exit = createMenuUiElement(
-		L"./Config/main_menu.ini",
+		configFile,
 		L"exit",
 		[]()
 		{
-			Blackboard::getInstance()->leaveCallback(GAME, [](Module* target)
+			Blackboard::getInstance()->leaveCallback(GAME, 
+			[](Module* target)
 			{
 				dynamic_cast<Game*>(target)->stop();
 			});
@@ -47,9 +60,37 @@ Menu* GamePhaseFactory::createMainMenu()
 
 	auto menu = new Menu;
 	menu->_ui.addElement(singlePlayer);
+	menu->_ui.addElement(multiPlayer);
+	menu->_ui.addElement(options);
 	menu->_ui.addElement(exit);
 
 	return menu;
+}
+
+StartMultiPlayerGame* GamePhaseFactory::createStartMultiPlayerGame()
+{
+	auto back = createMenuUiElement(
+		L"./Config/multiplayer.ini",
+		L"back",
+		[]() { GamePhaseManager::getInstance()->popPhase(); });
+
+	auto startMultiPlayerGame = new StartMultiPlayerGame;
+	startMultiPlayerGame->_ui.addElement(back);
+
+	return startMultiPlayerGame;
+}
+
+Options* GamePhaseFactory::createOptions()
+{
+	auto back = createMenuUiElement(
+		L"./Config/options.ini",
+		L"back",
+		[]() { GamePhaseManager::getInstance()->popPhase(); });
+
+	auto options = new Options;
+	options->_ui.addElement(back);
+
+	return options;
 }
 
 UiElement* GamePhaseFactory::createMenuUiElement(const wchar_t* configFile, const wchar_t* configSectionName, std::function<void()> onClick)

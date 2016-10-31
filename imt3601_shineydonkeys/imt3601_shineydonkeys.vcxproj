@@ -183,7 +183,6 @@
     <ClCompile Include="GraphicsComponent.cpp" />
     <ClCompile Include="InvalidEngineStateException.cpp" />
     <ClCompile Include="Level.cpp" />
-    <ClCompile Include="LoadingScreen.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainGame.cpp" />
@@ -193,6 +192,7 @@
     <ClCompile Include="Network.cpp" />
     <ClCompile Include="NetworkInputComponent.cpp" />
     <ClCompile Include="Npc.cpp" />
+    <ClCompile Include="Options.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="QuadTree.cpp" />
@@ -201,6 +201,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceLoader.cpp" />
     <ClCompile Include="SoundComponent.cpp" />
+    <ClCompile Include="StartMultiPlayerGame.cpp" />
     <ClCompile Include="StringUtilities.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Tilemap.cpp" />
@@ -258,7 +259,6 @@
     <ClInclude Include="GraphicsComponent.h" />
     <ClInclude Include="InvalidEngineStateException.h" />
     <ClInclude Include="Level.h" />
-    <ClInclude Include="LoadingScreen.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Menu.h" />
@@ -267,6 +267,7 @@
     <ClInclude Include="Network.h" />
     <ClInclude Include="NetworkInputComponent.h" />
     <ClInclude Include="Npc.h" />
+    <ClInclude Include="Options.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="QuadTree.h" />
@@ -276,6 +277,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceLoader.h" />
     <ClInclude Include="SoundComponent.h" />
+    <ClInclude Include="StartMultiPlayerGame.h" />
     <ClInclude Include="StringUtilities.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Tilemap.h" />

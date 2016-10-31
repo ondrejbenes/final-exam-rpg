@@ -2,18 +2,16 @@
 
 #include "GamePhase.h"
 
-#include <SFML/Graphics/RenderWindow.hpp>
-
-class Menu : public GamePhase
+class Options : public GamePhase
 {
 	friend GamePhaseFactory;
 public:
-	virtual ~Menu();
+	virtual ~Options();
 
 	void update() override;
 	void render(sf::RenderWindow* window) override;
 protected:
-	Menu();
+	Options();
 
 	void handleInput();
 	void handleMouseReleased(const sf::Event& event);
