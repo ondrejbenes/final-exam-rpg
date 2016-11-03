@@ -13,7 +13,8 @@ AiIdle::~AiIdle()
 
 void AiIdle::update()
 {
-	auto pc = _AiComponent->getParent().getComponent<PhysicsComponent>();
+
+	//auto pc = _AiComponent->getParent().getComponent<PhysicsComponent>();
 
 
 	_AiComponent->ChangeState(new AiPatrol(_AiComponent));

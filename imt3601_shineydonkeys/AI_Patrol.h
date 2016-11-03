@@ -10,6 +10,7 @@ public:
 private:
 	// TODO remove when we have smarter AI
 	int framesInOneDirection = 0;
+	int test = 0; // for testing
 
 };
 

@@ -1,10 +1,11 @@
 #include "AI_Patrol.h"
 #include "PhysicsComponent.h"
+#include "AI_Follow.h"
 
 
 AiPatrol::AiPatrol(AiComponent* component): AiState(component)    // RENAME ALL OF THEM LIKE THIS
 {
-	}
+}
 
 
 AiPatrol::~AiPatrol()
@@ -30,4 +31,10 @@ void AiPatrol::update()
 	}
 
 	framesInOneDirection++;
+	if (test > 300)
+	{
+		_AiComponent->ChangeState(new AiFollow(_AiComponent));
+		test = 0;
+	}
+	else test++;
 }
