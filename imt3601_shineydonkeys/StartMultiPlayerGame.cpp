@@ -3,6 +3,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include "Options.h"
 #include "Blackboard.h"
+#include <memory>
 
 
 StartMultiPlayerGame::StartMultiPlayerGame()
@@ -21,7 +22,7 @@ void StartMultiPlayerGame::update()
 	handleInput();
 }
 
-void StartMultiPlayerGame::render(sf::RenderWindow* window)
+void StartMultiPlayerGame::render(std::shared_ptr<sf::RenderWindow> window)
 {
 
 	GamePhase::render(window);

@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <regex>
 #include <functional>
+#include <memory>
 
 //TODO refactor singleton
 class Console
@@ -14,7 +15,7 @@ public:
 	static Console* getInstance();
 	bool handleInput();
 	void handleEvent(const sf::Event& event);
-	void draw(sf::RenderWindow* window) const;
+	void draw(std::shared_ptr<sf::RenderWindow> window) const;
 
 	bool isVisible() const { return _visible; }
 	void setVisible(bool visible) { this->_visible = visible; }

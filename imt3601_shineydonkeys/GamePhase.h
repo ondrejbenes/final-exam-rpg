@@ -3,6 +3,7 @@
 #include "UI.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <memory>
 
 class GamePhaseFactory;
 
@@ -14,11 +15,12 @@ public:
 
 	// virtual bool initialize() = 0;
 
-	virtual void render(sf::RenderWindow* window);
+	virtual void render(std::shared_ptr<sf::RenderWindow> window);
 	virtual void update() = 0;
 
 	UI& getUi();
 protected:
-	GamePhase();
 	UI _ui;
+
+	GamePhase();
 };

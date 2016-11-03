@@ -10,9 +10,9 @@ GraphicsComponent::~GraphicsComponent()
 
 }
 
-void GraphicsComponent::draw(sf::RenderWindow* window) const
+void GraphicsComponent::draw(std::shared_ptr<sf::RenderWindow> window) const
 {
-	window->draw(sprite);
+	window->draw(_sprite);
 }
 
 void GraphicsComponent::update()
@@ -22,10 +22,10 @@ void GraphicsComponent::update()
 
 void GraphicsComponent::setSprite(sf::Sprite& sprite)
 {
-	this->sprite = sprite;
+	this->_sprite = sprite;
 }
 
 sf::Sprite& GraphicsComponent::getSprite()
 {
-	return sprite;
+	return _sprite;
 }

@@ -19,7 +19,7 @@ void Options::update()
 	handleInput();
 }
 
-void Options::render(sf::RenderWindow* window)
+void Options::render(std::shared_ptr<sf::RenderWindow> window)
 {
 
 	GamePhase::render(window);

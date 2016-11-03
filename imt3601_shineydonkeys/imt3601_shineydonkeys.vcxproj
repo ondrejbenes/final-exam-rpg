@@ -181,7 +181,6 @@
     <ClCompile Include="GameStateLoader.cpp" />
     <ClCompile Include="GameStateSaver.cpp" />
     <ClCompile Include="GraphicsComponent.cpp" />
-    <ClCompile Include="InvalidEngineStateException.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -257,7 +256,6 @@
     <ClInclude Include="GameStateLoader.h" />
     <ClInclude Include="GameStateSaver.h" />
     <ClInclude Include="GraphicsComponent.h" />
-    <ClInclude Include="InvalidEngineStateException.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MainGame.h" />

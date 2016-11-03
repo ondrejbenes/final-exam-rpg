@@ -213,9 +213,6 @@
     <ClCompile Include="GameLogic.cpp">
       <Filter>Source Files\Core\Module\Game</Filter>
     </ClCompile>
-    <ClCompile Include="InvalidEngineStateException.cpp">
-      <Filter>Source Files\Exception</Filter>
-    </ClCompile>
     <ClCompile Include="EntityManager.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
@@ -425,9 +422,6 @@
     </ClInclude>
     <ClInclude Include="GameLogic.h">
       <Filter>Header Files\Core\Module\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="InvalidEngineStateException.h">
-      <Filter>Header Files\Exception</Filter>
     </ClInclude>
     <ClInclude Include="AnimationComponent.h">
       <Filter>Header Files\Entity\Component</Filter>

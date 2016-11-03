@@ -3,11 +3,12 @@
 #include "Module.h"
 
 #include <SFML/Graphics.hpp>
+#include <memory>
 
 class Renderer : public Module
 {
 public:
-	explicit Renderer(sf::RenderWindow* mainWindow);
+	explicit Renderer(std::shared_ptr<sf::RenderWindow> mainWindow);
 	virtual ~Renderer();
 	bool initialize() override;
 	void update() override;
@@ -15,6 +16,6 @@ public:
 	void render();
 	void setZoom(float zoom) { _camera.setZoom(zoom); }
 private:
-	sf::RenderWindow* _mainWindow;
+	std::shared_ptr<sf::RenderWindow> _mainWindow;
 	Camera _camera;
 };

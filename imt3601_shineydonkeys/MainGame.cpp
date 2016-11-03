@@ -8,6 +8,8 @@
 #include "Blackboard.h"
 #include "GamePhaseManager.h"
 #include "ConfigIO.h"
+#include <memory>
+#include "Console.h"
 
 MainGame::MainGame()
 {
@@ -42,7 +44,7 @@ void MainGame::update()
 		(*it)->update();
 }
 
-void MainGame::render(sf::RenderWindow* window)
+void MainGame::render(std::shared_ptr<sf::RenderWindow> window)
 {
 	auto entityManager = EntityManager::getInstance();
 	auto playerPos = entityManager->getLocalPlayer()->getPosition();
@@ -69,6 +71,7 @@ void MainGame::render(sf::RenderWindow* window)
 void MainGame::handleInput()
 {
 	auto blackboard = Blackboard::getInstance();
+	auto console = Console::getInstance();
 	sf::Event event;
 	while (blackboard->pollEvent(event))
 	{
@@ -98,13 +101,23 @@ void MainGame::handleInput()
 					dynamic_cast<Game*>(target)->quickLoad();
 				});
 			}
+
+			if (event.key.code == sf::Keyboard::Tilde)
+				console->setVisible(!console->isVisible());
+
+			if (console->isVisible())
+				console->handleEvent(event);
 			break;
+		case sf::Event::TextEntered:
+			if (console->isVisible())
+				console->handleEvent(event);
 		default:
 			break;
 		}
 	}
 
-	handleMovement();
+	if(!console->isVisible())
+		handleMovement();
 }
 
 void MainGame::handleMovement()

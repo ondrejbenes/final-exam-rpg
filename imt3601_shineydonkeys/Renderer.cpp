@@ -6,7 +6,7 @@
 #include "GamePhaseManager.h"
 #include "Blackboard.h"
 
-Renderer::Renderer(sf::RenderWindow* mainWindow) : 
+Renderer::Renderer(std::shared_ptr<sf::RenderWindow> mainWindow) : 
 Module(RENDERER), 
 _mainWindow(mainWindow),
 _camera(1.0f)
@@ -34,16 +34,8 @@ void Renderer::update()
 
 void Renderer::render()
 {
-	/*
-	for (auto it = EntityManager::currentLevelTiles.begin(); it != EntityManager::currentLevelTiles.end(); ++it)
-	{
-		auto graphicsComponent = (*it)->getComponent<GraphicsComponent>();
-		if (graphicsComponent != nullptr)
-			graphicsComponent->draw(mainWindow);
-	}*/
 	GamePhaseManager::getInstance()->getCurrentPhase()->render(_mainWindow);
-
-
+	
 	auto console = Console::getInstance();
 	if (console->isVisible())
 		console->draw(_mainWindow);

@@ -3,6 +3,7 @@
 #include "GamePhase.h"
 #include "Level.h"
 #include <SFML/Window/Keyboard.hpp>
+#include <memory>
 
 struct Controls
 {
@@ -21,7 +22,7 @@ public:
 	virtual ~MainGame();
 
 	void update() override;
-	void render(sf::RenderWindow* window) override;
+	void render(std::shared_ptr<sf::RenderWindow> window) override;
 
 	void handleInput();
 	void handleMovement();

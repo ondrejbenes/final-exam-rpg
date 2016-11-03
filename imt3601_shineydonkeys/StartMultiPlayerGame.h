@@ -9,7 +9,7 @@ public:
 	~StartMultiPlayerGame();
 
 	void update() override;
-	void render(sf::RenderWindow* window) override;
+	void render(std::shared_ptr<sf::RenderWindow> window) override;
 protected:
 	StartMultiPlayerGame();
 

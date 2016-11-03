@@ -83,7 +83,7 @@ void Console::handleEvent(const sf::Event& event)
 	}
 }
 
-void Console::draw(sf::RenderWindow* window) const
+void Console::draw(std::shared_ptr<sf::RenderWindow> window) const
 {
 	auto linesCount = std::min(size_t(_visibleMessagesCount), _history.size());
 	auto view = window->getView();

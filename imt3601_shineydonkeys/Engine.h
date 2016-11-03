@@ -1,38 +1,46 @@
 #pragma once
 
-#define NORMAL_EXIT 0
 #define FAILED_TO_INITIALIZE 1
 #define FAILED_TO_SHUT_OFF 2
 
 #include "Module.h"
+
 #include <SFML/Graphics/RenderWindow.hpp>
+
 #include <map>
-#include "ConfigIO.h"
+#include <memory>
 
-enum EngineState
-{
-	SHUT_OFF,
-	INITIALIZING,
-	INITIALIZED,
-	RUNNING,
-	SHUTTING_OFF
-};
-
+/**
+ * \brief Class responsible for Module init, running the game loop and Module destruction.
+ */
 class Engine
 {
 public:
-	Engine();
-	virtual ~Engine();
+	/**
+	 * \brief Inits the Main Window and each of the Modules
+	 * \return True, if all Modules were initialized successfully, false otherwise
+	 */
 	bool initialize();
-	void initializeMainWindow(ConfigIO config);
+
+	/**
+	 * \brief Runs the main loop while the Game Module's isRunning flag returns true.
+	 * Loop is based on the gamedesignepatterns. Modules are being updated until 
+	 * we catch up with lag, then render is called.
+	 * Lag is the elappsed time between updates.
+	 * \return EXIT_SUCCESS if nothing unexpected happened, or an error code.
+	 */
 	int runGameLoop();
+
+	/**
+	 * \brief Closses the main window.
+	 */
 	bool shutOff();
-	EngineState getEngineState();
 private:
-	sf::RenderWindow* mainWindow;
-	std::map<ModuleType, Module*> modules;
-	EngineState engineState;
 	static sf::Time MICRO_SEC_PER_UPDATE;
 
-	void handleWindowEvents();
+	std::shared_ptr<sf::RenderWindow> _mainWindow;
+	std::map<ModuleType, std::unique_ptr<Module>> _modules;
+
+	void initializeMainWindow();
+	void handleWindowEvents() const;
 };

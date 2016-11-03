@@ -13,7 +13,7 @@ Game::Game() : Module(GAME)
 
 Game::~Game()
 {
-
+	LOG_I("Destroying Game Module.");
 }
 
 bool Game::initialize()

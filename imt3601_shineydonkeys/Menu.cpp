@@ -20,7 +20,7 @@ void Menu::update()
 	handleInput();
 }
 
-void Menu::render(sf::RenderWindow* window)
+void Menu::render(std::shared_ptr<sf::RenderWindow> window)
 {	
 	
 	GamePhase::render(window);
