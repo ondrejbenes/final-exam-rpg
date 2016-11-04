@@ -11,7 +11,7 @@ EntityFactory::~EntityFactory(){
 
 Entity* EntityFactory::createFromToString(std::string str)
 {
-	std::regex entityRegEx("Type: class ([[:w:]]+), Id: .*, Pos: ([[:d:]]+);([[:d:]]+)");
+	std::regex entityRegEx("Type: class ([[:w:]]+), Id: .*, Pos: ([[:d:]]+\.?[[:d:]]*);([[:d:]]+\.?[[:d:]]*)");
 	std::smatch match;
 
 	Entity* entity = nullptr;
