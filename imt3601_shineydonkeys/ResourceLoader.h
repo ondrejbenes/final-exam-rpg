@@ -1,23 +1,29 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+#include <memory>
 
+#include <SFML/Graphics.hpp>
+
+/**
+ * \brief Singleton used for loading resources, such as Fonts or Textures
+ */
 class ResourceLoader
 {
-
 public:
-	static ResourceLoader* getInstance();
+	static std::shared_ptr<ResourceLoader> getInstance();
 
-	virtual ~ResourceLoader();
-	static sf::Texture PLAYER_SPRITE_SHEET;
-	static sf::SoundBuffer THEME_SONG;
+	// TODO consider caching the resources
 
-	const sf::Font& getMenuFont();
+	/* Returns a const reference to the sf::Font used for Menu sf::Texts */
+	const sf::Font& getMenuFont() const;
 
-private:
-	static ResourceLoader* instance;
+	/* Returns a const reference to the sf::Font used for Console sf::Texts */
+	const sf::Font& getConsoleFont() const;
+protected:
 	ResourceLoader();
+private:
+	static std::shared_ptr<ResourceLoader> instance;
 
 	sf::Font _menuFont;
+	sf::Font _consoleFont;
 };

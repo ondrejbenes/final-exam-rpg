@@ -1,51 +1,40 @@
 #include "Blackboard.h"
 #include "Module.h"
 #include <iterator>
-#include "Logger.h"
 
-Blackboard::Blackboard()
-{
-	LOG_D("Creating Blackboard");
-}
-
-Blackboard::~Blackboard()
-{
-
-}
-
-Blackboard* Blackboard::getInstance()
+std::shared_ptr<Blackboard> Blackboard::getInstance()
 {
 	if (instance == nullptr)
-		instance = new Blackboard;
+		instance = std::make_shared<Blackboard>(Blackboard());
 	return instance;
 }
 
 void Blackboard::leaveCallback(ModuleType moduleType, std::function<void(Module*)> callback)
 {
-	allCallbacks[moduleType].push_back(callback);
+	_allCallbacks[moduleType].push_back(callback);
 }
 
 std::vector<std::function<void(Module*)>> Blackboard::getCallbacks(ModuleType moduleType)
 {
 	std::vector<std::function<void(Module*)>> callbacks;
-	copy(allCallbacks[moduleType].begin(), allCallbacks[moduleType].end(), std::back_inserter(callbacks));
-	allCallbacks[moduleType].clear();
+	copy(_allCallbacks[moduleType].begin(), _allCallbacks[moduleType].end(), std::back_inserter(callbacks));
+	_allCallbacks[moduleType].clear();
 
 	return callbacks;
 }
 
 void Blackboard::pushEvent(const sf::Event& e)
 {
-	windowEvents.push(e);
+	_windowEvents.push(e);
 }
 
 bool Blackboard::pollEvent(sf::Event& e)
 {
-	if(windowEvents.empty())
+	if(_windowEvents.empty())
 		return false;
-	e = windowEvents.front();
-	windowEvents.pop();
+	e = _windowEvents.front();
+	_windowEvents.pop();
 	return true;
 }
 
-Blackboard* Blackboard::instance = nullptr;
+std::shared_ptr<Blackboard> Blackboard::instance = nullptr;

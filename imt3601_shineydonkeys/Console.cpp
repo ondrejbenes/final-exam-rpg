@@ -1,41 +1,32 @@
 #include "Console.h"
 #include "Logger.h"
 #include "EntityManager.h"
+#include "Blackboard.h"
+#include "Module.h"
+#include "Renderer.h"
 
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Event.hpp>
-#include "Blackboard.h"
-#include "Module.h"
-#include "Renderer.h"
+#include "ResourceLoader.h"
 
 Console::Console() :
-_visibleMessagesCount(10),
 _regexMove("move\\(([0-9]+),([0-9]+),([0-9]+)\\)"),
-_regexZoom("zoom\\(([0-9]+\\.?[0-9]*)\\)"),
-_visible(false)
+_regexZoom("zoom\\(([0-9]+\\.?[0-9]*)\\)")
 {
-	if (!font.loadFromFile("Resources/Fonts/sans.ttf"))
-		LOG_E("Could not load font");
+	_history.push_back("Type help to get help (duh)");
 
-	_history.push_back("This 'ere is a pretty console, innit?");
-
-	_commands.push_back(std::make_pair(std::regex("help"), [&] { help(); }));
-	_commands.push_back(std::make_pair(std::regex("list"), [&] { list(); }));
-	_commands.push_back(std::make_pair(_regexMove, [&] { move(); }));
-	_commands.push_back(std::make_pair(_regexZoom, [&] { zoom(); }));
+	_commands.push_back(std::make_pair(std::regex("help"), [] { getInstance()->help(); }));
+	_commands.push_back(std::make_pair(std::regex("list"), [] { getInstance()->list(); }));
+	_commands.push_back(std::make_pair(_regexMove, [] { getInstance()->move(); }));
+	_commands.push_back(std::make_pair(_regexZoom, [] { getInstance()->zoom(); }));
 }
 
-Console::~Console()
-{
-
-}
-
-Console* Console::getInstance()
+std::shared_ptr<Console> Console::getInstance()
 {
 	if (instance == nullptr)
-		instance = new Console;
+		instance = std::make_shared<Console>(Console());
 	return instance;
 }
 
@@ -100,6 +91,7 @@ void Console::draw(std::shared_ptr<sf::RenderWindow> window) const
 	window->draw(bg);
 
 	auto firstMsgIdx = std::max(int(_history.size() - _visibleMessagesCount), 0);
+	auto& font = ResourceLoader::getInstance()->getConsoleFont();
 
 	for(auto i = 0; i < linesCount; i++)
 	{
@@ -166,4 +158,4 @@ void Console::zoom()
 	});
 }
 
-Console* Console::instance = nullptr;
+std::shared_ptr<Console> Console::instance = nullptr;

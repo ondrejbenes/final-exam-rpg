@@ -1,19 +1,17 @@
 #include "GamePhaseManager.h"
 
-GamePhaseManager::GamePhaseManager()
-{
-
-}
-
 GamePhaseManager::~GamePhaseManager()
 {
-	// delete _currentPhase;
+	while(popPhase())
+	{
+		// Pop the phases, so that they will be deleted
+	}
 }
 
-GamePhaseManager* GamePhaseManager::getInstance()
+std::shared_ptr<GamePhaseManager> GamePhaseManager::getInstance()
 {
 	if (instance == nullptr)
-		instance = new GamePhaseManager;
+		instance = std::make_shared<GamePhaseManager>(GamePhaseManager());
 	return instance;
 }
 
@@ -22,11 +20,16 @@ void GamePhaseManager::pushPhase(GamePhase* phase)
 	_phases.push(phase);
 }
 
-void GamePhaseManager::popPhase()
+bool GamePhaseManager::popPhase()
 {
+	if (_phases.empty())
+		return false;
+
 	auto current = _phases.top();
 	delete current;
 	_phases.pop();
+
+	return true;
 }
 
 GamePhase* GamePhaseManager::getCurrentPhase() const
@@ -34,5 +37,4 @@ GamePhase* GamePhaseManager::getCurrentPhase() const
 	return _phases.top();
 }
 
-
-GamePhaseManager* GamePhaseManager::instance = nullptr;
+std::shared_ptr<GamePhaseManager> GamePhaseManager::instance = nullptr;

@@ -1,9 +1,9 @@
 #include "EntityManager.h"
 
-EntityManager* EntityManager::getInstance()
+std::shared_ptr<EntityManager> EntityManager::getInstance()
 {
 	if (_instance == nullptr)
-		_instance = new EntityManager;
+		_instance = std::make_shared<EntityManager>(EntityManager());
 	return _instance;
 }
 
@@ -115,31 +115,8 @@ _tiles(QuadTree(new QuadTreeBoundary(0.0, 8192.0, 0, 8192.0)))
 
 }
 
-EntityManager::~EntityManager()
-{
-	/*
-	for (auto it = gameEntities.begin(); it != gameEntities.end(); ++it)
-		delete *it;
-
-	for (auto it = currentLevelEntities.begin(); it != currentLevelEntities.end(); ++it)
-		delete *it;
-
-	for (auto it = currentLevelTiles.begin(); it != currentLevelTiles.end(); ++it)
-		delete *it;
-	*/
-}
-
 void EntityManager::clearCharacters()
 {
-	// TODO delete entities as well
-
-	/*
-	for (auto it = gameEntities.begin(); it != gameEntities.end(); ++it)
-		delete *it;
-
-	for (auto it = currentLevelEntities.begin(); it != currentLevelEntities.end(); ++it)
-		delete *it;
-	*/
 	// TODO remove magic constants
 	_characters = QuadTree(new QuadTreeBoundary(0.0, 8192.0, 0, 8192.0));
 	_localPlayer = nullptr;
@@ -147,10 +124,8 @@ void EntityManager::clearCharacters()
 
 void EntityManager::clearTiles()
 {
-	// TODO delete tiles
-
 	// TODO remove magic constants
 	_tiles = QuadTree(new QuadTreeBoundary(0.0, 8192.0, 0, 8192.0));
 }
 
-EntityManager* EntityManager::_instance = nullptr;
+std::shared_ptr<EntityManager> EntityManager::_instance = nullptr;
