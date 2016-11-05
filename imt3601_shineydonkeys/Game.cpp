@@ -25,8 +25,8 @@ bool Game::initialize()
 
 	GamePhaseFactory factory;
 
-	GamePhaseManager::getInstance()->pushPhase(factory.createMainMenu());
-
+	//GamePhaseManager::getInstance()->pushPhase(factory.createMainMenu());
+	GamePhaseManager::getInstance()->pushPhase(factory.createMainGame());
 	return success;
 }
 

@@ -1,8 +1,7 @@
 #include "AiComponent.h"
 #include "GraphicsComponent.h"
-#include "PhysicsComponent.h"
-#include "AI_Patrol.h"
-#include "AI_Idle.h"
+#include "AiIdle.h"
+#include "AiPatrol.h"
 
 AiComponent::AiComponent(Entity& parent) : 
 EntityComponent(parent)

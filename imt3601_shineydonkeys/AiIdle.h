@@ -1,7 +1,8 @@
 #pragma once
-#include "AI_State.h"
-class AiIdle :
-	public AiState
+
+#include "AiState.h"
+
+class AiIdle : public AiState
 {
 public:
 	AiIdle(AiComponent* component);

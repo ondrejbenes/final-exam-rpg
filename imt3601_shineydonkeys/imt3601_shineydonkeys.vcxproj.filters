@@ -237,23 +237,11 @@
     <ClCompile Include="AiComponent.cpp">
       <Filter>Source Files\Entity\Component\Ai</Filter>
     </ClCompile>
-    <ClCompile Include="AI_State.cpp">
-      <Filter>Source Files\Entity\Component\Ai</Filter>
-    </ClCompile>
-    <ClCompile Include="AI_Patrol.cpp">
-      <Filter>Source Files\Entity\Component\Ai</Filter>
-    </ClCompile>
-    <ClCompile Include="AI_Follow.cpp">
-      <Filter>Source Files\Entity\Component\Ai</Filter>
-    </ClCompile>
     <ClCompile Include="GamePhaseFactory.cpp">
       <Filter>Source Files\Core\Module\Game\GamePhase</Filter>
     </ClCompile>
     <ClCompile Include="GamePhaseManager.cpp">
       <Filter>Source Files\Core\Module\Game\GamePhase</Filter>
-    </ClCompile>
-    <ClCompile Include="AI_Idle.cpp">
-      <Filter>Source Files\Entity\Component\Ai</Filter>
     </ClCompile>
     <ClCompile Include="ResourceLoader.cpp">
       <Filter>Source Files\Utility</Filter>
@@ -272,6 +260,21 @@
     </ClCompile>
     <ClCompile Include="StartMultiPlayerGame.cpp">
       <Filter>Source Files\Core\Module\Game\GamePhase</Filter>
+    </ClCompile>
+    <ClCompile Include="AiState.cpp">
+      <Filter>Source Files\Entity\Component\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="AiIdle.cpp">
+      <Filter>Source Files\Entity\Component\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="AiPatrol.cpp">
+      <Filter>Source Files\Entity\Component\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="VectorUtilities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AiAttack.cpp">
+      <Filter>Source Files\Entity\Component\Ai</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -447,18 +450,6 @@
     <ClInclude Include="QuadTreeNode.h">
       <Filter>Header Files\Utility\QuadTree</Filter>
     </ClInclude>
-    <ClInclude Include="AI_State.h">
-      <Filter>Header Files\Entity\Component\Ai</Filter>
-    </ClInclude>
-    <ClInclude Include="AI_Patrol.h">
-      <Filter>Header Files\Entity\Component\Ai</Filter>
-    </ClInclude>
-    <ClInclude Include="AI_Idle.h">
-      <Filter>Header Files\Entity\Component\Ai</Filter>
-    </ClInclude>
-    <ClInclude Include="AI_Follow.h">
-      <Filter>Header Files\Entity\Component\Ai</Filter>
-    </ClInclude>
     <ClInclude Include="AiComponent.h">
       <Filter>Header Files\Entity\Component\Ai</Filter>
     </ClInclude>
@@ -485,6 +476,21 @@
     </ClInclude>
     <ClInclude Include="StartMultiPlayerGame.h">
       <Filter>Header Files\Core\Module\Game\GamePhase</Filter>
+    </ClInclude>
+    <ClInclude Include="AiState.h">
+      <Filter>Header Files\Entity\Component\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="AiIdle.h">
+      <Filter>Header Files\Entity\Component\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="AiPatrol.h">
+      <Filter>Header Files\Entity\Component\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorUtilities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AiAttack.h">
+      <Filter>Header Files\Entity\Component\Ai</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

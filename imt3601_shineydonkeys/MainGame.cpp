@@ -10,6 +10,7 @@
 #include "ConfigIO.h"
 #include <memory>
 #include "Console.h"
+#include "AiPatrol.h"
 
 MainGame::MainGame()
 {
@@ -22,7 +23,10 @@ MainGame::MainGame()
 	entityManager->setLocalPlayer(player);
 
 	auto npc = factory.create<Npc>();
-	npc->setPosition(sf::Vector2f(4120, 2310));
+	auto pos = sf::Vector2f(4120, 2310);
+	npc->setPosition(pos);
+	auto pc = npc->getComponent<AiComponent>();
+	pc->ChangeState(new AiPatrol(pc, pos, 500));
 	entityManager->add(npc);
 
 	loadLevel("level02.txt");

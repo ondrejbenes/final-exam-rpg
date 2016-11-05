@@ -155,10 +155,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AiComponent.cpp" />
-    <ClCompile Include="AI_Follow.cpp" />
-    <ClCompile Include="AI_Idle.cpp" />
-    <ClCompile Include="AI_Patrol.cpp" />
-    <ClCompile Include="AI_State.cpp" />
+    <ClCompile Include="AiAttack.cpp" />
+    <ClCompile Include="AiIdle.cpp" />
+    <ClCompile Include="AiPatrol.cpp" />
+    <ClCompile Include="AiState.cpp" />
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Blackboard.cpp" />
@@ -208,6 +208,7 @@
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="UiElement.cpp" />
     <ClCompile Include="UnsopportedEntityException.cpp" />
+    <ClCompile Include="VectorUtilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\Desktop\tilex7.png" />
@@ -230,10 +231,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AiComponent.h" />
-    <ClInclude Include="AI_Follow.h" />
-    <ClInclude Include="AI_Idle.h" />
-    <ClInclude Include="AI_Patrol.h" />
-    <ClInclude Include="AI_State.h" />
+    <ClInclude Include="AiAttack.h" />
+    <ClInclude Include="AiIdle.h" />
+    <ClInclude Include="AiPatrol.h" />
+    <ClInclude Include="AiState.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="Blackboard.h" />
@@ -283,6 +284,7 @@
     <ClInclude Include="UI.h" />
     <ClInclude Include="UiElement.h" />
     <ClInclude Include="UnsopportedEntityException.h" />
+    <ClInclude Include="VectorUtilities.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\sans.ttf" />
