@@ -1,14 +1,26 @@
 #include "AnimationComponent.h"
 #include "GraphicsComponent.h"
+#include "PhysicsComponent.h"
+#include "Logger.h"
+
+#include <sstream>
 
 #include <SFML/Graphics/Rect.hpp>
-#include <SFML/Graphics/Sprite.hpp>
 
 AnimationComponent::AnimationComponent(Entity& parent) : 
 EntityComponent(parent),
-spriteSheetCell(new sf::Vector2i(0, Still))
+spriteSheetCell(sf::Vector2i(1, 0)),
+_sprite (parent.getComponent<GraphicsComponent>()->getSprite())
 {
+	_spriteWidth = _sprite.getTexture()->getSize().x / 4;
+	_spriteHeight = _sprite.getTexture()->getSize().y / 4;
 
+	_sprite.setTextureRect(
+		sf::IntRect(
+			spriteSheetCell.x * _spriteWidth,
+			spriteSheetCell.y * _spriteHeight,
+			_spriteWidth,
+			_spriteHeight));
 }
 
 AnimationComponent::~AnimationComponent()
@@ -18,35 +30,47 @@ AnimationComponent::~AnimationComponent()
 
 void AnimationComponent::update()
 {
-	if (animationTimer.getElapsedTime() > ANIMATION_PERIOD_MS)
+	auto velocity = parent.getComponent<PhysicsComponent>()->getVelocity();
+	if (velocity == PhysicsComponent::ZERO_VELOCITY)
 	{
-		spriteSheetCell->x++;
-		animationTimer.restart();
+		if (spriteSheetCell.x == 0 || spriteSheetCell.x == 2)
+			return;
 	}
-	if (spriteSheetCell->x % 64 > 7)
-		spriteSheetCell->x = 0;
+	else 
+	{
+		auto direction = Down;
+		if (velocity.x > 0)
+			direction = Right;
+		else if (velocity.x < 0)
+			direction = Left;
+		else if (velocity.y > 0)
+			direction = Down;
+		else if (velocity.y < 0)
+			direction = Up;
 
-	auto graphicsComponent = parent.getComponent<GraphicsComponent>();
-	if (graphicsComponent == nullptr) return;
-	auto& sprite = graphicsComponent->getSprite();
-	// TODO remove magic constants
-	sprite.setTextureRect(sf::IntRect(spriteSheetCell->x % 8 * 240, spriteSheetCell->y % 8 * 240, 240, 240));
+		if (spriteSheetCell.y != direction)
+			spriteSheetCell.x = 0;
+		spriteSheetCell.y = direction;
+	}
+
+	if (_animationTimer.getElapsedTime() > ANIMATION_PERIOD_MS)
+	{
+		spriteSheetCell.x++;
+		_animationTimer.restart();
+	}
+
+	if (spriteSheetCell.x == 4)
+		spriteSheetCell.x = 0;
 	
-	auto speed = parent.getComponent<PhysicsComponent>()->getVelocity();
-	if (spriteSheetCell->y == Jump || spriteSheetCell->y == Still)
-	{
-		return;
-		//sprite.setTexture(playerTexture2);
-	}
-
-	sprite.setPosition(parent.getPosition());
-}
-
-void AnimationComponent::animate(MovementDirection directtion)
-{
-	if (spriteSheetCell->y != directtion)
-		spriteSheetCell->x = 0;
-	spriteSheetCell->y = directtion;
+	// TODO make a cache
+	_sprite.setTextureRect(
+		sf::IntRect(
+			spriteSheetCell.x * _spriteWidth, 
+			spriteSheetCell.y * _spriteHeight, 
+			_spriteWidth, 
+			_spriteHeight));
+	
+	_sprite.setPosition(parent.getPosition());
 }
 
 sf::Time AnimationComponent::ANIMATION_PERIOD_MS = sf::milliseconds(100);

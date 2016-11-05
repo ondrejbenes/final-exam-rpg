@@ -35,7 +35,7 @@ inline Npc* EntityFactory::create<Npc>()
 
 	// TODO ResLoader
 	auto texture = new sf::Texture;
-	if (!texture->loadFromFile("Resources/Images/bruteaxe.png"))
+	if (!texture->loadFromFile("Resources/Images/Npc1.png"))
 		LOG_E("Error: could not load player image");
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
@@ -59,7 +59,7 @@ inline Player* EntityFactory::create<Player>()
 
 	// TODO ResLoader
 	auto texture = new sf::Texture;
-	if (!texture->loadFromFile("Resources/Images/noaxereally.png"))
+	if (!texture->loadFromFile("Resources/Images/Player.png"))
 		LOG_E("Error: could not load player image");
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);

@@ -1,6 +1,8 @@
 #pragma once
+
 #include "EntityComponent.h"
-#include "PhysicsComponent.h"
+
+#include <SFML/Graphics/Sprite.hpp>
 
 class AnimationComponent : public EntityComponent
 {
@@ -9,11 +11,12 @@ public:
 	virtual ~AnimationComponent();
 
 	void update() override;
-
-	void animate(MovementDirection directtion);
 private:
-	sf::Vector2i* spriteSheetCell;
-	sf::Clock animationTimer;
+	sf::Vector2i spriteSheetCell;
+	unsigned int _spriteWidth;
+	unsigned int _spriteHeight;
+	sf::Sprite& _sprite;
+	sf::Clock _animationTimer;
 	static sf::Time ANIMATION_PERIOD_MS;
 };
 

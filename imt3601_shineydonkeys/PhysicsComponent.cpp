@@ -41,21 +41,9 @@ void PhysicsComponent::move()
 	}
 
 	EntityManager::getInstance()->move(&parent, newPosition);
-
-	auto direction = Still;
-	if (velocity.x > 0)
-		direction = Right;
-	else if (velocity.x < 0)
-		direction = Left;
-	else if (velocity.y > 0)
-		direction = Down;
-	else if (velocity.y < 0)
-		direction = Up;
-	auto pc = parent.getComponent<AnimationComponent>();
-	pc->animate(direction);
 }
 
-bool PhysicsComponent::hasCollision(const sf::Vector2f& newPosition)
+bool PhysicsComponent::hasCollision(const sf::Vector2f& newPosition) const
 {
 	// TODO implement
 
@@ -65,4 +53,6 @@ bool PhysicsComponent::hasCollision(const sf::Vector2f& newPosition)
 	return false;
 }
 
-const sf::Vector2f PhysicsComponent::defaultVelocity = sf::Vector2f(300, 300);
+const sf::Vector2f PhysicsComponent::defaultVelocity = sf::Vector2f(200, 200);
+
+const sf::Vector2f PhysicsComponent::ZERO_VELOCITY = sf::Vector2f(0, 0);
