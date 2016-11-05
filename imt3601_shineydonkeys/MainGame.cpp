@@ -11,9 +11,12 @@
 #include <memory>
 #include "Console.h"
 #include "AiPatrol.h"
+#include "windows.h"
 
 MainGame::MainGame()
 {
+	auto cursor = GetCursor();
+	SetCursor(LoadCursor(nullptr, IDC_WAIT));
 	EntityFactory factory;
 	auto player = factory.create<Player>();
 
@@ -32,6 +35,7 @@ MainGame::MainGame()
 	loadLevel("Resources/Images/tiles.png", "Resources/Levels/FinalExamTileMap.csv");
 
 	loadControls();
+	SetCursor(cursor);
 }
 
 MainGame::~MainGame()
