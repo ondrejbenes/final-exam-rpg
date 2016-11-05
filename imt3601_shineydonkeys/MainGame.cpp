@@ -29,7 +29,7 @@ MainGame::MainGame()
 	pc->ChangeState(new AiPatrol(pc, pos, 500));
 	entityManager->add(npc);
 
-	loadLevel("level02.txt");
+	loadLevel("Resources/Images/tiles.png", "Resources/Levels/FinalExamTileMap.csv");
 
 	loadControls();
 }
@@ -157,12 +157,12 @@ void MainGame::handleMovement()
 	}
 }
 
-bool MainGame::loadLevel(std::string levelDefinition)
+bool MainGame::loadLevel(const std::string& textureFileName, const std::string& levelDefinitionFileName)
 {
 	_currentLevel = Level();
 	_currentLevel.tilemap = new Tilemap();
 
-	if (!_currentLevel.tilemap->loadFromFile(levelDefinition))
+	if (!_currentLevel.tilemap->loadFromFile(textureFileName, levelDefinitionFileName))
 	{
 		LOG_E("Failed to load level");
 		return  false;

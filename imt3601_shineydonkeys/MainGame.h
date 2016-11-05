@@ -26,7 +26,7 @@ public:
 
 	void handleInput();
 	void handleMovement();
-	bool loadLevel(std::string levelDefinition);
+	bool loadLevel(const std::string& textureDefinitionFileName, const std::string& levelDefinitionFileName);
 
 protected:
 	MainGame();

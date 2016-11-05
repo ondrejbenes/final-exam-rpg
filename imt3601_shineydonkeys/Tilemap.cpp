@@ -3,11 +3,11 @@
 #include <fstream>
 #include "EntityManager.h"
 #include "EntityFactory.h"
+#include "StringUtilities.h"
 
-Tilemap::Tilemap(): tileSheet(new sf::Texture)
+Tilemap::Tilemap()
 {
-	if (!tileSheet->loadFromFile("Resources/Images/180tiles (3).png"))
-	LOG_E("Error: could not load tiles texture");
+	
 }
 
 Tilemap::~Tilemap()
@@ -21,37 +21,52 @@ int Tilemap::generate()
 	return 0;
 }
 
-bool Tilemap::loadFromFile(std::string fileName)
+bool Tilemap::loadFromFile(const std::string& textureFileName, const std::string& levelDefinitionFileName)
 {
-	tiles.clear();
 	auto entityManager = EntityManager::getInstance();
 	entityManager->clearTiles();
 
 	EntityFactory factory;
 
+	// TODO shared ptr?s
+	auto tileMap = new sf::Texture();
+	if (!tileMap->loadFromFile(textureFileName))
+		LOG_E("Failed to load TileMap texture");
+
+	auto tilesPerRow = tileMap->getSize().x / TILE_HEIGHT;
+
 	// TODO handle file not found, use ResourceLoader
-	std::ifstream input("level02.txt"); 
-	auto x = 0;
-	for (std::string line; getline(input, line); x++)
+	std::ifstream input(levelDefinitionFileName);
+	auto row = 0;
+	for (std::string line; getline(input, line); row++)
 	{
-		auto tile = factory.create<Tile>();
-		tile->tileType = stoi(line) + 7 * (rand() % 7 + 1);
-		tile->setPosition(sf::Vector2f(x % rows_x * tile_x, x / rows_y * tile_y));
+		auto types = StringUtilities::split(line, ',');
+		for(auto i = 0; i < types.size(); i++)
+		{
+			auto tile = factory.create<Tile>();
+			auto type = stoi(types[i]);
+			tile->tileType = type;
+			tile->setPosition(sf::Vector2f(i * TILE_WIDTH, row * TILE_HEIGHT));
 
-		sf::Sprite tileImage;
-		tileImage.setTexture(*tileSheet);
-		tileImage.setTextureRect(sf::IntRect(tile->tileType / 7 * 180 + 1, tile->tileType % 7 * 180 + 1, 180 - 1, 180 - 1));
-		tileImage.setPosition(x % rows_x * tile_x, x / rows_y * tile_y);
+			auto tileMapRow = floor(type / tilesPerRow);
+			auto tileMapColumn = type - (tileMapRow * tilesPerRow);
 
-		auto graphicsComponent = tile->getComponent<GraphicsComponent>();
-		graphicsComponent->setSprite(tileImage);
-		
-		tiles.push_back(tile);
-		entityManager->add(tile);
+			sf::Sprite tileImage;
+			tileImage.setTexture(*tileMap);
+			tileImage.setTextureRect(sf::IntRect(tileMapColumn * TILE_WIDTH, tileMapRow * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
+			tileImage.setPosition(sf::Vector2f(i * TILE_WIDTH, row * TILE_HEIGHT));
+
+			auto graphicsComponent = tile->getComponent<GraphicsComponent>();
+			graphicsComponent->setSprite(tileImage);
+
+			entityManager->add(tile);
+		}
 	}
 
-	LOG_D(x + " line loaded");
 	input.close();
 
 	return true;
 }
+
+unsigned int Tilemap::TILE_WIDTH = 32;
+unsigned int Tilemap::TILE_HEIGHT = 32;
