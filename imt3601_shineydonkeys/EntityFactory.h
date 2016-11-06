@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Npc.h"
 #include "Player.h"
 #include "UnsopportedEntityException.h"
@@ -9,6 +10,8 @@
 #include "Tile.h"
 #include "AiComponent.h"
 #include "AnimationComponent.h"
+#include "CombatComponent.h"
+#include "Weapon.h"
 
 class EntityFactory
 {
@@ -46,8 +49,12 @@ inline Npc* EntityFactory::create<Npc>()
 	npc->addComponent(gc);
 	npc->addComponent(new AiComponent(*npc));
 	npc->addComponent(new AnimationComponent(*npc));
+	npc->addComponent(new CombatComponent(*npc));
 	npc->addComponent(new PhysicsComponent(*npc));
 	npc->addComponent(new SoundComponent(*npc));
+
+	auto weapon = new Weapon(15, 25, 200);
+	npc->getChildren().push_back(*weapon);
 
 	return npc;
 }
@@ -69,8 +76,12 @@ inline Player* EntityFactory::create<Player>()
 
 	player->addComponent(gc);
 	player->addComponent(new AnimationComponent(*player));
+	player->addComponent(new CombatComponent(*player));
 	player->addComponent(new PhysicsComponent(*player));
 	player->addComponent(new SoundComponent(*player));
+
+	auto weapon = new Weapon(25, 50, 200);
+	player->getChildren().push_back(*weapon);
 
 	return player;
 }

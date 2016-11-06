@@ -270,11 +270,17 @@
     <ClCompile Include="AiPatrol.cpp">
       <Filter>Source Files\Entity\Component\Ai</Filter>
     </ClCompile>
-    <ClCompile Include="VectorUtilities.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AiAttack.cpp">
       <Filter>Source Files\Entity\Component\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="VectorUtilities.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="CombatComponent.cpp">
+      <Filter>Source Files\Entity\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -486,11 +492,17 @@
     <ClInclude Include="AiPatrol.h">
       <Filter>Header Files\Entity\Component\Ai</Filter>
     </ClInclude>
-    <ClInclude Include="VectorUtilities.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AiAttack.h">
       <Filter>Header Files\Entity\Component\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorUtilities.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="CombatComponent.h">
+      <Filter>Header Files\Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

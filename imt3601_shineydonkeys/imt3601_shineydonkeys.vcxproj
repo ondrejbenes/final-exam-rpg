@@ -165,6 +165,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="ChatBoard.cpp" />
+    <ClCompile Include="CombatComponent.cpp" />
     <ClCompile Include="ConfigIO.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Engine.cpp" />
@@ -209,6 +210,7 @@
     <ClCompile Include="UiElement.cpp" />
     <ClCompile Include="UnsopportedEntityException.cpp" />
     <ClCompile Include="VectorUtilities.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\Desktop\tilex7.png" />
@@ -241,6 +243,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="ChatBoard.h" />
+    <ClInclude Include="CombatComponent.h" />
     <ClInclude Include="ConfigIO.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Engine.h" />
@@ -285,6 +288,7 @@
     <ClInclude Include="UiElement.h" />
     <ClInclude Include="UnsopportedEntityException.h" />
     <ClInclude Include="VectorUtilities.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\sans.ttf" />

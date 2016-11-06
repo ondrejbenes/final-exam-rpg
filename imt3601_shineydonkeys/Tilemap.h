@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics/Texture.hpp>
+#include <string>
 
 class Tilemap
 {
