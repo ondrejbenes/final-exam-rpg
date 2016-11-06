@@ -66,7 +66,7 @@ inline Player* EntityFactory::create<Player>()
 
 	// TODO ResLoader
 	auto texture = new sf::Texture;
-	if (!texture->loadFromFile("Resources/Images/Player.png"))
+	if (!texture->loadFromFile("Resources/Images/Player2.png"))
 		LOG_E("Error: could not load player image");
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);

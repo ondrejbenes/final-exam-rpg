@@ -22,17 +22,19 @@ MainGame::MainGame()
 
 	auto entityManager = EntityManager::getInstance();
 	entityManager->add(player);
-	player->setPosition(sf::Vector2f(4250, 2550));
+	//player->setPosition(sf::Vector2f(4250, 2550)); TEST
+	player->setPosition(sf::Vector2f(100, 100));
 	entityManager->setLocalPlayer(player);
 
 	auto npc = factory.create<Npc>();
-	auto pos = sf::Vector2f(4120, 2310);
+	//auto pos = sf::Vector2f(4120, 2310); TESTs
+	auto pos = sf::Vector2f(250, 230);
 	npc->setPosition(pos);
 	auto pc = npc->getComponent<AiComponent>();
 	pc->ChangeState(new AiPatrol(pc, pos, 500));
 	entityManager->add(npc);
 
-	loadLevel("Resources/Images/tiles.png", "Resources/Levels/FinalExamTileMap.csv");
+	loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
 
 	loadControls();
 	SetCursor(cursor);
