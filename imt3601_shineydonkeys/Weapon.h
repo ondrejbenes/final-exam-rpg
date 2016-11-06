@@ -5,6 +5,8 @@
 class Weapon : public Entity
 {
 public:
+	static unsigned int WEAPON_RANGE;
+
 	Weapon(unsigned damage, unsigned maxDamage, unsigned attackSpeedMs);
 	
 	unsigned getMinDamage() const { return _minDamage;	}

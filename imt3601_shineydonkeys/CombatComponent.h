@@ -14,6 +14,8 @@ public:
 
 	bool isInCombat() const { return _inCombat; }
 
+	Character* getOther() const { return _other; }
+
 	void startCombat(Character* other);
 	void endCombat();
 	void takeDamage(const float damage);

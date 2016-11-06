@@ -14,6 +14,7 @@ private:
 	sf::Vector2f _center;
 	float _attackRadius;
 
+	Character* _parentAsChar;
 	CombatComponent* _parentCombatComp;
 	CombatComponent* _otherCombatComp;
 };

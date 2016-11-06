@@ -15,6 +15,7 @@ _attackRadius(attackRadius),
 _otherCombatComp(nullptr)
 {
 	_parentCombatComp = _aiComponent->getParent().getComponent<CombatComponent>();
+	_parentAsChar = dynamic_cast<Character*>(&_aiComponent->getParent());
 }
 
 AiAttack::~AiAttack()
@@ -30,20 +31,29 @@ void AiAttack::update()
 
 	if (isPlayerInRadius(_center, _attackRadius))
 	{
-		if (VectorUtilities::calculateDistance(playerPos, aiPos) > 100)
+		if (VectorUtilities::calculateDistance(playerPos, aiPos) > Weapon::WEAPON_RANGE)
+		{
 			setVelocityTowardsPosition(playerPos);
+			if (_parentCombatComp->isInCombat())
+			{
+				_parentCombatComp->endCombat();
+				if (_otherCombatComp != nullptr && _otherCombatComp->getOther() == _parentAsChar)
+					_otherCombatComp->endCombat();
+
+			}
+		}
 		else
 		{
 			if (!_parentCombatComp->isInCombat())
 			{
 				_parentCombatComp->startCombat(player);
+
 				if (_otherCombatComp == nullptr)
 					_otherCombatComp = player->getComponent<CombatComponent>();
+
 				if (!_otherCombatComp->isInCombat())
-				{
-					auto parentAsChar = dynamic_cast<Character*>(&_aiComponent->getParent());
-					_otherCombatComp->startCombat(parentAsChar);					
-				}
+					_otherCombatComp->startCombat(_parentAsChar);		
+
 				_aiComponent->getParent().getComponent<PhysicsComponent>()->setVelocity(
 					PhysicsComponent::ZERO_VELOCITY);
 			}
