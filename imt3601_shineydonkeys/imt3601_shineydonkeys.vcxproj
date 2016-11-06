@@ -168,6 +168,7 @@
     <ClCompile Include="CombatComponent.cpp" />
     <ClCompile Include="ConfigIO.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="DamageSplash.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityComponent.cpp" />
@@ -246,6 +247,7 @@
     <ClInclude Include="CombatComponent.h" />
     <ClInclude Include="ConfigIO.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="DamageSplash.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityComponent.h" />

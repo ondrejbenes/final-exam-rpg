@@ -2,6 +2,9 @@
 #include "Logger.h"
 #include <sstream>
 #include "EntityManager.h"
+#include "Blackboard.h"
+#include "Game.h"
+#include "DamageSplash.h"
 
 CombatComponent::CombatComponent(Entity& parent) :
 EntityComponent(parent),
@@ -69,10 +72,22 @@ void CombatComponent::takeDamage(const unsigned int damage)
 
 	ss << "Entity " << parent.id << " takes " << damage << " damage, " << stats->current_hitpoints << " left";
 	LOG_D(ss.str());
+	auto x = parent.getPosition().x;
+	auto y = parent.getPosition().y;
+
+	if (_other->getPosition().x > parent.getPosition().x)
+		x -= 25;
+	else
+		x += 25;
+
+	// TODO memory leak
+	Blackboard::getInstance()->leaveCallback(GAME, [damage, x, y](Module* target)
+	{
+		dynamic_cast<Game*>(target)->addUiElement(new DamageSplash(damage, x, y));
+	});
 
 	if (stats->current_hitpoints == 0)
 	{
-		// TODO stays alive one frame longer?
 		LOG_D("DEAD");
 		if (_otherCombatComp != nullptr && _otherCombatComp->getOther()->id == parent.id)
 			_otherCombatComp->endCombat();

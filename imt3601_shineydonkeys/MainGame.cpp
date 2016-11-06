@@ -51,7 +51,10 @@ void MainGame::update()
 
 	auto characters = EntityManager::getInstance()->getAllCharacters();
 	for (auto it = characters.begin(); it != characters.end(); ++it)
-		(*it)->update();
+	{
+		if((*it)->getStats()->current_hitpoints != 0)
+			(*it)->update();		
+	}
 }
 
 void MainGame::render(std::shared_ptr<sf::RenderWindow> window)

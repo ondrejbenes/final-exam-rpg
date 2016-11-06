@@ -57,3 +57,8 @@ void Game::stop()
 
 	_running = false;
 }
+
+void Game::addUiElement(UiElement* element)
+{
+	GamePhaseManager::getInstance()->getCurrentPhase()->getUi().addElement(element);
+}

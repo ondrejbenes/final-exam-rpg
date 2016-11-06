@@ -18,5 +18,8 @@ void GamePhase::render(std::shared_ptr<sf::RenderWindow> window)
 {
 	auto uiElements = _ui.getElements();
 	for (auto it = uiElements.begin(); it != uiElements.end(); ++it)
+	{
+		(*it)->update();
 		window->draw(*(*it)->getGraphics());
+	}
 }

@@ -3,6 +3,7 @@
 #include "Module.h"
 #include "GameLogic.h"
 #include "GameState.h"
+#include "UiElement.h"
 
 class Game : public Module
 {
@@ -19,6 +20,7 @@ public:
 	void quickLoad();
 
 	void stop();
+	void addUiElement(UiElement* element);
 	bool isRunning() const { return _running; }
 private:
 	bool _running;

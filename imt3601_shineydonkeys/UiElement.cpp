@@ -8,3 +8,8 @@ UiElement::~UiElement()
 {
 	delete _graphics;
 }
+
+void UiElement::update()
+{
+
+}
