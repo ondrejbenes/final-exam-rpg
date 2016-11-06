@@ -35,8 +35,8 @@ template <>
 inline Npc* EntityFactory::create<Npc>()
 {
 	CharacterStats stats;
-	stats.max_hitpoints = 100;
-	stats.current_hitpoints = 100;
+	stats.max_hitpoints = 300;
+	stats.current_hitpoints = 300;
 	auto npc = new Npc(stats);
 
 	// TODO ResLoader
@@ -49,7 +49,7 @@ inline Npc* EntityFactory::create<Npc>()
 	auto gc = new GraphicsComponent(*npc);
 	gc->setSprite(sprite);
 
-	auto weapon = new Weapon(15, 25, 1000);
+	auto weapon = new Weapon(1, 2, 1000);
 	npc->getChildren().push_back(weapon);
 
 	npc->addComponent(gc);

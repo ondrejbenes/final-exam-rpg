@@ -33,7 +33,7 @@ void AnimationComponent::update()
 	auto velocity = parent.getComponent<PhysicsComponent>()->getVelocity();
 	if (velocity == PhysicsComponent::ZERO_VELOCITY)
 	{
-		if (spriteSheetCell.x == 0 || spriteSheetCell.x == 2)
+		if (spriteSheetCell.x == 0/* || spriteSheetCell.x == 2*/)
 			return;
 	}
 	else 
