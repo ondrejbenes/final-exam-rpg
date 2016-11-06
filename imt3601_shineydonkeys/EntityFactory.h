@@ -34,7 +34,10 @@ T* EntityFactory::create()
 template <>
 inline Npc* EntityFactory::create<Npc>()
 {
-	auto npc = new Npc;
+	CharacterStats stats;
+	stats.max_hitpoints = 100;
+	stats.current_hitpoints = 100;
+	auto npc = new Npc(stats);
 
 	// TODO ResLoader
 	auto texture = new sf::Texture;
@@ -46,7 +49,7 @@ inline Npc* EntityFactory::create<Npc>()
 	auto gc = new GraphicsComponent(*npc);
 	gc->setSprite(sprite);
 
-	auto weapon = new Weapon(15, 25, 500);
+	auto weapon = new Weapon(15, 25, 1000);
 	npc->getChildren().push_back(weapon);
 
 	npc->addComponent(gc);
@@ -62,7 +65,11 @@ inline Npc* EntityFactory::create<Npc>()
 template <>
 inline Player* EntityFactory::create<Player>()
 {
-	auto player = new Player;
+	CharacterStats stats;
+	stats.max_hitpoints = 500;
+	stats.current_hitpoints = 500;
+
+	auto player = new Player(stats);
 
 	// TODO ResLoader
 	auto texture = new sf::Texture;
@@ -74,7 +81,7 @@ inline Player* EntityFactory::create<Player>()
 	auto gc = new GraphicsComponent(*player);
 	gc->setSprite(sprite);
 
-	auto weapon = new Weapon(25, 50, 500);
+	auto weapon = new Weapon(25, 50, 1000);
 	player->getChildren().push_back(weapon);
 
 	player->addComponent(gc);

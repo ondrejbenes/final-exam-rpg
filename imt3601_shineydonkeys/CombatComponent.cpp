@@ -1,6 +1,7 @@
 #include "CombatComponent.h"
 #include "Logger.h"
 #include <sstream>
+#include "EntityManager.h"
 
 CombatComponent::CombatComponent(Entity& parent) :
 EntityComponent(parent),
@@ -45,10 +46,24 @@ void CombatComponent::endCombat()
 	_otherCombatComp = nullptr;
 }
 
-void CombatComponent::takeDamage(const float damage)
+void CombatComponent::takeDamage(const unsigned int damage)
 {
 	std::stringstream ss;
 	auto parent = getParent();
-	ss << "Entity " << parent.id << " takes " << damage << " damage";
+
+	auto stats = dynamic_cast<Character*>(&getParent())->getStats(); 
+	stats->current_hitpoints = (damage > stats->current_hitpoints) ? 0U : (stats->current_hitpoints - damage);
+
+	ss << "Entity " << parent.id << " takes " << damage << " damage, " << stats->current_hitpoints << " left";
 	LOG_D(ss.str());
+
+	if (stats->current_hitpoints == 0)
+	{
+		// TODO stays alive one frame longer?
+		LOG_D("DEAD");
+		if (_otherCombatComp != nullptr && _otherCombatComp->getOther()->id == parent.id)
+			_otherCombatComp->endCombat();
+		endCombat();
+		EntityManager::getInstance()->remove(&parent);
+	}
 }

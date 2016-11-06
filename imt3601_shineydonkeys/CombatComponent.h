@@ -18,7 +18,7 @@ public:
 
 	void startCombat(Character* other);
 	void endCombat();
-	void takeDamage(const float damage);
+	void takeDamage(const unsigned int damage);
 private:
 	bool _inCombat;
 	Character* _other;

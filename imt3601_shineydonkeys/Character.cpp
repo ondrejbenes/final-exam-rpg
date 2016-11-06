@@ -1,12 +1,11 @@
 #include "Character.h"
 
-
-Character::Character(){
-
+Character::Character(CharacterStats stats)
+{
+	_stats = new CharacterStats(stats);
 }
 
-
-
-Character::~Character(){
+Character::~Character()
+{
 
 }

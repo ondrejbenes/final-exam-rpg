@@ -1,11 +1,13 @@
 #include "Player.h"
 
-Player::Player(){
+Player::Player(CharacterStats stats) : Character(stats)
+{
 
 }
 
 
 
-Player::~Player(){
+Player::~Player()
+{
 
 }

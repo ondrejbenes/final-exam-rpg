@@ -3,10 +3,11 @@
 
 struct CharacterStats
 {
-	unsigned __int8 agility;
-	unsigned __int8 defense;
-	unsigned __int8 hitpoints;
-	unsigned __int8 strength;
+	//unsigned agility;
+	//unsigned defense;
+	unsigned int max_hitpoints;
+	unsigned int current_hitpoints;
+	//unsigned strength;
 };
 
 class EntityFactory;
@@ -16,7 +17,9 @@ class Character : public Entity
 	friend EntityFactory;
 public:
 	virtual ~Character();
+	CharacterStats* getStats() const { return _stats; }
 protected:
-	Character();
-
+	explicit Character(CharacterStats stats);
+private:
+	CharacterStats* _stats;
 };
