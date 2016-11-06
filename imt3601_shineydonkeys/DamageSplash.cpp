@@ -1,6 +1,9 @@
 #include "DamageSplash.h"
 
 #include "ResourceLoader.h"
+#include "EntityManager.h"
+#include "GamePhaseManager.h"
+#include "Logger.h"
 
 DamageSplash::DamageSplash(unsigned damage, float x, float y) :
 UiElement(nullptr),
@@ -21,8 +24,15 @@ _damage(damage)
 void DamageSplash::update()
 {
 	auto text = dynamic_cast<sf::Text*>(_graphics);
-	auto newY = text->getPosition().y -_visibleForMs.getElapsedTime().asSeconds() * 10;
+	auto elapsedTime = _visibleForMs.getElapsedTime().asSeconds();
+	auto newY = text->getPosition().y - elapsedTime * 10;
 	text->setPosition(text->getPosition().x, newY);
+	text->setFillColor(sf::Color(255, 255, 255, 255 - 255 * (elapsedTime / _lifetime.asSeconds())));
+	
+	if (elapsedTime > _lifetime.asSeconds())
+	{
+		GamePhaseManager::getInstance()->getCurrentPhase()->getUi().removeElement(this);
+	}
 }
 
 

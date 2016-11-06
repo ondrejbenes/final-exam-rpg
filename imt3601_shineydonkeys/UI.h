@@ -12,6 +12,7 @@ public:
 	virtual ~UI();
 
 	void addElement(UiElement* element);
+	void removeElement(UiElement* element);
 	std::vector<UiElement*> getElements() const;
 private:
 	std::vector<UiElement*> _elements;

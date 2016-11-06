@@ -5,6 +5,7 @@
 #include "Blackboard.h"
 #include "Game.h"
 #include "DamageSplash.h"
+#include "GamePhaseManager.h"
 
 CombatComponent::CombatComponent(Entity& parent) :
 EntityComponent(parent),
@@ -81,10 +82,7 @@ void CombatComponent::takeDamage(const unsigned int damage)
 		x += 25;
 
 	// TODO memory leak
-	Blackboard::getInstance()->leaveCallback(GAME, [damage, x, y](Module* target)
-	{
-		dynamic_cast<Game*>(target)->addUiElement(new DamageSplash(damage, x, y));
-	});
+	GamePhaseManager::getInstance()->getCurrentPhase()->getUi().addElement(new DamageSplash(damage, x, y));
 
 	if (stats->current_hitpoints == 0)
 	{
