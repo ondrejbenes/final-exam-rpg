@@ -12,14 +12,16 @@ public:
 
 	void update() override;
 
+	bool isInCombat() const { return _inCombat; }
+
 	void startCombat(Character* other);
 	void endCombat();
 	void takeDamage(const float damage);
 private:
-	bool _isInCombat;
+	bool _inCombat;
 	Character* _other;
 	CombatComponent* _otherCombatComp;
-	Weapon& _weapon;
+	Weapon* _weapon;
 	sf::Clock attackTimer;
 };
 

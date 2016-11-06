@@ -26,7 +26,7 @@ public:
 	template <typename T>
 	T* getComponent();
 
-	std::vector<Entity>& getChildren(){ return _children; }
+	std::vector<Entity*>& getChildren(){ return _children; }
 
 	std::string toString() const;
 
@@ -43,7 +43,7 @@ protected:
 	void removeComponent(EntityComponent* component);
 private:
 	static unsigned int nextId;
-	std::vector<Entity> _children;
+	std::vector<Entity*> _children;
 };
 
 template <typename T>

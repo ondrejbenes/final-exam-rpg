@@ -23,7 +23,7 @@ MainGame::MainGame()
 	auto entityManager = EntityManager::getInstance();
 	entityManager->add(player);
 	//player->setPosition(sf::Vector2f(4250, 2550)); TEST
-	player->setPosition(sf::Vector2f(100, 100));
+	player->setPosition(sf::Vector2f(600, 600));
 	entityManager->setLocalPlayer(player);
 
 	auto npc = factory.create<Npc>();

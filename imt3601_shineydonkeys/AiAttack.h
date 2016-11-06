@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AiState.h"
+#include "CombatComponent.h"
 
 class AiAttack : public AiState
 {
@@ -12,5 +13,8 @@ private:
 	// TODO duplicity with AiPatrol
 	sf::Vector2f _center;
 	float _attackRadius;
+
+	CombatComponent* _parentCombatComp;
+	CombatComponent* _otherCombatComp;
 };
 
