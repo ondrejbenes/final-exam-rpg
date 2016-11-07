@@ -54,7 +54,8 @@ void Menu::handleMouseReleased(const sf::Event& event)
 		if (bounds.contains(event.mouseButton.x, event.mouseButton.y))
 		{
 			auto callback = (*it)->getOnClick();
-			(*callback)();
+			if (callback != nullptr)
+				(*callback)(*it, event);
 		}
 	}
 }

@@ -1,7 +1,8 @@
 #include "UI.h"
 
-UI::UI(){
-
+UI::UI() : 
+_focusedElement(nullptr)
+{
 }
 
 UI::~UI(){
@@ -18,7 +19,8 @@ void UI::removeElement(UiElement* element)
 	_elements.erase(remove(begin(_elements), end(_elements), element), _elements.end());
 }
 
-std::vector<UiElement*> UI::getElements() const
+void UI::setFocusedElement(UiElement* element)
 {
-	return _elements;
+	// TODO should do check if element belongs to this UI?
+	_focusedElement = element;
 }

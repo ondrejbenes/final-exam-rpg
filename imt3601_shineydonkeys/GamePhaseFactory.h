@@ -16,6 +16,6 @@ public:
 	StartMultiPlayerGame* createStartMultiPlayerGame();
 	Options* createOptions();
 private:
-	UiElement* createMenuUiElement(const wchar_t* configFile, const wchar_t* configSectionName, std::function<void()> onClick);
+	UiElement* createMenuUiElement(const wchar_t* configFile, const wchar_t* configSectionName, std::function<void(UiElement* source, const sf::Event& event)> onClick);
 };
 

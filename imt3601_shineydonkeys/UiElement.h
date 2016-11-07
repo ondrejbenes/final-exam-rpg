@@ -4,7 +4,6 @@
 #include <memory>
 
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Window/Event.hpp>
 
 class UiElement
@@ -20,13 +19,17 @@ public:
 	virtual void setPosition(const sf::Vector2f& pos);
 	const sf::Vector2f& getPosition() const { return _position; }
 
-	void setOnClick(std::function<void()>* callback) { _onClick = callback; }
-	std::function<void()>* getOnClick() const { return _onClick; }
+	void setOnClick(std::function<void(UiElement* source, const sf::Event& event)>* callback) { _onClick = callback; }
+	std::function<void(UiElement* source, const sf::Event& event)>* getOnClick() const { return _onClick; }
 
-	void setOnTextEntered(std::function<void(const sf::Event& text)>* callback) { _onTextEntered = callback; }
-	std::function<void(const sf::Event& text)>* getOnTextEntered() const { return _onTextEntered; }
+	void setOnKeyPressed(std::function<void(UiElement* source, const sf::Event& event)>* callback) { _onkeyPressed = callback; }
+	std::function<void(UiElement* source, const sf::Event& event)>* getOnKeyPressed() const { return _onkeyPressed; }
+
+	void setOnTextEntered(std::function<void(UiElement* source, const sf::Event& event)>* callback) { _onTextEntered = callback; }
+	std::function<void(UiElement* source, const sf::Event& event)>* getOnTextEntered() const { return _onTextEntered; }
 protected:
 	sf::Vector2f _position;
-	std::function<void()>* _onClick;
-	std::function<void(const sf::Event& text)>* _onTextEntered;
+	std::function<void(UiElement* source, const sf::Event& event)>* _onClick;
+	std::function<void(UiElement* source, const sf::Event& event)>* _onkeyPressed;
+	std::function<void(UiElement* source, const sf::Event& event)>* _onTextEntered;
 };

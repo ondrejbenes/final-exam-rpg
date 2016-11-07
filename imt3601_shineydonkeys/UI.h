@@ -13,7 +13,11 @@ public:
 
 	void addElement(UiElement* element);
 	void removeElement(UiElement* element);
-	std::vector<UiElement*> getElements() const;
+	std::vector<UiElement*> getElements() const { return _elements; }
+
+	UiElement* getFocusedElement() const { return _focusedElement; }
+	void setFocusedElement(UiElement* element);
 private:
 	std::vector<UiElement*> _elements;
+	UiElement* _focusedElement;
 };

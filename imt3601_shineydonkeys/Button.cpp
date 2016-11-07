@@ -1,10 +1,9 @@
 #include "Button.h"
 
 Button::Button(const std::string& text, const sf::Font& font, unsigned int fontSize, const sf::Color& fillColor) :
-_text(text),
 _fontSize(fontSize)
 {
-	_drawableText = sf::Text(_text, font, _fontSize);
+	_drawableText = sf::Text(text, font, _fontSize);
 	_drawableText.setFillColor(fillColor);
 }
 

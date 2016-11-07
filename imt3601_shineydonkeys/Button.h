@@ -15,10 +15,10 @@ public:
 	sf::FloatRect getBounds() override;
 	void setPosition(const sf::Vector2f& pos) override;
 
-	/*
-	std::string getText() const { return _text; }
-	void setText(const std::string& text) { _text = text; }
+	std::string getText() const { return _drawableText.getString(); }
+	void setText(const std::string& text) { _drawableText.setString(text); }
 
+	/*
 	sf::Font getFont() const { return _font; }
 	void setFont(sf::Font& font) { _font = font; }
 
@@ -28,6 +28,5 @@ public:
 
 private:
 	sf::Text _drawableText;
-	std::string _text;
 	unsigned int _fontSize;
 };
