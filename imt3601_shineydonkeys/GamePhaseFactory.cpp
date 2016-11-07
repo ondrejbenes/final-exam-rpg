@@ -8,6 +8,7 @@
 
 #include <SFML/Graphics/Text.hpp>
 #include "ConfigIO.h"
+#include "Button.h"
 
 GamePhaseFactory::GamePhaseFactory()
 {
@@ -101,12 +102,9 @@ UiElement* GamePhaseFactory::createMenuUiElement(const wchar_t* configFile, cons
 	auto x = ConfigIO::readInt(configSectionName, L"x", 20, configFile);
 	auto y = ConfigIO::readInt(configSectionName, L"y", 20, configFile);
 
-	auto singlePlayerText = new sf::Text(text, font, fontSize);
-	singlePlayerText->setPosition(x, y);
-	singlePlayerText->setFillColor(sf::Color::White);
-
-	auto uiElement = new UiElement(singlePlayerText);
+	UiElement* uiElement = new Button(text, font, fontSize);
 	uiElement->setOnClick(new std::function<void()>(onClick));
+	uiElement->setPosition(sf::Vector2f(x, y));
 
 	return uiElement;
 }

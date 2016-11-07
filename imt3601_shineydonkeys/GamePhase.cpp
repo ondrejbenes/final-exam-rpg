@@ -20,6 +20,6 @@ void GamePhase::render(std::shared_ptr<sf::RenderWindow> window)
 	for (auto it = uiElements.begin(); it != uiElements.end(); ++it)
 	{
 		(*it)->update();
-		window->draw(*(*it)->getGraphics());
+		(*it)->draw(window);
 	}
 }

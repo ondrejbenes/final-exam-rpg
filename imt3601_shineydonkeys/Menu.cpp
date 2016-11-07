@@ -49,14 +49,7 @@ void Menu::handleMouseReleased(const sf::Event& event)
 	auto uiElements = _ui.getElements();
 	for (auto it = uiElements.begin(); it != uiElements.end(); ++it)
 	{
-		auto graphics = (*it)->getGraphics();
-		sf::FloatRect bounds;
-		if (typeid(*graphics) == typeid(sf::Text))
-			bounds = static_cast<sf::Text*>(graphics)->getGlobalBounds();
-		else if (typeid(*graphics) == typeid(sf::Sprite))
-			bounds = static_cast<sf::Text*>(graphics)->getGlobalBounds();
-		else
-			return;
+		auto bounds = (*it)->getBounds();
 
 		if (bounds.contains(event.mouseButton.x, event.mouseButton.y))
 		{

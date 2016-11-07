@@ -285,6 +285,9 @@
     <ClCompile Include="Weapon.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files\Core\Module\Game\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\Player.png">
@@ -508,6 +511,9 @@
       <Filter>Header Files\Entity</Filter>
     </ClInclude>
     <ClInclude Include="DamageSplash.h">
+      <Filter>Header Files\Core\Module\Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
       <Filter>Header Files\Core\Module\Game\UI</Filter>
     </ClInclude>
   </ItemGroup>

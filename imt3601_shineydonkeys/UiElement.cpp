@@ -1,15 +1,19 @@
 #include "UiElement.h"
 
-UiElement::UiElement(sf::Drawable* _graphics): _onClick(nullptr), _graphics(_graphics)
+UiElement::UiElement() : 
+_onClick(nullptr), 
+_onTextEntered(nullptr)
 {
+
 }
 
 UiElement::~UiElement()
 {
-	delete _graphics;
+	
 }
 
-void UiElement::update()
+void UiElement::setPosition(const sf::Vector2f& pos)
 {
-
+	this->_position.x = pos.x;
+	this->_position.y = pos.y;
 }

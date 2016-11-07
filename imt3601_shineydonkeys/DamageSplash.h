@@ -2,19 +2,25 @@
 
 #include "UiElement.h"
 
+#include <memory>
+
 #include <SFML/System/Time.hpp>
 #include <SFML/System/Clock.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 class DamageSplash : public UiElement
 {
 public:
-	explicit DamageSplash(unsigned int damage, float x, float y);
+	DamageSplash(unsigned int damage, float x, float y);
 
 	void update() override;
+	void draw(std::shared_ptr<sf::RenderWindow> window) override;
+	sf::FloatRect getBounds() override;
 
 	~DamageSplash();
 private:
 	unsigned int _damage;
 	sf::Time _lifetime = sf::seconds(2);
 	sf::Clock _visibleForMs;
+	sf::Text _drawableText;
 };
