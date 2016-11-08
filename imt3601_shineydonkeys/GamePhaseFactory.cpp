@@ -11,6 +11,8 @@
 #include "Button.h"
 #include "StringUtilities.h"
 #include <sstream>
+#include <SFML/Network/IpAddress.hpp>
+#include "Network.h"
 
 GamePhaseFactory::GamePhaseFactory()
 {
@@ -40,11 +42,17 @@ Menu* GamePhaseFactory::createMainMenu()
 		[&](UiElement* source, const sf::Event& event) 
 		{ GamePhaseManager::getInstance()->pushPhase(createMainGame()); });
 
-	auto multiPlayer = createMenuUiElement(
+	auto startMP = createMenuUiElement(
 		configFile,
-		L"multiplayer",
+		L"startMP",
 		[&](UiElement* source, const sf::Event& event) 
 		{ GamePhaseManager::getInstance()->pushPhase(createStartMultiPlayerGame()); });
+
+	auto joinMP = createMenuUiElement(
+		configFile,
+		L"joinMP",
+		[&](UiElement* source, const sf::Event& event)
+		{ GamePhaseManager::getInstance()->pushPhase(createJoinMultiPlayerGame()); });
 
 	auto options = createMenuUiElement(
 		configFile,
@@ -66,28 +74,112 @@ Menu* GamePhaseFactory::createMainMenu()
 
 	auto menu = new Menu;
 	menu->_ui.addElement(singlePlayer);
-	menu->_ui.addElement(multiPlayer);
+	menu->_ui.addElement(startMP);
+	menu->_ui.addElement(joinMP);
 	menu->_ui.addElement(options);
 	menu->_ui.addElement(exit);
 
 	return menu;
 }
 
-StartMultiPlayerGame* GamePhaseFactory::createStartMultiPlayerGame()
+Menu* GamePhaseFactory::createStartMultiPlayerGame()
 {
+	auto configFile = L"./Config/startMP.ini";
+
+	auto ip = createMenuUiElement(
+		configFile,
+		L"ip",
+		[](UiElement* source, const sf::Event& event)
+		{ /* just a display */ });
+
+	// TODO unnecessary to use ss?
+	std::stringstream ss;
+	ss << "Your IP is: " << sf::IpAddress::getLocalAddress();
+	auto ipAsBtn = dynamic_cast<Button*>(ip);
+	ipAsBtn->setText(ss.str());
+
+	auto spectrator1 = createMenuUiElement(
+		configFile,
+		L"spectrator1",
+		[](UiElement* source, const sf::Event& event)
+		{ /* just a display */ });
+
+	auto start = createMenuUiElement(
+		configFile,
+		L"start",
+		[&](UiElement* source, const sf::Event& event)
+		{
+			// Network::setServerMode(true);
+			GamePhaseManager::getInstance()->pushPhase(createMainGame());
+		});
+
 	auto back = createMenuUiElement(
-		L"./Config/multiplayer.ini",
+		configFile,
 		L"back",
 		[](UiElement* source, const sf::Event& event) 
 		{ GamePhaseManager::getInstance()->popPhase(); });
 
-	auto startMultiPlayerGame = new StartMultiPlayerGame;
+	auto startMultiPlayerGame = new Menu;
+	startMultiPlayerGame->_ui.addElement(ip);
+	startMultiPlayerGame->_ui.addElement(spectrator1);
+	startMultiPlayerGame->_ui.addElement(start);
 	startMultiPlayerGame->_ui.addElement(back);
 
 	return startMultiPlayerGame;
 }
 
-Options* GamePhaseFactory::createOptions()
+Menu* GamePhaseFactory::createJoinMultiPlayerGame()
+{
+	auto configFile = L"./Config/joinMP.ini";
+
+	auto lambda = [](UiElement* source, const sf::Event& event)
+	{
+		auto sfCode = event.key.code;
+		auto sourceAsBtn = dynamic_cast<Button*>(source);
+		
+		auto humanReadable = new char[20];
+		StringUtilities::SFKeyToString(sfCode, humanReadable);
+		std::stringstream ss;
+		ss << sourceAsBtn->getText() << humanReadable;
+		delete humanReadable;
+
+		auto str = ss.str();
+
+		sourceAsBtn->setText(str);
+	};
+	auto ip = createMenuUiElement(
+		configFile,
+		L"ip", 
+		[](UiElement* source, const sf::Event& event){/* only gain focus */});
+
+	// TODO rather use textEntered
+	ip->setOnKeyPressed(new uiCallback(lambda));
+
+	auto connect = createMenuUiElement(
+		configFile,
+		L"connect",
+		[&](UiElement* source, const sf::Event& event)
+		{
+			// Network::setServerMode(false);
+			// Network::join(source->getIp)
+			GamePhaseManager::getInstance()->pushPhase(createMainGame());
+		});
+
+	auto back = createMenuUiElement(
+		configFile,
+		L"back",
+		[](UiElement* source, const sf::Event& event)
+		{ GamePhaseManager::getInstance()->popPhase(); });
+
+	auto startMultiPlayerGame = new Menu;
+	startMultiPlayerGame->_ui.addElement(ip);
+	startMultiPlayerGame->_ui.addElement(connect);
+	startMultiPlayerGame->_ui.addElement(back);
+
+	return startMultiPlayerGame;
+}
+
+Menu* GamePhaseFactory::createOptions()
 {
 	auto moveLeftKey = createMenuUiElement(
 		L"./Config/options.ini",
@@ -115,7 +207,7 @@ Options* GamePhaseFactory::createOptions()
 
 		ConfigIO::writeString(L"moveLeftKey", L"text", ws.c_str(), L"./Config/options.ini");
 	};
-	moveLeftKey->setOnKeyPressed(new std::function<void(UiElement* source, const sf::Event& event)>(lambda));
+	moveLeftKey->setOnKeyPressed(new uiCallback(lambda));
 
 	auto back = createMenuUiElement(
 		L"./Config/options.ini",
@@ -123,14 +215,14 @@ Options* GamePhaseFactory::createOptions()
 		[](UiElement* source, const sf::Event& event) 
 		{ GamePhaseManager::getInstance()->popPhase(); });
 
-	auto options = new Options;
+	auto options = new Menu;
 	options->_ui.addElement(back);
 	options->_ui.addElement(moveLeftKey);
 
 	return options;
 }
 
-UiElement* GamePhaseFactory::createMenuUiElement(const wchar_t* configFile, const wchar_t* configSectionName, std::function<void(UiElement* source, const sf::Event& event)> onClick)
+UiElement* GamePhaseFactory::createMenuUiElement(const wchar_t* configFile, const wchar_t* configSectionName, uiCallback onClick)
 {
 	auto text = ConfigIO::readString(configSectionName, L"text", L"???", configFile);
 	auto& font = ResourceLoader::getInstance()->getMenuFont();
@@ -139,7 +231,7 @@ UiElement* GamePhaseFactory::createMenuUiElement(const wchar_t* configFile, cons
 	auto y = ConfigIO::readInt(configSectionName, L"y", 20, configFile);
 
 	UiElement* uiElement = new Button(text, font, fontSize);
-	uiElement->setOnClick(new std::function<void(UiElement* source, const sf::Event& event)>(onClick));
+	uiElement->setOnClick(new uiCallback(onClick));
 	uiElement->setPosition(sf::Vector2f(x, y));
 
 	return uiElement;

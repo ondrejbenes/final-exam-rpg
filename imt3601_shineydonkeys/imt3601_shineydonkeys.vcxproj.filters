@@ -255,12 +255,6 @@
     <ClCompile Include="ConfigIO.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="Options.cpp">
-      <Filter>Source Files\Core\Module\Game\GamePhase</Filter>
-    </ClCompile>
-    <ClCompile Include="StartMultiPlayerGame.cpp">
-      <Filter>Source Files\Core\Module\Game\GamePhase</Filter>
-    </ClCompile>
     <ClCompile Include="AiState.cpp">
       <Filter>Source Files\Entity\Component\Ai</Filter>
     </ClCompile>
@@ -482,12 +476,6 @@
     </ClInclude>
     <ClInclude Include="ConfigIO.h">
       <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Options.h">
-      <Filter>Header Files\Core\Module\Game\GamePhase</Filter>
-    </ClInclude>
-    <ClInclude Include="StartMultiPlayerGame.h">
-      <Filter>Header Files\Core\Module\Game\GamePhase</Filter>
     </ClInclude>
     <ClInclude Include="AiState.h">
       <Filter>Header Files\Entity\Component\Ai</Filter>

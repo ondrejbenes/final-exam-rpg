@@ -2,8 +2,7 @@
 
 #include "MainGame.h"
 #include "Menu.h"
-#include "StartMultiPlayerGame.h"
-#include "Options.h"
+#include "UiElement.h"
 
 class GamePhaseFactory
 {
@@ -13,9 +12,10 @@ public:
 
 	MainGame* createMainGame();
 	Menu* createMainMenu();
-	StartMultiPlayerGame* createStartMultiPlayerGame();
-	Options* createOptions();
+	Menu* createStartMultiPlayerGame();
+	Menu* createJoinMultiPlayerGame();
+	Menu* createOptions();
 private:
-	UiElement* createMenuUiElement(const wchar_t* configFile, const wchar_t* configSectionName, std::function<void(UiElement* source, const sf::Event& event)> onClick);
+	UiElement* createMenuUiElement(const wchar_t* configFile, const wchar_t* configSectionName, uiCallback onClick);
 };
 
