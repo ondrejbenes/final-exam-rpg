@@ -282,6 +282,9 @@
     <ClCompile Include="Button.cpp">
       <Filter>Source Files\Core\Module\Game\UI</Filter>
     </ClCompile>
+    <ClCompile Include="PacketFactory.cpp">
+      <Filter>Source Files\Core\Module\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\Player.png">
@@ -503,6 +506,9 @@
     </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>Header Files\Core\Module\Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketFactory.h">
+      <Filter>Header Files\Core\Module\Network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

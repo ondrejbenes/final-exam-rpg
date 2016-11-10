@@ -12,6 +12,7 @@
 #include "AnimationComponent.h"
 #include "CombatComponent.h"
 #include "Weapon.h"
+#include "Network.h"
 
 class EntityFactory
 {
@@ -53,7 +54,10 @@ inline Npc* EntityFactory::create<Npc>()
 	npc->getChildren().push_back(weapon);
 
 	npc->addComponent(gc);
-	npc->addComponent(new AiComponent(*npc));
+
+	if (!Network::isMultiplayer() || Network::isServer())
+		npc->addComponent(new AiComponent(*npc));
+
 	npc->addComponent(new AnimationComponent(*npc));
 	npc->addComponent(new CombatComponent(*npc));
 	npc->addComponent(new PhysicsComponent(*npc));

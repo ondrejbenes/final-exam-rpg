@@ -5,29 +5,19 @@
 #include "Blackboard.h"
 #include "Module.h"
 #include "Game.h"
-
-#include <SFML/Graphics/Text.hpp>
 #include "ConfigIO.h"
 #include "Button.h"
 #include "StringUtilities.h"
-#include <sstream>
-#include <SFML/Network/IpAddress.hpp>
 #include "Network.h"
+#include "PacketFactory.h"
 
-GamePhaseFactory::GamePhaseFactory()
-{
-}
+#include <sstream>
 
-
-GamePhaseFactory::~GamePhaseFactory()
-{
-}
+#include <SFML/Network/IpAddress.hpp>
 
 MainGame* GamePhaseFactory::createMainGame()
 {
 	auto ret = new MainGame;
-
-
 
 	return ret;
 }
@@ -39,14 +29,31 @@ Menu* GamePhaseFactory::createMainMenu()
 	auto singlePlayer = createMenuUiElement(
 		configFile, 
 		L"singleplayer", 
-		[&](UiElement* source, const sf::Event& event) 
-		{ GamePhaseManager::getInstance()->pushPhase(createMainGame()); });
+		[&](UiElement* source, const sf::Event& event)
+		{
+			Blackboard::getInstance()->leaveCallback(
+				NETWORK,
+				[](Module* target)
+				{
+					dynamic_cast<Network*>(target)->clear();
+				});
+			GamePhaseManager::getInstance()->pushPhase(createMainGame());
+		});
 
 	auto startMP = createMenuUiElement(
 		configFile,
 		L"startMP",
-		[&](UiElement* source, const sf::Event& event) 
-		{ GamePhaseManager::getInstance()->pushPhase(createStartMultiPlayerGame()); });
+		[&](UiElement* source, const sf::Event& event)
+		{
+			Blackboard::getInstance()->leaveCallback(
+				NETWORK,
+				[](Module* target)
+			{
+				auto networkModule = dynamic_cast<Network*>(target);
+				networkModule->initAsServer();
+			});
+			GamePhaseManager::getInstance()->pushPhase(createStartMultiPlayerGame());
+		});
 
 	auto joinMP = createMenuUiElement(
 		configFile,
@@ -103,13 +110,32 @@ Menu* GamePhaseFactory::createStartMultiPlayerGame()
 		L"spectrator1",
 		[](UiElement* source, const sf::Event& event)
 		{ /* just a display */ });
+	spectrator1->setName("spectrator1");
+
+	auto spectrator2 = createMenuUiElement(
+		configFile,
+		L"spectrator2",
+		[](UiElement* source, const sf::Event& event)
+		{ /* just a display */ });
+	spectrator2->setName("spectrator2");
 
 	auto start = createMenuUiElement(
 		configFile,
 		L"start",
 		[&](UiElement* source, const sf::Event& event)
 		{
-			// Network::setServerMode(true);
+			Blackboard::getInstance()->leaveCallback(
+				NETWORK,
+				[](Module* target)
+				{
+					PacketFactory factory;
+					auto packet = factory.createGameStarted();
+					std::string msg;
+					packet >> msg;
+					LOG_D(msg);
+
+					dynamic_cast<Network*>(target)->broadcast(packet);
+				});
 			GamePhaseManager::getInstance()->pushPhase(createMainGame());
 		});
 
@@ -122,6 +148,7 @@ Menu* GamePhaseFactory::createStartMultiPlayerGame()
 	auto startMultiPlayerGame = new Menu;
 	startMultiPlayerGame->_ui.addElement(ip);
 	startMultiPlayerGame->_ui.addElement(spectrator1);
+	startMultiPlayerGame->_ui.addElement(spectrator2);
 	startMultiPlayerGame->_ui.addElement(start);
 	startMultiPlayerGame->_ui.addElement(back);
 
@@ -134,16 +161,14 @@ Menu* GamePhaseFactory::createJoinMultiPlayerGame()
 
 	auto lambda = [](UiElement* source, const sf::Event& event)
 	{
-		auto sfCode = event.key.code;
 		auto sourceAsBtn = dynamic_cast<Button*>(source);
 		
-		auto humanReadable = new char[20];
-		StringUtilities::SFKeyToString(sfCode, humanReadable);
-		std::stringstream ss;
-		ss << sourceAsBtn->getText() << humanReadable;
-		delete humanReadable;
+		auto str = sourceAsBtn->getText();
 
-		auto str = ss.str();
+		if (event.text.unicode == 8) // backspace
+			str = str.substr(0, str.length() - 1);
+		else
+			str += event.text.unicode;
 
 		sourceAsBtn->setText(str);
 	};
@@ -152,24 +177,43 @@ Menu* GamePhaseFactory::createJoinMultiPlayerGame()
 		L"ip", 
 		[](UiElement* source, const sf::Event& event){/* only gain focus */});
 
-	// TODO rather use textEntered
-	ip->setOnKeyPressed(new uiCallback(lambda));
+	ip->setOnTextEntered(new uiCallback(lambda));
+	ip->setName("serverIp");
 
 	auto connect = createMenuUiElement(
 		configFile,
 		L"connect",
 		[&](UiElement* source, const sf::Event& event)
 		{
-			// Network::setServerMode(false);
-			// Network::join(source->getIp)
-			GamePhaseManager::getInstance()->pushPhase(createMainGame());
+			Blackboard::getInstance()->leaveCallback(
+				NETWORK,
+				[](Module* target)
+				{
+					auto networkModule = dynamic_cast<Network*>(target);
+
+					auto serverIpField = GamePhaseManager::getInstance()->getCurrentPhase()->getUi().getElementByName("serverIp");
+					auto serverIpFieldStr = dynamic_cast<Button*>(serverIpField)->getText();
+					std::string str{ "Server IP: " };
+					auto ipAsStr = serverIpFieldStr.substr(str.length());
+					LOG_D(ipAsStr);
+					networkModule->setServerIp(sf::IpAddress(ipAsStr));
+					networkModule->initAsClient();
+				});
 		});
 
 	auto back = createMenuUiElement(
 		configFile,
 		L"back",
 		[](UiElement* source, const sf::Event& event)
-		{ GamePhaseManager::getInstance()->popPhase(); });
+	{
+		Blackboard::getInstance()->leaveCallback(
+			NETWORK,
+			[](Module* target)
+			{
+				dynamic_cast<Network*>(target)->clear();
+			});
+		GamePhaseManager::getInstance()->popPhase();
+	});
 
 	auto startMultiPlayerGame = new Menu;
 	startMultiPlayerGame->_ui.addElement(ip);

@@ -18,4 +18,5 @@ protected:
 	void handleInput();
 	void handleMouseReleased(const sf::Event& event);
 	void handleKeyPressed(const sf::Event& event);
+	void handleTextEntered(const sf::Event& event);
 };

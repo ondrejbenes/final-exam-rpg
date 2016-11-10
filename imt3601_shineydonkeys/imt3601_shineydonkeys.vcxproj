@@ -96,6 +96,10 @@
       <AdditionalLibraryDirectories>C:\Program Files\SFML\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>"sfml-main-d.lib"; "sfml-graphics-d.lib";"sfml-window-d.lib";"sfml-system-d.lib";"sfml-audio-d.lib";"sfml-network-d.lib";kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>XCOPY "$(SolutionDir)Resources" "$(TargetDir)Resources" /s /i /y 
+XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -132,6 +136,10 @@
       <AdditionalLibraryDirectories>C:\Program Files\SFML\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>"sfml-main.lib"; "sfml-graphics.lib";"sfml-window.lib";"sfml-system.lib";"sfml-audio.lib";"sfml-network.lib";kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>XCOPY "$(SolutionDir)Resources" "$(TargetDir)Resources" /s /i /y 
+XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -194,6 +202,7 @@
     <ClCompile Include="Network.cpp" />
     <ClCompile Include="NetworkInputComponent.cpp" />
     <ClCompile Include="Npc.cpp" />
+    <ClCompile Include="PacketFactory.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="QuadTree.cpp" />
@@ -271,6 +280,7 @@
     <ClInclude Include="Network.h" />
     <ClInclude Include="NetworkInputComponent.h" />
     <ClInclude Include="Npc.h" />
+    <ClInclude Include="PacketFactory.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="QuadTree.h" />

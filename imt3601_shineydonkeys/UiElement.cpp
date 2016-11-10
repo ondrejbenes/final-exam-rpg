@@ -1,11 +1,10 @@
 #include "UiElement.h"
 
-UiElement::UiElement() : 
+UiElement::UiElement() :
+_name(""),
 _onClick(nullptr), 
-_onTextEntered(nullptr)
-{
-
-}
+_onkeyPressed(nullptr),
+_onTextEntered(nullptr) {}
 
 UiElement::~UiElement()
 {

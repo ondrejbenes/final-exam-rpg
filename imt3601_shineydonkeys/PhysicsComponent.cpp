@@ -1,6 +1,8 @@
 #include "PhysicsComponent.h"
 #include "AnimationComponent.h"
 #include "EntityManager.h"
+#include "Network.h"
+#include "Blackboard.h"
 
 PhysicsComponent::PhysicsComponent(Entity& parent) : 
 EntityComponent(parent) ,
@@ -22,6 +24,17 @@ void PhysicsComponent::update()
 void PhysicsComponent::setVelocity(sf::Vector2f velocity)
 {
 	this->velocity = velocity;
+
+	auto id = parent.id;
+	Blackboard::getInstance()->leaveCallback(
+		NETWORK,
+		[id, velocity](Module* target)
+		{
+			PacketFactory factory;
+			auto packet = factory.createVelocityChange(id, velocity);
+			dynamic_cast<Network*>(target)->broadcast(packet);
+		}
+	);
 }
 
 sf::Vector2f PhysicsComponent::getVelocity()

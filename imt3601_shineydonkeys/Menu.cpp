@@ -38,7 +38,7 @@ void Menu::handleInput()
 			handleMouseReleased(event);
 			break;
 		case sf::Event::TextEntered:
-			//handleTextEntered(event);
+			handleTextEntered(event);
 			break;
 		case sf::Event::KeyPressed:
 			handleKeyPressed(event);
@@ -78,6 +78,17 @@ void Menu::handleKeyPressed(const sf::Event& event)
 		return;
 
 	auto callback = focusedElement->getOnKeyPressed();
+	if (callback != nullptr)
+		(*callback)(focusedElement, event);
+}
+
+void Menu::handleTextEntered(const sf::Event& event) 
+{
+	auto focusedElement = _ui.getFocusedElement();
+	if (focusedElement == nullptr)
+		return;
+
+	auto callback = focusedElement->getOnTextEntered();
 	if (callback != nullptr)
 		(*callback)(focusedElement, event);
 }

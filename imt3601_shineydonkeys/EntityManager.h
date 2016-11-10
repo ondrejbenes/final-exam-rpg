@@ -62,6 +62,9 @@ public:
 	/* Returns Charater located at pos, or nullptr, if none was found */
 	Character* getCharacterAtPos(const sf::Vector2f& pos);
 
+	/* Returns Charater with the given Id */
+	Character* getCharacterById(unsigned int id);
+
 	/* Returns all Tiles in the underlaying QuadTree */
 	std::vector<Tile*> getAllTiles();
 

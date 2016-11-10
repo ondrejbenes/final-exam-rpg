@@ -3,6 +3,7 @@
 UI::UI() : 
 _focusedElement(nullptr)
 {
+
 }
 
 UI::~UI(){
@@ -17,6 +18,15 @@ void UI::addElement(UiElement* element)
 void UI::removeElement(UiElement* element)
 {
 	_elements.erase(remove(begin(_elements), end(_elements), element), _elements.end());
+}
+
+UiElement* UI::getElementByName(const std::string& name)
+{
+	for(auto* element : _elements)
+		if (element->getName() == name)
+			return element;
+
+	return nullptr;
 }
 
 void UI::setFocusedElement(UiElement* element)

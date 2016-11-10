@@ -30,7 +30,7 @@ bool Engine::initialize()
 
 void Engine::initializeMainWindow()
 {
-	auto style = sf::Style::None;
+	auto style = sf::Style::Default;
 	auto desktop = sf::VideoMode::getDesktopMode();
 	auto fullscreen = ConfigIO::readInt(L"graphics", L"fullscreen");
 	auto resolutionWidth = ConfigIO::readInt(L"graphics", L"resolutionWidth", desktop.width);

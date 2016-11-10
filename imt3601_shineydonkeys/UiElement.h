@@ -18,6 +18,9 @@ public:
 	virtual void update() = 0;
 	virtual void draw(std::shared_ptr<sf::RenderWindow> window) = 0;
 	virtual sf::FloatRect getBounds() = 0;
+	
+	std::string getName() const { return _name; }
+	void setName(const std::string& name) { _name = name; }
 
 	virtual void setPosition(const sf::Vector2f& pos);
 	const sf::Vector2f& getPosition() const { return _position; }
@@ -31,6 +34,7 @@ public:
 	void setOnTextEntered(uiCallback* callback) { _onTextEntered = callback; }
 	uiCallback* getOnTextEntered() const { return _onTextEntered; }
 protected:
+	std::string _name;
 	sf::Vector2f _position;
 	uiCallback* _onClick;
 	uiCallback* _onkeyPressed;

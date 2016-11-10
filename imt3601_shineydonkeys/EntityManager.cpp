@@ -70,6 +70,17 @@ Character* EntityManager::getCharacterAtPos(const sf::Vector2f& pos)
 	return ret;
 }
 
+Character* EntityManager::getCharacterById(unsigned int id) 
+{
+	// TODO refacor - map<id, char*>
+	auto all = getAllCharacters();
+	for (auto it = begin(all); it != end(all); ++it)
+		if ((*it)->id == id)
+			return *it;
+
+	return nullptr;
+}
+
 std::vector<Tile*> EntityManager::getAllTiles()
 {
 	std::vector<Tile*> tiles;

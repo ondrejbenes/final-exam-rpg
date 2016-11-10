@@ -12,6 +12,8 @@
 #include "Console.h"
 #include "AiPatrol.h"
 #include "windows.h"
+#include "Network.h"
+#include "PacketFactory.h"
 
 MainGame::MainGame()
 {
@@ -31,7 +33,10 @@ MainGame::MainGame()
 	auto pos = sf::Vector2f(250, 230);
 	npc->setPosition(pos);
 	auto pc = npc->getComponent<AiComponent>();
-	pc->ChangeState(new AiPatrol(pc, pos, 500));
+
+	if (!Network::isMultiplayer() || Network::isServer())
+		pc->ChangeState(new AiPatrol(pc, pos, 500));
+
 	entityManager->add(npc);
 
 	loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
@@ -94,8 +99,25 @@ void MainGame::handleInput()
 			if (event.key.code == sf::Keyboard::Escape)
 			{
 				GamePhaseManager::getInstance()->popPhase();
+
+				if(Network::isServer())
+				{
+					Blackboard::getInstance()->leaveCallback(
+						NETWORK,
+						[](Module* target)
+						{
+							PacketFactory factory;
+							auto packet = factory.createGameOver();
+							dynamic_cast<Network*>(target)->broadcast(packet);
+						}
+					);
+				}
+
 				return;
 			}
+
+			if (Network::isMultiplayer())
+				break;
 
 			if (event.key.code == sf::Keyboard::F5)
 			{
@@ -129,7 +151,7 @@ void MainGame::handleInput()
 		}
 	}
 
-	if(!console->isVisible())
+	if(!console->isVisible() && (!Network::isMultiplayer() || Network::isServer()))
 		handleMovement();
 }
 
@@ -138,32 +160,30 @@ void MainGame::handleMovement()
 	auto localPlayer = EntityManager::getInstance()->getLocalPlayer();
 	auto physicsComponent = localPlayer->getComponent<PhysicsComponent>();
 	auto defaultVelocity = PhysicsComponent::defaultVelocity;
+	sf::Vector2f newVelocity;
 
 	if (sf::Keyboard::isKeyPressed(CONTROLS.up))
 	{
-		physicsComponent->setVelocity(sf::Vector2f(0, -1 * defaultVelocity.y));
+		newVelocity = sf::Vector2f(0, -1 * defaultVelocity.y);
 	}
 	else if (sf::Keyboard::isKeyPressed(CONTROLS.down))
 	{
-		physicsComponent->setVelocity(sf::Vector2f(0, defaultVelocity.y));
+		newVelocity = sf::Vector2f(0, defaultVelocity.y);
 	}
 	else if (sf::Keyboard::isKeyPressed(CONTROLS.right))
 	{
-		physicsComponent->setVelocity(sf::Vector2f(defaultVelocity.x, 0));
+		newVelocity = sf::Vector2f(defaultVelocity.x, 0);
 	}
 	else if (sf::Keyboard::isKeyPressed(CONTROLS.left))
 	{
-		physicsComponent->setVelocity(sf::Vector2f(-1 * defaultVelocity.x, 0));
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-	{
-		// TODO remove?
-		//pc->move(Jump);
+		newVelocity = sf::Vector2f(-1 * defaultVelocity.x, 0);
 	}
 	else
 	{
-		physicsComponent->setVelocity(sf::Vector2f(0, 0));
+		newVelocity = PhysicsComponent::ZERO_VELOCITY;
 	}
+
+	physicsComponent->setVelocity(newVelocity);
 }
 
 bool MainGame::loadLevel(const std::string& textureFileName, const std::string& levelDefinitionFileName)

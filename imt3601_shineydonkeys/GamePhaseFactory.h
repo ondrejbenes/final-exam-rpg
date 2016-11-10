@@ -7,9 +7,6 @@
 class GamePhaseFactory
 {
 public:
-	GamePhaseFactory();
-	~GamePhaseFactory();
-
 	MainGame* createMainGame();
 	Menu* createMainMenu();
 	Menu* createStartMultiPlayerGame();
