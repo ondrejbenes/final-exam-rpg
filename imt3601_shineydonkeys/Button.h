@@ -3,12 +3,12 @@
 #include "UiElement.h"
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 
 class Button : public UiElement
 {
 public:
-	Button(const std::string& text, const sf::Font& font, unsigned int fontSize = 16, const sf::Color& fillColor = sf::Color::White);
-	~Button();
+	Button(const std::string& text, const sf::Font& font, unsigned int fontSize = 16, const sf::Color& textColor = sf::Color::White, const sf::Color& backgroundColor = sf::Color(0, 0, 128, 192));
 
 	void update() override;
 	void draw(std::shared_ptr<sf::RenderWindow> window) override;
@@ -17,16 +17,10 @@ public:
 
 	std::string getText() const { return _drawableText.getString(); }
 	void setText(const std::string& text) { _drawableText.setString(text); }
-
-	/*
-	sf::Font getFont() const { return _font; }
-	void setFont(sf::Font& font) { _font = font; }
-
-	unsigned getFontSize() const { return _fontSize; }
-	void setFontSize(const unsigned fontSize) { _fontSize = fontSize; }
-	*/
-
+	
 private:
 	sf::Text _drawableText;
-	unsigned int _fontSize;
+	sf::RectangleShape _background;
+
+	const static int padding = 10;
 };

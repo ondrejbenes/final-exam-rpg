@@ -192,6 +192,8 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClCompile Include="GameStateLoader.cpp" />
     <ClCompile Include="GameStateSaver.cpp" />
     <ClCompile Include="GraphicsComponent.cpp" />
+    <ClCompile Include="Image.cpp" />
+    <ClCompile Include="Label.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -210,9 +212,9 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClCompile Include="QuadTreeNode.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceLoader.cpp" />
-    <ClCompile Include="SoundComponent.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="StringUtilities.cpp" />
+    <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Tilemap.cpp" />
     <ClCompile Include="TimeUtilities.cpp" />
@@ -272,6 +274,8 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClInclude Include="GameStateLoader.h" />
     <ClInclude Include="GameStateSaver.h" />
     <ClInclude Include="GraphicsComponent.h" />
+    <ClInclude Include="Image.h" />
+    <ClInclude Include="Label.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MainGame.h" />
@@ -290,9 +294,9 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClInclude Include="QuadTreeNodeData.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceLoader.h" />
-    <ClInclude Include="SoundComponent.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="StringUtilities.h" />
+    <ClInclude Include="TextBox.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Tilemap.h" />
     <ClInclude Include="TimeUtilities.h" />

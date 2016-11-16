@@ -12,7 +12,6 @@ class GamePhaseManager
 {
 public:
 	~GamePhaseManager();
-
 	/**
 	* \brief Gets the unique instance of this class.
 	* \return the unique instance

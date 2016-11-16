@@ -5,7 +5,6 @@
 #include "UnsopportedEntityException.h"
 #include "GraphicsComponent.h"
 #include "PhysicsComponent.h"
-#include "SoundComponent.h"
 #include "Logger.h"
 #include "Tile.h"
 #include "AiComponent.h"
@@ -13,6 +12,9 @@
 #include "CombatComponent.h"
 #include "Weapon.h"
 #include "Network.h"
+#include "ConfigIO.h"
+
+#include <sstream>
 
 class EntityFactory
 {
@@ -47,12 +49,11 @@ inline Npc* EntityFactory::create<Npc>()
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
 
-	auto gc = new GraphicsComponent(*npc);
-	gc->setSprite(sprite);
-
 	auto weapon = new Weapon(1, 2, 1000);
 	npc->getChildren().push_back(weapon);
 
+	auto gc = new GraphicsComponent(*npc);
+	gc->setSprite(sprite);
 	npc->addComponent(gc);
 
 	if (!Network::isMultiplayer() || Network::isServer())
@@ -61,7 +62,6 @@ inline Npc* EntityFactory::create<Npc>()
 	npc->addComponent(new AnimationComponent(*npc));
 	npc->addComponent(new CombatComponent(*npc));
 	npc->addComponent(new PhysicsComponent(*npc));
-	npc->addComponent(new SoundComponent(*npc));
 
 	return npc;
 }
@@ -76,23 +76,25 @@ inline Player* EntityFactory::create<Player>()
 	auto player = new Player(stats);
 
 	// TODO ResLoader
-	auto texture = new sf::Texture;
-	if (!texture->loadFromFile("Resources/Images/Player2.png"))
-		LOG_E("Error: could not load player image");
+	auto currSpriteNumber = ConfigIO::readInt(L"player", L"sprite", 1);
+	std::stringstream ss;
+	ss << "Resources/Images/Player" << currSpriteNumber << ".png";
+
+	auto texture = new sf::Texture();
+	if (!texture->loadFromFile(ss.str()))
+		LOG_E("Error loading player texture");
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
-
-	auto gc = new GraphicsComponent(*player);
-	gc->setSprite(sprite);
-
+	
 	auto weapon = new Weapon(25, 50, 1000);
 	player->getChildren().push_back(weapon);
 
+	auto gc = new GraphicsComponent(*player);
+	gc->setSprite(sprite);
 	player->addComponent(gc);
 	player->addComponent(new AnimationComponent(*player));
 	player->addComponent(new CombatComponent(*player));
 	player->addComponent(new PhysicsComponent(*player));
-	player->addComponent(new SoundComponent(*player));
 
 	return player;
 }
@@ -103,7 +105,6 @@ inline Tile* EntityFactory::create<Tile>()
 	auto tile = new Tile();
 	tile->addComponent(new GraphicsComponent(*tile));
 	tile->addComponent(new PhysicsComponent(*tile));
-	tile->addComponent(new SoundComponent(*tile));
 
 	return tile;
 }

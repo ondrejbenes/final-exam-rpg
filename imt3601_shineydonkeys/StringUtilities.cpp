@@ -102,7 +102,7 @@ void StringUtilities::SFKeyToString(unsigned int keycode, char *keyStr) {
 		case sf::Keyboard::Key::Divide: sprintf(keyStr, "/"); break;
 		case sf::Keyboard::Key::Left: sprintf(keyStr, "Left"); break;
 		case sf::Keyboard::Key::Right: sprintf(keyStr, "Right"); break;
-		case sf::Keyboard::Key::Up: sprintf(keyStr, "UP"); break;
+		case sf::Keyboard::Key::Up: sprintf(keyStr, "Up"); break;
 		case sf::Keyboard::Key::Down: sprintf(keyStr, "Down"); break;
 		case sf::Keyboard::Key::Numpad0: sprintf(keyStr, "NP 0"); break;
 		case sf::Keyboard::Key::Numpad1: sprintf(keyStr, "NP 1"); break;

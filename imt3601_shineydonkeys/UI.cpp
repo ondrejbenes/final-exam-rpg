@@ -31,6 +31,14 @@ UiElement* UI::getElementByName(const std::string& name)
 
 void UI::setFocusedElement(UiElement* element)
 {
-	// TODO should do check if element belongs to this UI?
+	if(find(begin(_elements), end(_elements), element) == end(_elements) && element != nullptr)
+		return;
+
+	if (_focusedElement != nullptr)
+		_focusedElement->setFocused(false);
+
 	_focusedElement = element;
+
+	if (element != nullptr)
+		element->setFocused(true);
 }

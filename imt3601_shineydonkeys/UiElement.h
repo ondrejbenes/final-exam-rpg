@@ -7,7 +7,7 @@
 #include <SFML/Window/Event.hpp>
 
 class UiElement;
-typedef std::function<void(UiElement* source, const sf::Event& event)> uiCallback;
+typedef std::function<void(UiElement* source, const sf::Event& event)> UiCallback;
 
 class UiElement
 {
@@ -15,6 +15,7 @@ public:
 	UiElement();
 	virtual ~UiElement();
 
+	// TODO ugly to make it pure virtual
 	virtual void update() = 0;
 	virtual void draw(std::shared_ptr<sf::RenderWindow> window) = 0;
 	virtual sf::FloatRect getBounds() = 0;
@@ -25,19 +26,23 @@ public:
 	virtual void setPosition(const sf::Vector2f& pos);
 	const sf::Vector2f& getPosition() const { return _position; }
 
-	void setOnClick(uiCallback* callback) { _onClick = callback; }
-	uiCallback* getOnClick() const { return _onClick; }
+	void setOnClick(UiCallback* callback) { _onClick = callback; }
+	UiCallback* getOnClick() const { return _onClick; }
 
-	void setOnKeyPressed(uiCallback* callback) { _onkeyPressed = callback; }
-	uiCallback* getOnKeyPressed() const { return _onkeyPressed; }
+	void setOnKeyPressed(UiCallback* callback) { _onkeyPressed = callback; }
+	UiCallback* getOnKeyPressed() const { return _onkeyPressed; }
 
-	void setOnTextEntered(uiCallback* callback) { _onTextEntered = callback; }
-	uiCallback* getOnTextEntered() const { return _onTextEntered; }
+	void setOnTextEntered(UiCallback* callback) { _onTextEntered = callback; }
+	UiCallback* getOnTextEntered() const { return _onTextEntered; }
+
+	virtual void setFocused(bool focused) { _focused = focused; }
+	bool isFocused() const { return _focused; }
 protected:
 	std::string _name;
 	sf::Vector2f _position;
-	uiCallback* _onClick;
-	uiCallback* _onkeyPressed;
-	uiCallback* _onTextEntered;
+	UiCallback* _onClick;
+	UiCallback* _onkeyPressed;
+	UiCallback* _onTextEntered;
+	bool _focused = false;
 };
 
