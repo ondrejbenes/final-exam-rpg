@@ -14,6 +14,7 @@
 #include "windows.h"
 #include "Network.h"
 #include "PacketFactory.h"
+#include "Audio.h"
 
 MainGame::MainGame()
 {
@@ -42,6 +43,15 @@ MainGame::MainGame()
 	loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
 
 	loadControls();
+
+	Blackboard::getInstance()->leaveCallback(
+		AUDIO,
+		[](Module* target)
+		{
+			dynamic_cast<Audio*>(target)->playMusic(Audio::THEME_SONG);
+		}
+	);
+
 	SetCursor(cursor);
 }
 

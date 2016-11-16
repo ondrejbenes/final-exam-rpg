@@ -211,6 +211,7 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceLoader.cpp" />
     <ClCompile Include="SoundComponent.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="StringUtilities.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Tilemap.cpp" />
@@ -290,6 +291,7 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceLoader.h" />
     <ClInclude Include="SoundComponent.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="StringUtilities.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Tilemap.h" />

@@ -109,6 +109,12 @@
     <Filter Include="Source Files\Core\Module\Game\UI">
       <UniqueIdentifier>{725af30e-159f-47e0-bbfb-336707e97f12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Core\Module\Audio">
+      <UniqueIdentifier>{129f2e09-5f7c-41cc-8572-88675ede913b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Module\Audio">
+      <UniqueIdentifier>{e24734df-6514-4881-b567-942685c99fdc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -157,9 +163,6 @@
       <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="Module.cpp">
-      <Filter>Source Files\Core\Module</Filter>
-    </ClCompile>
-    <ClCompile Include="Audio.cpp">
       <Filter>Source Files\Core\Module</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
@@ -285,6 +288,12 @@
     <ClCompile Include="PacketFactory.cpp">
       <Filter>Source Files\Core\Module\Network</Filter>
     </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Source Files\Core\Module\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Source Files\Core\Module\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\Player.png">
@@ -380,9 +389,6 @@
     </ClInclude>
     <ClInclude Include="TimeUtilities.h">
       <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Audio.h">
-      <Filter>Header Files\Core\Module</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files\Core\Module\Game</Filter>
@@ -509,6 +515,12 @@
     </ClInclude>
     <ClInclude Include="PacketFactory.h">
       <Filter>Header Files\Core\Module\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Header Files\Core\Module\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Header Files\Core\Module\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

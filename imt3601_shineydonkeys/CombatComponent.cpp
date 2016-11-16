@@ -1,11 +1,13 @@
 #include "CombatComponent.h"
 #include "Logger.h"
-#include <sstream>
 #include "EntityManager.h"
 #include "Blackboard.h"
 #include "Game.h"
 #include "DamageSplash.h"
 #include "GamePhaseManager.h"
+#include "Audio.h"
+
+#include <sstream>
 
 CombatComponent::CombatComponent(Entity& parent) :
 EntityComponent(parent),
@@ -34,6 +36,14 @@ void CombatComponent::update()
 	auto damageModifier = rand() % (_weapon->getMaxDamage() - _weapon->getMinDamage());
 	auto damage = _weapon->getMinDamage() + damageModifier;
 	_otherCombatComp->takeDamage(damage);
+
+	Blackboard::getInstance()->leaveCallback(
+		AUDIO,
+		[](Module* target)
+		{
+			dynamic_cast<Audio*>(target)->playSound(Audio::WEAPON_SLASH);
+		}
+	);
 }
 
 void CombatComponent::startCombat(Character* other)
@@ -86,7 +96,14 @@ void CombatComponent::takeDamage(const unsigned int damage)
 
 	if (stats->current_hitpoints == 0)
 	{
-		LOG_D("DEAD");
+		Blackboard::getInstance()->leaveCallback(
+			AUDIO,
+			[](Module* target)
+			{
+				dynamic_cast<Audio*>(target)->playSound(Audio::HUMAN_NPC_DYING);
+			}
+		);
+
 		if (_otherCombatComp != nullptr && _otherCombatComp->getOther()->id == parent.id)
 			_otherCombatComp->endCombat();
 		endCombat();
