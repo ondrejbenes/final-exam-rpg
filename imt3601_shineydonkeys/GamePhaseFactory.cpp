@@ -18,12 +18,19 @@
 
 #include <SFML/Network/IpAddress.hpp>
 #include "Image.h"
+#include "Minimap.h"
 
 MainGame* GamePhaseFactory::createMainGame()
 {
-	auto ret = new MainGame;
+	auto texture = new sf::Texture();
+	if (!texture->loadFromFile("Resources/Images/minimap.png"))
+		LOG_E("Error loading minimap texture");
+	auto minimap = new Minimap(texture);
 
-	return ret;
+	auto mainGame = new MainGame;
+	mainGame->_ui.addElement(minimap);
+
+	return mainGame;
 }
 
 Menu* GamePhaseFactory::createMainMenu()

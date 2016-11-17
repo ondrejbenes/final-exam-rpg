@@ -34,5 +34,6 @@ protected:
 private:
 	Level _currentLevel;
 
+	void drawHealthBar(std::shared_ptr<sf::RenderWindow> window);
 	void loadControls();
 };

@@ -201,9 +201,6 @@
     <ClCompile Include="GameStateSaver.cpp">
       <Filter>Source Files\Core\Module\Game\GameState</Filter>
     </ClCompile>
-    <ClCompile Include="Minimap.cpp">
-      <Filter>Source Files\Core\Module\Game\Level</Filter>
-    </ClCompile>
     <ClCompile Include="Tilemap.cpp">
       <Filter>Source Files\Core\Module\Game\Level</Filter>
     </ClCompile>
@@ -298,6 +295,9 @@
       <Filter>Source Files\Core\Module\Game\UI</Filter>
     </ClCompile>
     <ClCompile Include="Image.cpp">
+      <Filter>Source Files\Core\Module\Game\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Minimap.cpp">
       <Filter>Source Files\Core\Module\Game\UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -435,9 +435,6 @@
     <ClInclude Include="Tilemap.h">
       <Filter>Header Files\Core\Module\Game\Level</Filter>
     </ClInclude>
-    <ClInclude Include="Minimap.h">
-      <Filter>Header Files\Core\Module\Game\Level</Filter>
-    </ClInclude>
     <ClInclude Include="Level.h">
       <Filter>Header Files\Core\Module\Game\Level</Filter>
     </ClInclude>
@@ -532,6 +529,9 @@
       <Filter>Header Files\Core\Module\Game\UI</Filter>
     </ClInclude>
     <ClInclude Include="Image.h">
+      <Filter>Header Files\Core\Module\Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Minimap.h">
       <Filter>Header Files\Core\Module\Game\UI</Filter>
     </ClInclude>
   </ItemGroup>

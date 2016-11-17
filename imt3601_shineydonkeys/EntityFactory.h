@@ -49,7 +49,7 @@ inline Npc* EntityFactory::create<Npc>()
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
 
-	auto weapon = new Weapon(1, 2, 1000);
+	auto weapon = new Weapon(50, 80, 1000);
 	npc->getChildren().push_back(weapon);
 
 	auto gc = new GraphicsComponent(*npc);
