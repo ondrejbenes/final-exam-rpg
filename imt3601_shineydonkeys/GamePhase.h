@@ -23,4 +23,7 @@ protected:
 	UI _ui;
 
 	GamePhase();
+
+	void handleMouseReleased(const sf::Event& event);
+	void handleTextEntered(const sf::Event& event);
 };

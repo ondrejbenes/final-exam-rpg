@@ -96,6 +96,16 @@ void Engine::handleWindowEvents() const
 		case sf::Event::Closed:
 			dynamic_cast<Game*>(_modules.at(GAME).get())->stop();
 			break;
+		case sf::Event::MouseButtonReleased:
+		{
+			// translate window coordinates to map coordinates
+			auto mouse = sf::Mouse::getPosition(*_mainWindow);
+			auto mouse_world = _mainWindow->mapPixelToCoords(mouse);
+			event.mouseButton.x = mouse_world.x;
+			event.mouseButton.y = mouse_world.y;
+			Blackboard::getInstance()->pushEvent(event);
+			break;
+		}
 		default:
 			Blackboard::getInstance()->pushEvent(event);
 			break;

@@ -12,13 +12,14 @@
 #include "PacketFactory.h"
 #include "TextBox.h"
 #include "Audio.h"
+#include "Image.h"
+#include "Minimap.h"
 
 #include <sstream>
 #include <codecvt>
 
 #include <SFML/Network/IpAddress.hpp>
-#include "Image.h"
-#include "Minimap.h"
+#include "ChatBoard.h"
 
 MainGame* GamePhaseFactory::createMainGame()
 {
@@ -27,8 +28,57 @@ MainGame* GamePhaseFactory::createMainGame()
 		LOG_E("Error loading minimap texture");
 	auto minimap = new Minimap(texture);
 
+	auto lambda = [](UiElement* source, const sf::Event& event)
+	{
+		auto chatBoard = dynamic_cast<ChatBoard*>(source);
+
+		if (!chatBoard->isFocused())
+			return;
+
+		auto& input = chatBoard->getInput();
+
+		if (event.text.unicode == 8) // backspace
+			input = input.substr(0, input.length() - 1);
+		else if (event.text.unicode == 13) // enter
+		{
+			auto playerName = ConfigIO::readString(L"player", L"name", L"Player");
+			chatBoard->addMessage(playerName, input);
+			input = "";
+			// TODO terrible encapsulation
+			// TODO send message over net (or maybe from chat method directly?)
+		}
+		else
+			input += event.text.unicode;
+
+	};
+	auto chatBoard = new ChatBoard();
+	// TODO directly to chatboard?
+	chatBoard->setOnTextEntered(new UiCallback(lambda));
+
+	chatBoard->setName("chatBoard");
+
+	chatBoard->addMessage("System", "1Howdy.");
+	chatBoard->addMessage("System", "I am a little chatboard.");
+	chatBoard->addMessage("System", "2Howdy.");
+	chatBoard->addMessage("System", "I am a little chatboard.");
+	chatBoard->addMessage("System", "3Howdy.");
+	chatBoard->addMessage("System", "I am a little chatboard.");
+	chatBoard->addMessage("System", "4Howdy.");
+	chatBoard->addMessage("System", "I am a little chatboard.");
+	chatBoard->addMessage("System", "5Howdy.");
+	chatBoard->addMessage("System", "I am a little chatboard.");
+	chatBoard->addMessage("System", "6Howdy.");
+	chatBoard->addMessage("System", "I am a little chatboard.");
+	chatBoard->addMessage("System", "7Howdy.");
+	chatBoard->addMessage("System", "I am a little chatboard.");
+	chatBoard->addMessage("System", "8Howdy.");
+	chatBoard->addMessage("System", "I am a little chatboard.");
+	chatBoard->addMessage("System", "9Howdy.");
+	chatBoard->addMessage("System", "I am a little chatboard.");
+
 	auto mainGame = new MainGame;
 	mainGame->_ui.addElement(minimap);
+	mainGame->_ui.addElement(chatBoard);		
 
 	return mainGame;
 }

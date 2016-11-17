@@ -177,9 +177,6 @@
     <ClCompile Include="Network.cpp">
       <Filter>Source Files\Core\Module\Network</Filter>
     </ClCompile>
-    <ClCompile Include="ChatBoard.cpp">
-      <Filter>Source Files\Core\Module\Network</Filter>
-    </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
@@ -300,6 +297,9 @@
     <ClCompile Include="Minimap.cpp">
       <Filter>Source Files\Core\Module\Game\UI</Filter>
     </ClCompile>
+    <ClCompile Include="ChatBoard.cpp">
+      <Filter>Source Files\Core\Module\Game\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\Player.png">
@@ -406,9 +406,6 @@
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Network.h">
-      <Filter>Header Files\Core\Module\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="ChatBoard.h">
       <Filter>Header Files\Core\Module\Network</Filter>
     </ClInclude>
     <ClInclude Include="Tile.h">
@@ -532,6 +529,9 @@
       <Filter>Header Files\Core\Module\Game\UI</Filter>
     </ClInclude>
     <ClInclude Include="Minimap.h">
+      <Filter>Header Files\Core\Module\Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ChatBoard.h">
       <Filter>Header Files\Core\Module\Game\UI</Filter>
     </ClInclude>
   </ItemGroup>

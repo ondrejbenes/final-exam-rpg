@@ -8,14 +8,15 @@
 #include "Blackboard.h"
 #include "GamePhaseManager.h"
 #include "ConfigIO.h"
-#include <memory>
 #include "Console.h"
 #include "AiPatrol.h"
 #include "windows.h"
 #include "Network.h"
 #include "PacketFactory.h"
 #include "Audio.h"
-#include "Image.h"
+#include "ChatBoard.h"
+
+#include <memory>
 
 MainGame::MainGame()
 {
@@ -26,12 +27,12 @@ MainGame::MainGame()
 
 	auto entityManager = EntityManager::getInstance();
 	entityManager->add(player);
-	//player->setPosition(sf::Vector2f(4250, 2550)); TEST
+	//player->setPosition(sf::Vector2f(4250, 2550)); //TEST
 	player->setPosition(sf::Vector2f(600, 600));
 	entityManager->setLocalPlayer(player);
 
 	auto npc = factory.create<Npc>();
-	//auto pos = sf::Vector2f(4120, 2310); TESTs
+	//auto pos = sf::Vector2f(4120, 2310); //TESTs
 	auto pos = sf::Vector2f(250, 230);
 	npc->setPosition(pos);
 	auto pc = npc->getComponent<AiComponent>();
@@ -41,8 +42,8 @@ MainGame::MainGame()
 
 	entityManager->add(npc);
 
+	loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
 	//loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
-	loadLevel("Resources/Images/tiles.png", "Resources/Levels/DONTUSETHISFinalExamMap.csv");
 
 	loadControls();
 
@@ -184,6 +185,11 @@ void MainGame::handleInput()
 		case sf::Event::TextEntered:
 			if (console->isVisible())
 				console->handleEvent(event);
+			handleTextEntered(event);
+			break;
+		case sf::Event::MouseButtonReleased:
+			handleMouseReleased(event);
+			break;
 		default:
 			break;
 		}
