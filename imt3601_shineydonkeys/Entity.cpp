@@ -2,6 +2,7 @@
 #include "AnimationComponent.h"
 #include "GraphicsComponent.h"
 #include <sstream>
+#include "PhysicsComponent.h"
 
 unsigned int Entity::nextId = 0;
 
@@ -43,7 +44,16 @@ void Entity::setPosition(sf::Vector2f position)
 {
 	this->position = position;
 
-	getComponent<GraphicsComponent>()->getSprite().setPosition(position);
+	auto gc = getComponent<GraphicsComponent>();
+	if(gc != nullptr)
+		gc->getSprite().setPosition(position);
+
+	auto pc = getComponent<PhysicsComponent>();
+	if (pc != nullptr)
+	{
+		pc->getCollider().left = position.x;
+		pc->getCollider().top = position.y;
+	}
 }
 
 std::string Entity::toString() const

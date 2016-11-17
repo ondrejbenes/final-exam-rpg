@@ -104,7 +104,7 @@ inline Tile* EntityFactory::create<Tile>()
 {
 	auto tile = new Tile();
 	tile->addComponent(new GraphicsComponent(*tile));
-	tile->addComponent(new PhysicsComponent(*tile));
+	tile->addComponent(new PhysicsComponent(*tile, true));
 
 	return tile;
 }

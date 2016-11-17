@@ -8,6 +8,9 @@ public:
 	static unsigned int TILE_WIDTH;
 	static unsigned int TILE_HEIGHT;
 
+	static unsigned int MAP_WIDTH;
+	static unsigned int MAP_HEIGHT;
+
 	Tilemap();
 	virtual ~Tilemap();
 

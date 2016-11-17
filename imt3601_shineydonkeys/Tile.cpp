@@ -1,6 +1,8 @@
 #include "Tile.h"
 
-Tile::Tile()
+Tile::Tile() : 
+_blocking(false), 
+tileType(-1)
 {
 
 }
