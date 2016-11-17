@@ -41,7 +41,8 @@ MainGame::MainGame()
 
 	entityManager->add(npc);
 
-	loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
+	//loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
+	loadLevel("Resources/Images/tiles.png", "Resources/Levels/DONTUSETHISFinalExamMap.csv");
 
 	loadControls();
 
