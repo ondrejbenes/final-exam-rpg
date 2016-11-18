@@ -23,7 +23,6 @@ private:
 	bool _inCombat;
 	Character* _other;
 	CombatComponent* _otherCombatComp;
-	Weapon* _weapon;
 	sf::Clock attackTimer;
 };
 

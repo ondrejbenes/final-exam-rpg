@@ -15,10 +15,7 @@ _inCombat(false),
 _other(nullptr), 
 _otherCombatComp(nullptr)
 {
-	auto& children = parent.getChildren();
-	for (auto it = begin(children); it != end(children); ++it)
-		if (typeid(**it) == typeid(Weapon))
-			_weapon = dynamic_cast<Weapon*>(*it);
+
 }
 
 CombatComponent::~CombatComponent()
@@ -30,11 +27,13 @@ void CombatComponent::update()
 {
 	if (!_inCombat)
 		return;
-	if (attackTimer.getElapsedTime().asMilliseconds() < _weapon->getAttackSpeedMs())
+
+	auto weapon = dynamic_cast<Character*>(&parent)->getEquipedWeapon();
+	if (attackTimer.getElapsedTime().asMilliseconds() < weapon->getAttackSpeedMs())
 		return;
 	attackTimer.restart();
-	auto damageModifier = rand() % (_weapon->getMaxDamage() - _weapon->getMinDamage());
-	auto damage = _weapon->getMinDamage() + damageModifier;
+	auto damageModifier = rand() % (weapon->getMaxDamage() - weapon->getMinDamage());
+	auto damage = weapon->getMinDamage() + damageModifier;
 	_otherCombatComp->takeDamage(damage);
 
 	Blackboard::getInstance()->leaveCallback(

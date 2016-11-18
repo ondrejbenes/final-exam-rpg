@@ -193,6 +193,8 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClCompile Include="GameStateSaver.cpp" />
     <ClCompile Include="GraphicsComponent.cpp" />
     <ClCompile Include="Image.cpp" />
+    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -275,6 +277,8 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClInclude Include="GameStateSaver.h" />
     <ClInclude Include="GraphicsComponent.h" />
     <ClInclude Include="Image.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Logger.h" />

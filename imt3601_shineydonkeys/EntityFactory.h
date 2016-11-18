@@ -23,9 +23,11 @@ public:
 	virtual ~EntityFactory();
 
 	Entity* createFromToString(std::string str);
-
+	void initWeapon(std::shared_ptr<Item> weapon, const std::string& texturePath);
 	template <typename T> 
 	T* create();
+
+	std::shared_ptr<Item> createInventoryItem(const std::string& texturePath);
 };
 
 template <typename T>
@@ -49,8 +51,8 @@ inline Npc* EntityFactory::create<Npc>()
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
 
-	auto weapon = new Weapon(50, 80, 1000);
-	npc->getChildren().push_back(weapon);
+	auto weapon = std::make_shared<Weapon>(50, 80, 1000);
+	npc->setEquipedWeapon(weapon);
 
 	auto gc = new GraphicsComponent(*npc);
 	gc->setSprite(sprite);
@@ -86,8 +88,18 @@ inline Player* EntityFactory::create<Player>()
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
 	
-	auto weapon = new Weapon(25, 50, 1000);
-	player->getChildren().push_back(weapon);
+	auto sword = std::make_shared<Weapon>(25, 50, 1000);
+	initWeapon(sword, "Resources/Images/Weapons/Sword.png");
+	player->setEquipedWeapon(sword);
+	player->getInventory().push_back(sword);
+
+	auto axe = std::make_shared<Weapon>(50, 75, 1500);
+	initWeapon(axe, "Resources/Images/Weapons/Axe.png");
+	player->getInventory().push_back(axe);
+
+	player->getInventory().push_back(createInventoryItem("Resources/Images/Keys/BronzeKey.png"));
+	player->getInventory().push_back(createInventoryItem("Resources/Images/Keys/SilverKey.png"));
+	player->getInventory().push_back(createInventoryItem("Resources/Images/Keys/GoldKey.png"));
 
 	auto gc = new GraphicsComponent(*player);
 	gc->setSprite(sprite);

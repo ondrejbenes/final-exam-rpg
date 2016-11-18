@@ -5,7 +5,6 @@
 ChatBoard::ChatBoard()
 {
 	_background.setSize(sf::Vector2f(width, height));
-	_background.setFillColor(sf::Color(0, 0, 0, 128));
 
 	_input = "";
 }
@@ -25,6 +24,11 @@ void ChatBoard::draw(std::shared_ptr<sf::RenderWindow> window)
 	auto rectY = viewBottom - height;
 
 	_background.setPosition(rectX, rectY);
+	
+	if(isFocused())
+		_background.setFillColor(sf::Color::Black);
+	else
+		_background.setFillColor(sf::Color(0, 0, 0, 32));
 
 	window->draw(_background);
 

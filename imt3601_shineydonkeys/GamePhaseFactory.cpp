@@ -20,6 +20,8 @@
 
 #include <SFML/Network/IpAddress.hpp>
 #include "ChatBoard.h"
+#include "Inventory.h"
+#include "EntityManager.h"
 
 MainGame* GamePhaseFactory::createMainGame()
 {
@@ -54,31 +56,45 @@ MainGame* GamePhaseFactory::createMainGame()
 	auto chatBoard = new ChatBoard();
 	// TODO directly to chatboard?
 	chatBoard->setOnTextEntered(new UiCallback(lambda));
-
 	chatBoard->setName("chatBoard");
+	chatBoard->addMessage("System", "Welcome to Final Exam!");
 
-	chatBoard->addMessage("System", "1Howdy.");
-	chatBoard->addMessage("System", "I am a little chatboard.");
-	chatBoard->addMessage("System", "2Howdy.");
-	chatBoard->addMessage("System", "I am a little chatboard.");
-	chatBoard->addMessage("System", "3Howdy.");
-	chatBoard->addMessage("System", "I am a little chatboard.");
-	chatBoard->addMessage("System", "4Howdy.");
-	chatBoard->addMessage("System", "I am a little chatboard.");
-	chatBoard->addMessage("System", "5Howdy.");
-	chatBoard->addMessage("System", "I am a little chatboard.");
-	chatBoard->addMessage("System", "6Howdy.");
-	chatBoard->addMessage("System", "I am a little chatboard.");
-	chatBoard->addMessage("System", "7Howdy.");
-	chatBoard->addMessage("System", "I am a little chatboard.");
-	chatBoard->addMessage("System", "8Howdy.");
-	chatBoard->addMessage("System", "I am a little chatboard.");
-	chatBoard->addMessage("System", "9Howdy.");
-	chatBoard->addMessage("System", "I am a little chatboard.");
+	auto inventory = new Inventory();
+	inventory->setHighlightedItem(0);
+
+	auto inventoryLambda = [](UiElement* source, const sf::Event& event)
+	{
+		auto inventory = dynamic_cast<Inventory*>(source);
+		auto bounds = inventory->getBounds();
+
+		auto x = event.mouseButton.x - bounds.left;
+		auto y = event.mouseButton.y - bounds.top;
+
+		auto column = floor(x / (Inventory::width / Inventory::iconsPerRow));
+		auto row = floor(y / (Inventory::height / (Inventory::maxItems / Inventory::iconsPerRow)));
+
+		auto itemToHighlight = unsigned(row * Inventory::iconsPerRow + column);
+
+		auto player = EntityManager::getInstance()->getLocalPlayer();
+		auto playerInventory = player->getInventory();
+
+		if (playerInventory.size() <= itemToHighlight)
+			return;
+
+		auto item = playerInventory[itemToHighlight];
+
+		if(typeid(*item) == typeid(Weapon))
+		{
+			inventory->setHighlightedItem(itemToHighlight);
+			player->setEquipedWeapon(std::dynamic_pointer_cast<Weapon>(item));
+		}
+	};
+	inventory->setOnClick(new UiCallback(inventoryLambda));
 
 	auto mainGame = new MainGame;
 	mainGame->_ui.addElement(minimap);
-	mainGame->_ui.addElement(chatBoard);		
+	mainGame->_ui.addElement(chatBoard);
+	mainGame->_ui.addElement(inventory);
 
 	return mainGame;
 }

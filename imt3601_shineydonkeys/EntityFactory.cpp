@@ -32,3 +32,33 @@ Entity* EntityFactory::createFromToString(std::string str)
 	}
 	return entity;
 }
+
+void EntityFactory::initWeapon(std::shared_ptr<Item> weapon, const std::string& texturePath)
+{
+	auto texture = new sf::Texture();
+	if (!texture->loadFromFile(texturePath))
+		LOG_E("Error loading item icon texture");
+	sf::Sprite sprite;
+	sprite.setTexture(*texture);
+
+	auto gc = new GraphicsComponent(*weapon);
+	weapon->addComponent(gc);
+	gc->setSprite(sprite);
+}
+
+std::shared_ptr<Item> EntityFactory::createInventoryItem(const std::string& texturePath)
+{
+	auto item = std::make_shared<Item>();
+
+	auto texture = new sf::Texture();
+	if (!texture->loadFromFile(texturePath))
+		LOG_E("Error loading item icon texture");
+	sf::Sprite sprite;
+	sprite.setTexture(*texture);
+
+	auto gc = new GraphicsComponent(*item);
+	item->addComponent(gc);
+	gc->setSprite(sprite);
+
+	return item;
+}

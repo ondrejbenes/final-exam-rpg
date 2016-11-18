@@ -26,8 +26,6 @@ public:
 	template <typename T>
 	T* getComponent();
 
-	std::vector<Entity*>& getChildren(){ return _children; }
-
 	std::string toString() const;
 
 	double getX() const override { return position.x; }
@@ -43,7 +41,6 @@ protected:
 	void removeComponent(EntityComponent* component);
 private:
 	static unsigned int nextId;
-	std::vector<Entity*> _children;
 };
 
 template <typename T>

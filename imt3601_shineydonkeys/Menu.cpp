@@ -22,6 +22,7 @@ void Menu::render(std::shared_ptr<sf::RenderWindow> window)
 	GamePhase::render(window);
 }
 
+// TODO rename to something like handleUiCallbacks and move to gamephase
 void Menu::handleInput()
 {
 	auto blackboard = Blackboard::getInstance();

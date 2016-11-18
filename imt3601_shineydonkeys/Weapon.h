@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Entity.h"
+#include "Item.h"
 
-class Weapon : public Entity
+class Weapon : public Item
 {
 public:
 	static unsigned int WEAPON_RANGE;
