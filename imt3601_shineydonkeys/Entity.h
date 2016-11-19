@@ -32,6 +32,9 @@ public:
 	double getY() const override { return position.y; }
 	void setX(double x) override { position.x = x; }
 	void setY(double y) override { position.y = y; }
+	
+	const std::string& getName() const { return name; }
+	void setName(const std::string& name) { this->name = name; }
 protected:
 	sf::Vector2f position;
 	std::vector<EntityComponent*> components;
@@ -41,6 +44,8 @@ protected:
 	void removeComponent(EntityComponent* component);
 private:
 	static unsigned int nextId;
+
+	std::string name;
 };
 
 template <typename T>

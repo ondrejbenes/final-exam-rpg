@@ -13,8 +13,4 @@ public:
 
 protected:
 	explicit Player(CharacterStats stats);
-
-private:
-	std::string name;
-
 };

@@ -8,6 +8,8 @@
 #include "Audio.h"
 
 #include <sstream>
+#include <valarray>
+#include "ChatBoard.h"
 
 CombatComponent::CombatComponent(Entity& parent) :
 EntityComponent(parent),
@@ -80,8 +82,6 @@ void CombatComponent::takeDamage(const unsigned int damage)
 	auto stats = dynamic_cast<Character*>(&getParent())->getStats(); 
 	stats->current_hitpoints = (damage > stats->current_hitpoints) ? 0U : (stats->current_hitpoints - damage);
 
-	ss << "Entity " << parent.id << " takes " << damage << " damage, " << stats->current_hitpoints << " left";
-	LOG_D(ss.str());
 	auto x = parent.getPosition().x;
 	auto y = parent.getPosition().y;
 
@@ -91,21 +91,41 @@ void CombatComponent::takeDamage(const unsigned int damage)
 		x += 25;
 
 	// TODO memory leak
-	GamePhaseManager::getInstance()->getCurrentPhase()->getUi().addElement(new DamageSplash(damage, x, y));
+	auto& ui = GamePhaseManager::getInstance()->getCurrentPhase()->getUi();
+	ui.addElement(new DamageSplash(damage, x, y));
 
 	if (stats->current_hitpoints == 0)
 	{
-		Blackboard::getInstance()->leaveCallback(
-			AUDIO,
-			[](Module* target)
-			{
-				dynamic_cast<Audio*>(target)->playSound(Audio::HUMAN_NPC_DYING);
-			}
-		);
+		auto entityManager = EntityManager::getInstance();
+		if(parent.id == entityManager->getLocalPlayer()->id)
+		{
+			// handlePlayerDeath();
+		}
+		else
+		{
+			auto parentAsCharacter = dynamic_cast<Character*>(&getParent());
+			auto loot = parentAsCharacter->getInventory();
+			auto& inventoryOfOther = entityManager->getLocalPlayer()->getInventory();
 
-		if (_otherCombatComp != nullptr && _otherCombatComp->getOther()->id == parent.id)
-			_otherCombatComp->endCombat();
-		endCombat();
-		EntityManager::getInstance()->remove(&parent);
+			auto chatBoard = dynamic_cast<ChatBoard*>(ui.getElementByName("chatBoard"));
+			for (auto it = begin(loot); it != end(loot); ++it)
+			{
+				chatBoard->addMessage("System", (*it)->getName() + " added to inventory");
+				inventoryOfOther.push_back(*it);
+			}			
+
+			Blackboard::getInstance()->leaveCallback(
+				AUDIO,
+				[](Module* target)
+				{
+					dynamic_cast<Audio*>(target)->playSound(Audio::HUMAN_NPC_DYING);
+				}
+			);
+
+			if (_otherCombatComp != nullptr && _otherCombatComp->getOther()->id == parent.id)
+				_otherCombatComp->endCombat();
+			endCombat();
+			entityManager->remove(&parent);
+		}
 	}
 }
