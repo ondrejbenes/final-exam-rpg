@@ -11,6 +11,7 @@
 #include "EntityManager.h"
 #include <regex>
 #include "PhysicsComponent.h"
+#include "ChatBoard.h"
 
 Network::Network() : 
 Module(NETWORK)
@@ -105,12 +106,13 @@ void Network::initAsClient()
 
 void Network::broadcast(sf::Packet& packet)
 {
-	/*std::string msg;
-	packet >> msg;
-	LOG_D("Broadcasting: " + msg);*/
-
-	for (auto i = 0; i < _clients.size(); i++)
-		_clients[i]->send(packet);
+	if (_isServer)
+	{
+		for (auto i = 0; i < _clients.size(); i++)
+			_clients[i]->send(packet);
+	}
+	else
+		_socket.send(packet);
 }
 
 void Network::updateClientMenu()
@@ -148,7 +150,8 @@ void Network::updateServerMenu()
 			std::string id;
 			if (socket->receive(packet) == sf::Socket::Done)
 				packet >> id;
-			
+			LOG_D(id);
+			/*
 			std::stringstream ss;
 			ss << "spectrator" << int(_clients.size()) + 1;
 			auto uiElelementName = ss.str();
@@ -160,7 +163,7 @@ void Network::updateServerMenu()
 				auto originalStr = elementAsBtn->getText();
 				elementAsBtn->setText(originalStr + id);				
 			}
-
+			*/
 			_clients.push_back(socket);
 			_selector.add(*socket);
 		}		
@@ -191,21 +194,58 @@ void Network::updateClientMainGame()
 		auto velocity = sf::Vector2f(stof(tokens[2]), stof(tokens[3]));
 		charater->getComponent<PhysicsComponent>()->setVelocity(velocity);
 	}
+
+	if (packetType == CHAT)
+	{
+		auto tokens = StringUtilities::split(msg, PacketFactory::ATTRIBUTE_SEPARATOR);
+		auto chatBoard = dynamic_cast<ChatBoard*>(GamePhaseManager::getInstance()->getCurrentPhase()->getUi().getElementByName("chatBoard"));
+		auto msgTokens = StringUtilities::split(tokens[1], ':');
+		chatBoard->addMessage(msgTokens[0], msgTokens[1]);
+	}
 }
 
 void Network::updateServerMainGame()
 {
-	
-	// not much to do here, perhaps game over?
+	if (_selector.wait(sf::seconds(0.01)))
+	{
+		if (!_selector.isReady(_listener))
+		{
+			for (auto i = 0; i < _clients.size(); i++)
+			{
+				if (_selector.isReady(*_clients[i]))
+				{
+					sf::Packet packet, sendPacket;
+					if (_clients[i]->receive(packet) == sf::Socket::Done)
+					{
+						std::string msg;
+						packet >> msg;
+						sendPacket << msg;
+						for (auto j = 0; j < _clients.size(); j++)
+						{
+							if (i != j)
+								_clients[j]->send(sendPacket);
+						}
 
-	// other classes use the broadcast method...
+						auto packetType = decodeMessage(msg);
 
+						if (packetType == CHAT)
+						{
+							auto tokens = StringUtilities::split(msg, PacketFactory::ATTRIBUTE_SEPARATOR);
+							auto chatBoard = dynamic_cast<ChatBoard*>(GamePhaseManager::getInstance()->getCurrentPhase()->getUi().getElementByName("chatBoard"));
+							auto msgTokens = StringUtilities::split(tokens[1], ':');
+							chatBoard->addMessage(msgTokens[0], msgTokens[1]);
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 
 PacketType Network::decodeMessage(std::string msg) {
 	std::regex reg1("[[:d:]]+");
-	std::regex reg2("[[:d:]]+;[[:d:]]+;[[:d:]]+\.?[[:d:]]*;[[:d:]]+\.?[[:d:]]*");
+	std::regex reg2("[[:d:]]+;.*");
 	std::smatch match;
 
 	auto packetType = -1;

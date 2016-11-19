@@ -23,7 +23,6 @@ sf::Packet PacketFactory::createGameOver()
 
 sf::Packet PacketFactory::createVelocityChange(unsigned entityId, const sf::Vector2f& newVelocity) 
 {
-	sf::Packet packet;
 	std::stringstream ss;
 	ss << VELOCITY_CHANGE;
 	ss << ATTRIBUTE_SEPARATOR;
@@ -33,8 +32,8 @@ sf::Packet PacketFactory::createVelocityChange(unsigned entityId, const sf::Vect
 	ss << ATTRIBUTE_SEPARATOR;
 	ss << newVelocity.y;
 
+	sf::Packet packet;
 	packet << ss.str();
-
 	return packet;
 }
 
@@ -67,5 +66,17 @@ sf::Packet PacketFactory::createTakeDamage(unsigned entityId, unsigned damage)
 	sf::Packet packet;
 	packet << TAKE_DAMAGE;
 
+	return packet;
+}
+
+sf::Packet PacketFactory::createChatMessage(const std::string& message)
+{
+	std::stringstream ss;
+	ss << CHAT;
+	ss << ATTRIBUTE_SEPARATOR;
+	ss << message;
+
+	sf::Packet packet;
+	packet << ss.str();
 	return packet;
 }

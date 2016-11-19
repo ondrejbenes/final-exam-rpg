@@ -1,6 +1,8 @@
 #include "ChatBoard.h"
 #include "ResourceLoader.h"
 #include <sstream>
+#include "Blackboard.h"
+#include "Network.h"
 
 ChatBoard::ChatBoard()
 {
@@ -68,10 +70,4 @@ void ChatBoard::addMessage(const std::string& author, const std::string& message
 	ss << author << ": " << message;
 	auto msg = std::string(ss.str());
 	_messages.push_back(msg);
-}
-
-void ChatBoard::saveInputAsMessage() 
-{
-	_messages.push_back(_input);
-	_input = "";
 }

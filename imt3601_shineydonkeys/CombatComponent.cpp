@@ -10,6 +10,8 @@
 #include <sstream>
 #include <valarray>
 #include "ChatBoard.h"
+#include "PacketFactory.h"
+#include "Network.h"
 
 CombatComponent::CombatComponent(Entity& parent) :
 EntityComponent(parent),
@@ -108,7 +110,19 @@ void CombatComponent::takeDamage(const unsigned int damage)
 			auto chatBoard = dynamic_cast<ChatBoard*>(ui.getElementByName("chatBoard"));
 			for (auto it = begin(loot); it != end(loot); ++it)
 			{
-				chatBoard->addMessage("System", (*it)->getName() + " added to inventory");
+				auto message = (*it)->getName() + " added to inventory";;
+				chatBoard->addMessage("System", message);
+
+				Blackboard::getInstance()->leaveCallback(NETWORK,
+					[message](Module* target)
+					{
+						PacketFactory factory;
+						auto packet = factory.createChatMessage(std::string("System") + ": " + message);
+						auto network = dynamic_cast<Network*>(target);
+						network->broadcast(packet);
+					}
+				);
+
 				inventoryOfOther.push_back(*it);
 			}
 		}

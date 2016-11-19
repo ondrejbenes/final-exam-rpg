@@ -13,7 +13,8 @@ enum PacketType
 	STATS_CHANGE,
 	ENTER_COMBAT,
 	LEAVE_COMBAT,
-	TAKE_DAMAGE
+	TAKE_DAMAGE,
+	CHAT
 };
 
 class PacketFactory
@@ -29,6 +30,8 @@ public:
 	sf::Packet createEnterCombat(unsigned int entityId);
 	sf::Packet createLeaveCombat(unsigned int entityId);
 	sf::Packet createTakeDamage(unsigned int entityId, unsigned int damage);
+
+	sf::Packet createChatMessage(const std::string& message);
 
 	const static char ATTRIBUTE_SEPARATOR = ';';
 };

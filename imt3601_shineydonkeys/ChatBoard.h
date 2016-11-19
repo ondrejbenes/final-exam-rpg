@@ -23,7 +23,6 @@ public:
 	std::string& getInput() { return _input; }
 
 	void addMessage(const std::string& author, const std::string& message);
-	void saveInputAsMessage();
 private:
 	sf::RectangleShape _background;
 	std::vector<std::string> _messages;

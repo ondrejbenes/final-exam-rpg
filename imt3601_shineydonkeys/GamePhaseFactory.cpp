@@ -45,9 +45,19 @@ MainGame* GamePhaseFactory::createMainGame()
 		{
 			auto playerName = ConfigIO::readString(L"player", L"name", L"Player");
 			chatBoard->addMessage(playerName, input);
+			auto msg = playerName + ": " + input;
 			input = "";
 			// TODO terrible encapsulation
-			// TODO send message over net (or maybe from chat method directly?)
+			
+			Blackboard::getInstance()->leaveCallback(NETWORK,
+				[msg](Module* target)
+				{
+					PacketFactory factory;
+					auto packet = factory.createChatMessage(msg);
+					auto network = dynamic_cast<Network*>(target);
+					network->broadcast(packet);
+				}
+			);
 		}
 		else
 			input += event.text.unicode;
@@ -57,6 +67,7 @@ MainGame* GamePhaseFactory::createMainGame()
 	// TODO directly to chatboard?
 	chatBoard->setOnTextEntered(new UiCallback(lambda));
 	chatBoard->setName("chatBoard");
+
 	chatBoard->addMessage("System", "Welcome to Final Exam!");
 
 	auto inventory = new Inventory();
