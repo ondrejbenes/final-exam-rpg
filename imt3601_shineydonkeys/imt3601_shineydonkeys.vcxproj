@@ -184,7 +184,6 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameLogic.cpp" />
     <ClCompile Include="GamePhase.cpp" />
     <ClCompile Include="GamePhaseFactory.cpp" />
     <ClCompile Include="GamePhaseManager.cpp" />
@@ -268,7 +267,6 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameLogic.h" />
     <ClInclude Include="GamePhase.h" />
     <ClInclude Include="GamePhaseFactory.h" />
     <ClInclude Include="GamePhaseManager.h" />

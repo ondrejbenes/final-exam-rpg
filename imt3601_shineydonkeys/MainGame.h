@@ -33,6 +33,9 @@ protected:
 
 private:
 	Level _currentLevel;
+	sf::Clock _playerDeathTimer;
+	bool _playerDied;
+	void handlePlayerDeath();
 
 	void drawHealthBar(std::shared_ptr<sf::RenderWindow> window);
 	void loadControls();

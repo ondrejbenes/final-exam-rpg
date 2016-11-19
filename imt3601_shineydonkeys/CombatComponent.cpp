@@ -97,11 +97,9 @@ void CombatComponent::takeDamage(const unsigned int damage)
 	if (stats->current_hitpoints == 0)
 	{
 		auto entityManager = EntityManager::getInstance();
-		if(parent.id == entityManager->getLocalPlayer()->id)
-		{
-			// handlePlayerDeath();
-		}
-		else
+		auto player = entityManager->getLocalPlayer();
+
+		if (parent.id != player->id)
 		{
 			auto parentAsCharacter = dynamic_cast<Character*>(&getParent());
 			auto loot = parentAsCharacter->getInventory();
@@ -112,20 +110,22 @@ void CombatComponent::takeDamage(const unsigned int damage)
 			{
 				chatBoard->addMessage("System", (*it)->getName() + " added to inventory");
 				inventoryOfOther.push_back(*it);
-			}			
-
-			Blackboard::getInstance()->leaveCallback(
-				AUDIO,
-				[](Module* target)
-				{
-					dynamic_cast<Audio*>(target)->playSound(Audio::HUMAN_NPC_DYING);
-				}
-			);
-
-			if (_otherCombatComp != nullptr && _otherCombatComp->getOther()->id == parent.id)
-				_otherCombatComp->endCombat();
-			endCombat();
-			entityManager->remove(&parent);
+			}
 		}
+
+		Blackboard::getInstance()->leaveCallback(
+			AUDIO,
+			[](Module* target)
+		{
+			dynamic_cast<Audio*>(target)->playSound(Audio::HUMAN_NPC_DYING);
+		}
+		);
+
+		if (_otherCombatComp != nullptr && _otherCombatComp->getOther()->id == parent.id)
+			_otherCombatComp->endCombat();
+		endCombat();
+		entityManager->remove(&parent);
+
+		// TODO set player to nullptr in EM?
 	}
 }

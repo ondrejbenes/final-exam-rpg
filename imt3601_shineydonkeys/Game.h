@@ -1,13 +1,11 @@
 #pragma once
 
 #include "Module.h"
-#include "GameLogic.h"
 #include "GameState.h"
 
 class Game : public Module
 {
 public:
-	GameLogic gameLogic;
 	GameState gameState;
 
 	Game();

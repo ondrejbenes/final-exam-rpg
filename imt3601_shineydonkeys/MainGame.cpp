@@ -19,7 +19,7 @@
 #include <memory>
 #include "Renderer.h"
 
-MainGame::MainGame()
+MainGame::MainGame() : _playerDied(false)
 {
 	auto cursor = GetCursor();
 	SetCursor(LoadCursor(nullptr, IDC_WAIT));
@@ -74,6 +74,16 @@ MainGame::~MainGame()
 
 void MainGame::update()
 {
+	auto player = EntityManager::getInstance()->getLocalPlayer();
+	if (player->getStats()->current_hitpoints == 0 && !_playerDied)
+		handlePlayerDeath();
+
+	if (_playerDied && _playerDeathTimer.getElapsedTime() > sf::seconds(3))
+	{
+		GamePhaseManager::getInstance()->popPhase();
+		return;
+	}	
+
 	handleInput();
 
 	auto characters = EntityManager::getInstance()->getAllCharacters();
@@ -87,7 +97,10 @@ void MainGame::update()
 void MainGame::render(std::shared_ptr<sf::RenderWindow> window)
 {
 	auto entityManager = EntityManager::getInstance();
-	auto playerPos = entityManager->getLocalPlayer()->getPosition();
+	auto player = entityManager->getLocalPlayer();
+	if(player == nullptr)
+		return;
+	auto playerPos = player->getPosition();
 	auto boundary = QuadTreeBoundary(playerPos.x - 800, playerPos.x + 800, playerPos.y - 500, playerPos.y + 500);
 	auto tiles = entityManager->getTilesInInterval(boundary);
 	for (auto it = tiles.begin(); it != tiles.end(); ++it)
@@ -108,6 +121,19 @@ void MainGame::render(std::shared_ptr<sf::RenderWindow> window)
 	drawHealthBar(window);
 
 	GamePhase::render(window);
+}
+
+void MainGame::handlePlayerDeath() 
+{
+	Blackboard::getInstance()->leaveCallback(
+		RENDERER,
+		[](Module* target)
+		{
+			dynamic_cast<Renderer*>(target)->fadeOut(sf::seconds(3), "You died! Game over!");
+		}
+	);
+	_playerDeathTimer.restart();
+	_playerDied = true;
 }
 
 // TODO create a new subclass of UiElement instead

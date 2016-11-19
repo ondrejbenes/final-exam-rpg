@@ -26,6 +26,8 @@ AiAttack::~AiAttack()
 void AiAttack::update()
 {
 	auto player = EntityManager::getInstance()->getLocalPlayer();
+	if (player->getStats()->current_hitpoints == 0)
+		return;
 	auto playerPos = player->getPosition();
 	auto aiPos = _aiComponent->getParent().getPosition();
 

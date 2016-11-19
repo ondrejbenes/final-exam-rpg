@@ -204,9 +204,6 @@
     <ClCompile Include="Level.cpp">
       <Filter>Source Files\Core\Module\Game\Level</Filter>
     </ClCompile>
-    <ClCompile Include="GameLogic.cpp">
-      <Filter>Source Files\Core\Module\Game</Filter>
-    </ClCompile>
     <ClCompile Include="EntityManager.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
@@ -440,9 +437,6 @@
     </ClInclude>
     <ClInclude Include="Level.h">
       <Filter>Header Files\Core\Module\Game\Level</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLogic.h">
-      <Filter>Header Files\Core\Module\Game</Filter>
     </ClInclude>
     <ClInclude Include="AnimationComponent.h">
       <Filter>Header Files\Entity\Component</Filter>
