@@ -20,6 +20,7 @@
 #include "Renderer.h"
 #include <future>
 #include "VectorUtilities.h"
+#include "LevelLoader.h"
 
 MainGame::MainGame() : 
 _playerDied(false), 
@@ -375,7 +376,7 @@ bool MainGame::loadLevel(const std::string& textureFileName, const std::string& 
 {
 	_currentLevel = Level();
 	_currentLevel.tilemap = new Tilemap();
-
+	LevelLoader();
 	if (!_currentLevel.tilemap->loadFromFile(textureFileName, levelDefinitionFileName))
 	{
 		LOG_E("Failed to load level");

@@ -303,6 +303,12 @@
     <ClCompile Include="Inventory.cpp">
       <Filter>Source Files\Core\Module\Game\UI</Filter>
     </ClCompile>
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\Player.png">
@@ -539,6 +545,12 @@
     </ClInclude>
     <ClInclude Include="Inventory.h">
       <Filter>Header Files\Core\Module\Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml2.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelLoader.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
