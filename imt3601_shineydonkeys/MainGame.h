@@ -18,6 +18,7 @@ class MainGame : public GamePhase
 	friend GamePhaseFactory;
 public:
 	static Controls CONTROLS;
+	const static sf::Vector2f arenaTeleportPosition;
 
 	virtual ~MainGame();
 
@@ -35,11 +36,20 @@ private:
 	Level _currentLevel;
 	sf::Clock _playerDeathTimer;
 	sf::Clock _levelCompleteTimer;
+	sf::Clock _teleportTimer;
 	bool _playerDied;
 	bool _levelComplete;
+	bool _teleported;
+	bool _teleportClockRestarted;
+	bool _teleportFadedOut;
+
+	void teleportToArena();
+
 	void handlePlayerDeath();
 	void handleLevelComplete();
 
 	void drawHealthBar(std::shared_ptr<sf::RenderWindow> window);
 	void loadControls();
+
+	bool hasKeys();
 };

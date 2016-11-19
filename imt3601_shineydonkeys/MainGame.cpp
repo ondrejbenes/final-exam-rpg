@@ -19,8 +19,14 @@
 #include <memory>
 #include "Renderer.h"
 #include <future>
+#include "VectorUtilities.h"
 
-MainGame::MainGame() : _playerDied(false), _levelComplete(false)
+MainGame::MainGame() : 
+_playerDied(false), 
+_levelComplete(false),
+_teleported(false),
+_teleportClockRestarted(false),
+_teleportFadedOut(false)
 {
 	auto cursor = GetCursor();
 	SetCursor(LoadCursor(nullptr, IDC_WAIT));
@@ -96,7 +102,15 @@ void MainGame::update()
 		return;
 	}
 	
-
+	if(VectorUtilities::calculateDistance(player->getPosition(), sf::Vector2f(1100, 600)) < 100 && hasKeys())
+	{
+		if(!_teleportClockRestarted)
+		{
+			_teleportTimer.restart();
+			_teleportClockRestarted = true;
+		}
+		teleportToArena();
+	}
 
 	handleInput();
 
@@ -135,6 +149,34 @@ void MainGame::render(std::shared_ptr<sf::RenderWindow> window)
 	drawHealthBar(window);
 
 	GamePhase::render(window);
+}
+
+void MainGame::teleportToArena() 
+{
+	auto player = EntityManager::getInstance()->getLocalPlayer();
+	if (!_teleportFadedOut)
+	{
+		Blackboard::getInstance()->leaveCallback(
+			RENDERER,
+			[](Module* target)
+		{
+			dynamic_cast<Renderer*>(target)->fadeOut(sf::seconds(3), "You found a tunnel and gathered the courage to go forward...");
+		}
+		);
+		_teleportFadedOut = true;
+	}
+	if(_teleportTimer.getElapsedTime().asSeconds() >= 2.9)
+	{
+		Blackboard::getInstance()->leaveCallback(
+			RENDERER,
+			[](Module* target)
+			{
+				dynamic_cast<Renderer*>(target)->fadeIn(sf::seconds(3), "The tunnel lead you to an arena filled with deamons!");
+			}
+		);
+		EntityManager::getInstance()->move(player, arenaTeleportPosition);
+		player->setPosition(arenaTeleportPosition);
+	}
 }
 
 void MainGame::handlePlayerDeath() 
@@ -314,4 +356,19 @@ void MainGame::loadControls()
 	CONTROLS.right = sf::Keyboard::Key(ConfigIO::readInt(L"controls", L"right"));
 }
 
+bool MainGame::hasKeys() 
+{
+	auto player = EntityManager::getInstance()->getLocalPlayer();
+	auto keysCount = 0;
+	for(auto& item : player->getInventory())
+	{
+		if (item->getName() == "BronzeKey" || item->getName() == "SilverKey" || item->getName() == "GoldKey")
+			keysCount++;
+	}
+
+	// TODO chagne to 3
+	return keysCount >= 0;
+}
+
 Controls MainGame::CONTROLS = Controls();
+const sf::Vector2f MainGame::arenaTeleportPosition = sf::Vector2f(200, 500);
