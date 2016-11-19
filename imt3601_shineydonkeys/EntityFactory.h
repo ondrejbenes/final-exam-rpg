@@ -28,6 +28,9 @@ public:
 	T* create();
 
 	std::shared_ptr<Item> createInventoryItem(const std::string& texturePath);
+
+	// TODO seriously? :D
+	Character* createDonkey();
 };
 
 template <typename T>

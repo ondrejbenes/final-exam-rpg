@@ -10,7 +10,7 @@ class ChatBoard : public UiElement
 {
 public:
 	const static unsigned int fontSize = 12;
-	const static unsigned int width = 400;
+	const static unsigned int width = 450;
 	const static unsigned int height = 200;
 	const static char inputMarker = '>';
 

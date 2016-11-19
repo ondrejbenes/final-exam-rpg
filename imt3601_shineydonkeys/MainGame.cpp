@@ -26,7 +26,8 @@ _playerDied(false),
 _levelComplete(false),
 _teleported(false),
 _teleportClockRestarted(false),
-_teleportFadedOut(false)
+_teleportFadedOut(false),
+_donkeyTextShown(false)
 {
 	auto cursor = GetCursor();
 	SetCursor(LoadCursor(nullptr, IDC_WAIT));
@@ -50,10 +51,16 @@ _teleportFadedOut(false)
 
 	entityManager->add(npc);
 
+	auto donkey = factory.createDonkey();
+	donkey->setPosition(sf::Vector2f(900, 600));
+	donkey->setName("donkey");
+	entityManager->add(donkey);
+
 	loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
 	//loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
 
 	loadControls();
+	SetCursor(cursor);
 
 	Blackboard::getInstance()->leaveCallback(
 		AUDIO,
@@ -67,11 +74,9 @@ _teleportFadedOut(false)
 		RENDERER,
 		[](Module* target)
 		{
-			dynamic_cast<Renderer*>(target)->fadeIn(sf::seconds(2));
+			dynamic_cast<Renderer*>(target)->fadeIn(sf::seconds(4), "You wake up on a beach, not remembering how you got there.");
 		}
 	);
-
-	SetCursor(cursor);
 }
 
 MainGame::~MainGame()
@@ -81,7 +86,27 @@ MainGame::~MainGame()
 
 void MainGame::update()
 {
-	auto player = EntityManager::getInstance()->getLocalPlayer();
+	auto entityManager = EntityManager::getInstance();
+	auto player = entityManager->getLocalPlayer();
+
+	if (!_donkeyTextShown)
+	{
+		auto charaters = entityManager->getAllCharacters();
+		sf::Vector2f donkeyPos;
+
+		for (auto& x : charaters)
+		{
+			if (x->getName() == "donkey")
+				donkeyPos = x->getPosition();
+		}
+
+		if (VectorUtilities::calculateDistance(player->getPosition(), donkeyPos) < 50)
+		{
+			_donkeyTextShown = true;
+			showDonkeyText();
+		}
+	}
+
 	if (player->getStats()->current_hitpoints == 0 && !_playerDied)
 		handlePlayerDeath();
 
@@ -149,6 +174,18 @@ void MainGame::render(std::shared_ptr<sf::RenderWindow> window)
 	drawHealthBar(window);
 
 	GamePhase::render(window);
+}
+
+void MainGame::showDonkeyText() 
+{
+	auto chatBoard = dynamic_cast<ChatBoard*>(_ui.getElementByName("chatBoard"));
+
+	chatBoard->addMessage("Shiny Donkey", "Hi. I'm the Shiney Donkey");
+	chatBoard->addMessage("Shiny Donkey", "You won't believe it, but I have a quest for you.");
+	chatBoard->addMessage("Shiny Donkey", "You need to explore the island and look for keys.");
+	chatBoard->addMessage("Shiny Donkey", "The keys will unlock the gate to the east of here.");
+	chatBoard->addMessage("Shiny Donkey", "Then I need you to enter the tunnel.");
+	chatBoard->addMessage("Shiny Donkey", "You will know what to do when you exit on the other side.");
 }
 
 void MainGame::teleportToArena() 

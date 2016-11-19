@@ -62,3 +62,24 @@ std::shared_ptr<Item> EntityFactory::createInventoryItem(const std::string& text
 
 	return item;
 }
+
+Character* EntityFactory::createDonkey() 
+{
+	CharacterStats stats{0,0};
+	auto donkey = new Character(stats);
+
+	// TODO ResLoader
+	auto texture = new sf::Texture;
+	if (!texture->loadFromFile("Resources/Images/Donkey.png"))
+		LOG_E("Error: could not load donkey image");
+	sf::Sprite sprite;
+	sprite.setTexture(*texture);
+
+	auto gc = new GraphicsComponent(*donkey);
+	gc->setSprite(sprite);
+	donkey->addComponent(gc);
+
+	donkey->addComponent(new PhysicsComponent(*donkey, true));
+	
+	return donkey;
+}

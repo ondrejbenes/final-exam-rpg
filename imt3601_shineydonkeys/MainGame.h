@@ -42,7 +42,9 @@ private:
 	bool _teleported;
 	bool _teleportClockRestarted;
 	bool _teleportFadedOut;
+	bool _donkeyTextShown;
 
+	void showDonkeyText();
 	void teleportToArena();
 
 	void handlePlayerDeath();

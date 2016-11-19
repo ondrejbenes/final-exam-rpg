@@ -30,7 +30,7 @@ void ChatBoard::draw(std::shared_ptr<sf::RenderWindow> window)
 	if(isFocused())
 		_background.setFillColor(sf::Color::Black);
 	else
-		_background.setFillColor(sf::Color(0, 0, 0, 32));
+		_background.setFillColor(sf::Color(0, 0, 0, 64));
 
 	window->draw(_background);
 

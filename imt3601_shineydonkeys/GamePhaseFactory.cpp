@@ -68,7 +68,7 @@ MainGame* GamePhaseFactory::createMainGame()
 	chatBoard->setOnTextEntered(new UiCallback(lambda));
 	chatBoard->setName("chatBoard");
 
-	chatBoard->addMessage("System", "Welcome to Final Exam!");
+	chatBoard->addMessage("Shiny Donkey", "Hey you! Come here.");
 
 	auto inventory = new Inventory();
 	inventory->setHighlightedItem(0);
