@@ -18,8 +18,9 @@
 
 #include <memory>
 #include "Renderer.h"
+#include <future>
 
-MainGame::MainGame() : _playerDied(false)
+MainGame::MainGame() : _playerDied(false), _levelComplete(false)
 {
 	auto cursor = GetCursor();
 	SetCursor(LoadCursor(nullptr, IDC_WAIT));
@@ -78,11 +79,24 @@ void MainGame::update()
 	if (player->getStats()->current_hitpoints == 0 && !_playerDied)
 		handlePlayerDeath();
 
+	// TODO assync?
 	if (_playerDied && _playerDeathTimer.getElapsedTime() > sf::seconds(3))
 	{
 		GamePhaseManager::getInstance()->popPhase();
 		return;
 	}	
+
+	if (EntityManager::getInstance()->getAllCharacters().size() == 1 && !_levelComplete)
+		handleLevelComplete();
+
+	// TODO assync?
+	if (_levelComplete && _levelCompleteTimer.getElapsedTime() > sf::seconds(3))
+	{
+		GamePhaseManager::getInstance()->popPhase();
+		return;
+	}
+	
+
 
 	handleInput();
 
@@ -134,6 +148,19 @@ void MainGame::handlePlayerDeath()
 	);
 	_playerDeathTimer.restart();
 	_playerDied = true;
+}
+
+void MainGame::handleLevelComplete() 
+{
+	Blackboard::getInstance()->leaveCallback(
+		RENDERER,
+		[](Module* target)
+		{
+			dynamic_cast<Renderer*>(target)->fadeOut(sf::seconds(3), "You won!");
+		}
+	);
+	_levelComplete = true;
+	_levelCompleteTimer.restart();
 }
 
 // TODO create a new subclass of UiElement instead

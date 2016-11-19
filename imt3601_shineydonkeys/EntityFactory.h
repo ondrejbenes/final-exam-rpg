@@ -51,7 +51,7 @@ inline Npc* EntityFactory::create<Npc>()
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
 
-	auto weapon = std::make_shared<Weapon>(100, 200, 500);
+	auto weapon = std::make_shared<Weapon>(10, 20, 1000);
 	npc->setEquipedWeapon(weapon);
 	// npc->getInventory().push_back(weapon);
 
