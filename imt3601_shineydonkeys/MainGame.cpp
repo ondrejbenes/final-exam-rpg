@@ -17,6 +17,7 @@
 #include "ChatBoard.h"
 
 #include <memory>
+#include "Renderer.h"
 
 MainGame::MainGame()
 {
@@ -52,6 +53,14 @@ MainGame::MainGame()
 		[](Module* target)
 		{
 			dynamic_cast<Audio*>(target)->playMusic(Audio::THEME_SONG);
+		}
+	);
+
+	Blackboard::getInstance()->leaveCallback(
+		RENDERER,
+		[](Module* target)
+		{
+			dynamic_cast<Renderer*>(target)->fadeIn(sf::seconds(2));
 		}
 	);
 
