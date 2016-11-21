@@ -57,7 +57,7 @@ _donkeyTextShown(false)
 	donkey->setName("donkey");
 	entityManager->add(donkey);
 
-	loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
+	loadLevel("Resources/Images/tiles.png", "Resources/Levels/FinalExamMap_v2.csv");
 	//loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
 
 	loadControls();

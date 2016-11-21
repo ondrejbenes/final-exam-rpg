@@ -89,6 +89,7 @@ inline Player* EntityFactory::create<Player>()
 	auto currSpriteNumber = ConfigIO::readInt(L"player", L"sprite", 1);
 	std::stringstream ss;
 	ss << "Resources/Images/Player" << currSpriteNumber << ".png";
+	
 
 	auto texture = new sf::Texture();
 	if (!texture->loadFromFile(ss.str()))

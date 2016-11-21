@@ -26,7 +26,7 @@
 MainGame* GamePhaseFactory::createMainGame()
 {
 	auto texture = new sf::Texture();
-	if (!texture->loadFromFile("Resources/Images/minimap.png"))
+	if (!texture->loadFromFile("Resources/Images/minimap2.png"))
 		LOG_E("Error loading minimap texture");
 	auto minimap = new Minimap(texture);
 

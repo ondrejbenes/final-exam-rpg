@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Level>
+ <TileMap>
+  <BlockingTilesID>486,287,310,312,335,244,311,288</BlockingTilesID>
+  <Tiles 
+link ="Resources/Levels/DONTUSETHISFinalExamMap.csv"/>
+ </TileMap>
+ <Player>
+  <Position>
+600,600</Position>
+  <HitPoints>
+1000</HitPoints>
+  <MinimumDamage>
+10</MinimumDamage>
+  <MaximumDamage>20</MaximumDamage>
+ </Player>
+ 
+<NPCs>
+
+<NPC>
+<Position>
+250, 230</Position>
+<Sprite link= "Resources/Images/Npc1.png"/>
+<HitPoints>
+150</HitPoints>
+</NPC>
+
+<NPC>
+<Position>
+1000,1000</Position>
+<Sprite link = "Resources/Images/Npc2.png"/>
+<HitPoints>
+200</HitPoints>
+
+</NPC>
+
+<NPC>
+<Position>
+2000,1500</Position>
+<Sprite link = "Resources/Images/Npc3.png"/>
+<HitPoints>
+300</HitPoints>
+</NPC>
+
+<NPC>
+<Position>
+2000,750</Position>
+<Sprite link = "Resources/Images/Npc4.png"/>
+<HitPoints>
+700</HitPoints>
+</NPC>
+
+<NPC>
+<Position>
+2500,800</Position>
+<Sprite link = "Resources/Images/BossDeamon.png"/>
+<HitPoints>
+1500</HitPoints>
+</NPC>
+</NPCs>
+
+<Weapons>
+
+<Weapons_player>
+
+<Weapon_Basic>
+<MinimumDamage>
+10</MinimumDamage>
+<Speed>
+<MaximumDamage>
+25</MaximumDamage>
+1000</Speed>
+</Weapon_Basic>
+
+<Weapon_Extra_1>
+<MinimumDamage>
+15</MinimumDamage>
+<MaximumDamage>
+40</MaximumDamage>
+<Speed>
+1500</Speed>
+<Image link = "Resources/Images/weapon1.png"/>
+</Weapon_Extra_1>
+
+<Weapon_Extra_2>
+<MinimumDamage>
+50</MinimumDamage>
+<MaximumDamage>
+100</MaximumDamage>
+<Speed>
+2000</Speed>
+<Image link = "Resources/Images/weapon2.png"/>
+</Weapon_Extra_2>
+
+</Weapons_player>
+
+<Weapon_NPC>
+
+<NPC_Weapon>
+<MinimumDamage>
+7</MinimumDamage>
+<MaximumDamage>
+14</MaximumDamage>
+<AttackSpeed>
+750</AttackSpeed>
+</NPC_Weapon>
+
+<NPC_Weapon>
+<MinimumDamage>
+10</MinimumDamage>
+<MaximumDamage>
+20</MaximumDamage>
+<AttackSpeed>
+1100</AttackSpeed>
+</NPC_Weapon>
+
+<NPC_Weapon>
+<MinimumDamage>
+10</MinimumDamage>
+<MaximumDamage>
+20</MaximumDamage>
+<AttackSpeed>
+1500</AttackSpeed>
+</NPC_Weapon>
+
+<NPC_Weapon>
+<MinimumDamage>
+3</MinimumDamage>
+<MaximumDamage>
+5</MaximumDamage>
+<AttackSpeed>
+2100</AttackSpeed>
+</NPC_Weapon>
+<NPC_Weapon>
+
+<MinimumDamage>
+25</MinimumDamage>
+<MaximumDamage>
+45</MaximumDamage>
+<AttackSpeed>
+500</AttackSpeed>
+</NPC_Weapon>
+
+</Weapon_NPC>
+
+</Weapons>
+
+</Level>
+
+
