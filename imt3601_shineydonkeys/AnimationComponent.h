@@ -13,7 +13,8 @@ public:
 private:
 	sf::Vector2i spriteSheetCell;
 	sf::Clock _animationTimer;
-	static sf::Time ANIMATION_PERIOD_MS;
+	static sf::Time MOVE_ANIMATION_PERIOD_MS;
+	static sf::Time COMBAT_ANIMATION_PERIOD_MS;
 
 	void doCombatAnimation();
 	void doMoveAnimation();

@@ -62,8 +62,6 @@ inline Npc* EntityFactory::create<Npc>()
 	key->setName("Bronze Key");
 	npc->getInventory().push_back(key);
 
-	npc->addComponent(new AnimationComponent(*npc));
-
 	auto gc = new GraphicsComponent(*npc);
 	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite);
 	gc->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
@@ -77,6 +75,8 @@ inline Npc* EntityFactory::create<Npc>()
 	auto pc = new PhysicsComponent(*npc);
 	pc->setCollider(sprite.getGlobalBounds());
 	npc->addComponent(pc);
+
+	npc->addComponent(new AnimationComponent(*npc));
 
 	return npc;
 }
@@ -93,7 +93,7 @@ inline Player* EntityFactory::create<Player>()
 	// TODO ResLoader
 	auto currSpriteNumber = ConfigIO::readInt(L"player", L"sprite", 1);
 	std::stringstream ss;
-	ss << "Resources/Images/Player" << currSpriteNumber << ".png";
+	ss << "Resources/Images/Char_Animations/Player" << currSpriteNumber << ".png";
 	
 
 	auto texture = new sf::Texture();
@@ -102,25 +102,27 @@ inline Player* EntityFactory::create<Player>()
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
 
+	ss.seekp(-4, ss.cur);
+	ss << "_Battle.png";
+
 	auto combatTexture = new sf::Texture;
-	if (!combatTexture->loadFromFile("Resources/Images/Player1.png"))
+	if (!combatTexture->loadFromFile(ss.str()))
 		LOG_E("Error: could not load player image");
 	sf::Sprite combatSprite;
 	combatSprite.setTexture(*combatTexture);
 	
-	auto sword = std::make_shared<Weapon>(10, 20, 1000);
+	auto sword = std::make_shared<Weapon>(50, 75, 1000);
 	initWeapon(sword, "Resources/Images/Weapons/Sword.png");
 	player->setEquipedWeapon(sword);
 	player->getInventory().push_back(sword);
 
-	auto axe = std::make_shared<Weapon>(50, 75, 1500);
+	auto axe = std::make_shared<Weapon>(75, 125, 1500);
 	initWeapon(axe, "Resources/Images/Weapons/Axe.png");
 	player->getInventory().push_back(axe);
 
 	//player->getInventory().push_back(createInventoryItem("Resources/Images/Keys/SilverKey.png"));
 	//player->getInventory().push_back(createInventoryItem("Resources/Images/Keys/GoldKey.png"));
 
-	player->addComponent(new AnimationComponent(*player));
 	auto gc = new GraphicsComponent(*player);
 	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite);
 	gc->addSprite(CombatComponent::COMBAT_SPRITE_NAME, combatSprite);
@@ -132,6 +134,8 @@ inline Player* EntityFactory::create<Player>()
 	auto pc = new PhysicsComponent(*player);
 	pc->setCollider(sprite.getGlobalBounds());
 	player->addComponent(pc);
+
+	player->addComponent(new AnimationComponent(*player));
 
 	return player;
 }

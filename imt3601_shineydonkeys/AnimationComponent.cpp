@@ -23,7 +23,7 @@ void AnimationComponent::update()
 
 void AnimationComponent::doCombatAnimation() 
 {
-	if (_animationTimer.getElapsedTime() > ANIMATION_PERIOD_MS)
+	if (_animationTimer.getElapsedTime() > COMBAT_ANIMATION_PERIOD_MS)
 	{
 		spriteSheetCell.x++;
 		_animationTimer.restart();
@@ -72,7 +72,7 @@ void AnimationComponent::doMoveAnimation()
 		spriteSheetCell.y = direction;
 	}
 
-	if (_animationTimer.getElapsedTime() > ANIMATION_PERIOD_MS)
+	if (_animationTimer.getElapsedTime() > MOVE_ANIMATION_PERIOD_MS)
 	{
 		spriteSheetCell.x++;
 		_animationTimer.restart();
@@ -96,4 +96,5 @@ void AnimationComponent::doMoveAnimation()
 }
 
 
-sf::Time AnimationComponent::ANIMATION_PERIOD_MS = sf::milliseconds(100);
+sf::Time AnimationComponent::MOVE_ANIMATION_PERIOD_MS = sf::milliseconds(100);
+sf::Time AnimationComponent::COMBAT_ANIMATION_PERIOD_MS = sf::milliseconds(250);

@@ -83,8 +83,8 @@ bool Tilemap::loadFromFile(const std::string& textureFileName, const std::string
 		}
 	}
 
-	MAP_WIDTH = TILE_HEIGHT * --row;
-	MAP_HEIGHT = TILE_HEIGHT * --column;
+	MAP_WIDTH = TILE_WIDTH * --column;
+	MAP_HEIGHT = TILE_HEIGHT * --row;
 
 	input.close();
 
