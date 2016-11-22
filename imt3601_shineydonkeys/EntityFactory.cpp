@@ -43,7 +43,8 @@ void EntityFactory::initWeapon(std::shared_ptr<Item> weapon, const std::string& 
 
 	auto gc = new GraphicsComponent(*weapon);
 	weapon->addComponent(gc);
-	gc->setSprite(sprite);
+	gc->addSprite("item", sprite);
+	gc->setActiveSprite("item");
 }
 
 std::shared_ptr<Item> EntityFactory::createInventoryItem(const std::string& texturePath)
@@ -58,7 +59,8 @@ std::shared_ptr<Item> EntityFactory::createInventoryItem(const std::string& text
 
 	auto gc = new GraphicsComponent(*item);
 	item->addComponent(gc);
-	gc->setSprite(sprite);
+	gc->addSprite("item", sprite);
+	gc->setActiveSprite("item");
 
 	return item;
 }
@@ -76,10 +78,13 @@ Character* EntityFactory::createDonkey()
 	sprite.setTexture(*texture);
 
 	auto gc = new GraphicsComponent(*donkey);
-	gc->setSprite(sprite);
+	gc->addSprite("donkey", sprite);
+	gc->setActiveSprite("donkey");
 	donkey->addComponent(gc);
 
-	donkey->addComponent(new PhysicsComponent(*donkey, true));
+	auto pc = new PhysicsComponent(*donkey);
+	pc->setCollider(sprite.getGlobalBounds());
+	donkey->addComponent(pc);
 	
 	return donkey;
 }

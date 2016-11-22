@@ -8,6 +8,8 @@ enum MovementDirection { Down, Left, Right, Up };
 class PhysicsComponent : public EntityComponent
 {
 public:	
+	static const std::string MOVE_SPRITE_NAME;
+
 	/* Default velocity in pixels per second */
 	static const sf::Vector2f defaultVelocity;
 
@@ -15,13 +17,13 @@ public:
 	static const sf::Vector2f ZERO_VELOCITY;
 
 	explicit PhysicsComponent(Entity& parent, bool _static = false);
-	virtual ~PhysicsComponent();
 
 	void update() override;
 
 	sf::Vector2f getVelocity();
 	void setVelocity(sf::Vector2f velocity);
 
+	void setCollider(sf::FloatRect collider) { _collider = collider; }
 	sf::FloatRect& getCollider() { return _collider; }
 private:
 	bool _static;

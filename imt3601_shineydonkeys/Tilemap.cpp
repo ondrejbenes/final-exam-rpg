@@ -56,7 +56,6 @@ bool Tilemap::loadFromFile(const std::string& textureFileName, const std::string
 
 			auto x = column * TILE_WIDTH;
 			auto y = row * TILE_HEIGHT;
-			tile->setPosition(sf::Vector2f(x, y));
 
 			auto tileMapRow = floor(type / tilesPerRow);
 			auto tileMapColumn = type - (tileMapRow * tilesPerRow);
@@ -67,15 +66,19 @@ bool Tilemap::loadFromFile(const std::string& textureFileName, const std::string
 			tileImage.setPosition(sf::Vector2f(column * TILE_WIDTH, row * TILE_HEIGHT));
 
 			auto graphicsComponent = tile->getComponent<GraphicsComponent>();
-			graphicsComponent->setSprite(tileImage);
+			graphicsComponent->addSprite(TILE_SPRITE_NAME, tileImage);
+			graphicsComponent->setActiveSprite(TILE_SPRITE_NAME);
 
 			// TODO ugly
-			auto& collider = tile->getComponent<PhysicsComponent>()->getCollider();
+			sf::FloatRect collider;
 			collider.height = TILE_HEIGHT;
 			collider.width = TILE_WIDTH;
 			collider.left = x;
 			collider.top = y;
 
+			tile->getComponent<PhysicsComponent>()->setCollider(collider);
+
+			tile->setPosition(sf::Vector2f(x, y));
 			entityManager->add(tile);
 		}
 	}
@@ -87,6 +90,8 @@ bool Tilemap::loadFromFile(const std::string& textureFileName, const std::string
 
 	return true;
 }
+
+const std::string Tilemap::TILE_SPRITE_NAME = "tile";
 
 unsigned int Tilemap::TILE_WIDTH = 32;
 unsigned int Tilemap::TILE_HEIGHT = 32;

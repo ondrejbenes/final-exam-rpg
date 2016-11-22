@@ -2,11 +2,12 @@
 
 #include "EntityComponent.h"
 #include "Character.h"
-#include "Weapon.h"
 
 class CombatComponent : public EntityComponent
 {
 public:
+	static const std::string COMBAT_SPRITE_NAME;
+
 	explicit CombatComponent(Entity& parent);
 	virtual ~CombatComponent();
 

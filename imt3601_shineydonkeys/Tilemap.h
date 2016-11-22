@@ -5,6 +5,8 @@
 class Tilemap
 {
 public:
+	static const std::string TILE_SPRITE_NAME;
+
 	static unsigned int TILE_WIDTH;
 	static unsigned int TILE_HEIGHT;
 

@@ -1,17 +1,17 @@
 #include "CombatComponent.h"
-#include "Logger.h"
 #include "EntityManager.h"
 #include "Blackboard.h"
 #include "Game.h"
 #include "DamageSplash.h"
 #include "GamePhaseManager.h"
 #include "Audio.h"
-
-#include <sstream>
-#include <valarray>
 #include "ChatBoard.h"
 #include "PacketFactory.h"
 #include "Network.h"
+
+#include <sstream>
+#include "PhysicsComponent.h"
+#include "GraphicsComponent.h"
 
 CombatComponent::CombatComponent(Entity& parent) :
 EntityComponent(parent),
@@ -31,6 +31,14 @@ void CombatComponent::update()
 {
 	if (!_inCombat)
 		return;
+
+	auto pc = parent.getComponent<PhysicsComponent>();
+	auto gc = parent.getComponent<GraphicsComponent>();
+
+	if (pc->getVelocity() == PhysicsComponent::ZERO_VELOCITY)
+		gc->setActiveSprite(COMBAT_SPRITE_NAME);
+	else
+		gc->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
 
 	auto weapon = dynamic_cast<Character*>(&parent)->getEquipedWeapon();
 	if (attackTimer.getElapsedTime().asMilliseconds() < weapon->getAttackSpeedMs())
@@ -74,6 +82,9 @@ void CombatComponent::endCombat()
 	_inCombat = false;
 	_other = nullptr;
 	_otherCombatComp = nullptr;
+
+	auto gc = parent.getComponent<GraphicsComponent>();
+	gc->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
 }
 
 void CombatComponent::takeDamage(const unsigned int damage)
@@ -143,3 +154,5 @@ void CombatComponent::takeDamage(const unsigned int damage)
 		// TODO set player to nullptr in EM?
 	}
 }
+
+const std::string CombatComponent::COMBAT_SPRITE_NAME = "combat";

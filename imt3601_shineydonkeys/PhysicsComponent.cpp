@@ -14,15 +14,6 @@ EntityComponent(parent) ,
 _velocity(0, 0),
 _static(_static)
 {
-	auto gc = parent.getComponent<GraphicsComponent>();
-	if (gc == nullptr)
-		LOG_E("No GraphicsComponent - cannot create _collider");
-	else
-		_collider = gc->getSprite().getGlobalBounds();
-}
-
-PhysicsComponent::~PhysicsComponent()
-{
 
 }
 
@@ -108,6 +99,8 @@ bool PhysicsComponent::hasCollision(const sf::Vector2f& newPosition) const
 
 	return false;
 }
+
+const std::string PhysicsComponent::MOVE_SPRITE_NAME = "move";
 
 const sf::Vector2f PhysicsComponent::defaultVelocity = sf::Vector2f(200, 200);
 const sf::Vector2f PhysicsComponent::ZERO_VELOCITY = sf::Vector2f(0, 0);

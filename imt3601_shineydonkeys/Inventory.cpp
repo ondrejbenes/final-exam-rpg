@@ -33,7 +33,7 @@ void Inventory::draw(std::shared_ptr<sf::RenderWindow> window)
 
 	for(auto it = begin(playerInventory); it != end(playerInventory); ++it)
 	{
-		auto sprite = (*it)->getComponent<GraphicsComponent>()->getSprite();
+		auto sprite = (*it)->getComponent<GraphicsComponent>()->getActiveSprite();
 
 		sprite.setPosition(x, y);
 		if (isFocused())

@@ -376,7 +376,7 @@ bool MainGame::loadLevel(const std::string& textureFileName, const std::string& 
 {
 	_currentLevel = Level();
 	_currentLevel.tilemap = new Tilemap();
-	LevelLoader();
+	//LevelLoader();
 	if (!_currentLevel.tilemap->loadFromFile(textureFileName, levelDefinitionFileName))
 	{
 		LOG_E("Failed to load level");
