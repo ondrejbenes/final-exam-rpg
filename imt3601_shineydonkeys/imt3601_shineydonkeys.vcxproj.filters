@@ -115,6 +115,12 @@
     <Filter Include="Source Files\Core\Module\Audio">
       <UniqueIdentifier>{e24734df-6514-4881-b567-942685c99fdc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entity\Component\Physics">
+      <UniqueIdentifier>{986d8bcb-9af8-4294-9ae8-65a34c9c11d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entity\Component\Physics">
+      <UniqueIdentifier>{39d871e8-5e66-43cb-b1c8-036295fda3b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -133,9 +139,6 @@
       <Filter>Source Files\Entity\Component</Filter>
     </ClCompile>
     <ClCompile Include="NetworkInputComponent.cpp">
-      <Filter>Source Files\Entity\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysicsComponent.cpp">
       <Filter>Source Files\Entity\Component</Filter>
     </ClCompile>
     <ClCompile Include="Character.cpp">
@@ -306,8 +309,17 @@
     <ClCompile Include="tinyxml2.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="PhysicsComponent.cpp">
+      <Filter>Source Files\Entity\Component\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Trigger.cpp">
+      <Filter>Source Files\Entity\Component\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Scheduler.cpp">
+      <Filter>Source Files\Core\Module</Filter>
+    </ClCompile>
     <ClCompile Include="LevelLoader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Core\Module\Game\Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -370,9 +382,6 @@
       <Filter>Header Files\Entity\Component</Filter>
     </ClInclude>
     <ClInclude Include="NetworkInputComponent.h">
-      <Filter>Header Files\Entity\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsComponent.h">
       <Filter>Header Files\Entity\Component</Filter>
     </ClInclude>
     <ClInclude Include="EntityFactory.h">
@@ -549,8 +558,17 @@
     <ClInclude Include="tinyxml2.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsComponent.h">
+      <Filter>Header Files\Entity\Component\Physics</Filter>
+    </ClInclude>
     <ClInclude Include="LevelLoader.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Core\Module\Game\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Scheduler.h">
+      <Filter>Header Files\Core\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="Trigger.h">
+      <Filter>Header Files\Entity\Component\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

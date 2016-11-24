@@ -12,6 +12,7 @@
 #include <sstream>
 #include "PhysicsComponent.h"
 #include "GraphicsComponent.h"
+#include "MainGame.h"
 
 CombatComponent::CombatComponent(Entity& parent) :
 EntityComponent(parent),
@@ -62,19 +63,6 @@ void CombatComponent::startCombat(Character* other)
 	_inCombat = true;
 	_other = other;
 	_otherCombatComp = _other->getComponent<CombatComponent>();
-
-
-	//TODO move to animetionComponent and fix
-
-	//auto texture = new sf::Texture;
-	//if (!texture->loadFromFile("Resources/Images/Player3.png"))
-	//	LOG_E("Error: could not load player image");
-	//sf::Sprite sprite;
-	//sprite.setTexture(*texture);
-
-	//auto gc = parent.getComponent<GraphicsComponent>();
-	//gc->setSprite(sprite);
-
 }
 
 void CombatComponent::endCombat()
@@ -136,6 +124,11 @@ void CombatComponent::takeDamage(const unsigned int damage)
 
 				inventoryOfOther.push_back(*it);
 			}
+		} 
+		else
+		{
+			auto phase = dynamic_cast<MainGame*>(GamePhaseManager::getInstance()->getCurrentPhase());
+			phase->handlePlayerDeath();
 		}
 
 		Blackboard::getInstance()->leaveCallback(

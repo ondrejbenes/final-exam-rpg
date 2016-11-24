@@ -4,10 +4,8 @@
 #include "Network.h"
 #include "Blackboard.h"
 #include "MainGame.h"
-#include "GamePhaseFactory.h"
 #include "Tile.h"
 #include "GraphicsComponent.h"
-#include "Logger.h"
 
 PhysicsComponent::PhysicsComponent(Entity& parent, bool _static) : 
 EntityComponent(parent) ,
@@ -21,6 +19,19 @@ void PhysicsComponent::update()
 {
 	if(!_static)
 		move();
+
+	// TODO a bit strange to handle enter outside and leave inside
+	std::vector<Entity*> toUnregister;
+	for (auto trigger : _triggers)
+	{
+		for (auto entity : trigger->getRegisteredEntities())
+			if (!entity->getComponent<PhysicsComponent>()->getCollider().intersects(trigger->getBoundary()))
+				toUnregister.push_back(entity);
+
+		for (auto entity : toUnregister)
+			trigger->unregisterEntity(entity);
+	}
+
 }
 
 void PhysicsComponent::setVelocity(sf::Vector2f velocity)
@@ -62,6 +73,11 @@ bool PhysicsComponent::hasCollision(const sf::Vector2f& newPosition) const
 {
 	// TODO better way to look for tiles (and characters) to check
 
+	auto diff = newPosition - parent.getPosition();
+	auto collCpy = sf::FloatRect(_collider);
+	collCpy.left += diff.x;
+	collCpy.top += diff.y;
+
 	auto radius = 32;
 	auto boundary = QuadTreeBoundary(newPosition.x - radius, newPosition.x + radius, newPosition.y - radius, newPosition.y + radius);
 
@@ -74,22 +90,62 @@ bool PhysicsComponent::hasCollision(const sf::Vector2f& newPosition) const
 	
 	for (auto tile : tilesToCheck)
 	{
+		auto pc = tile->getComponent<PhysicsComponent>();
+
+		// TODO check colliders somewhere else
+		auto& triggers = pc->getTriggers();
+		for (auto trigger : triggers)
+		{
+			if (_collider.intersects(trigger->getBoundary()))
+			{
+				auto& registeredEntities = trigger->getRegisteredEntities();
+				auto result = find(begin(registeredEntities), end(registeredEntities), &parent);
+				if(result == end(registeredEntities))
+				{					
+					trigger->registerEntity(&parent);
+					auto callback = *trigger->getOnTriggerEnter();
+					callback(&parent);
+				}
+			}
+		}
+
 		if (tile != nullptr && tile->isBlocking())
 		{
-			auto tileCollider = tile->getComponent<PhysicsComponent>()->getCollider();
-			if (_collider.intersects(tileCollider))
+			auto tileCollider = pc->getCollider();
+			if (collCpy.intersects(tileCollider))
 				return true;
 		}
 	}
 
+	// TODO duplicity
+	radius = 128;
+	boundary = QuadTreeBoundary(newPosition.x - radius, newPosition.x + radius, newPosition.y - radius, newPosition.y + radius);
 	auto charactersToCheck = EntityManager::getInstance()->getCharactersInInterval(boundary);
 
 	for (auto character : charactersToCheck)
 	{
 		if (character->id != parent.id && character != nullptr)
 		{
-			auto collider = character->getComponent<PhysicsComponent>()->getCollider();
-			if (_collider.intersects(collider))
+			auto pc = character->getComponent<PhysicsComponent>();
+
+			auto& triggers = pc->getTriggers();
+			for (auto trigger : triggers)
+			{
+				if (_collider.intersects(trigger->getBoundary()))
+				{
+					auto& registeredEntities = trigger->getRegisteredEntities();
+					auto result = find(begin(registeredEntities), end(registeredEntities), &parent);
+					if (result == end(registeredEntities))
+					{
+						trigger->registerEntity(&parent);
+						auto callback = *trigger->getOnTriggerEnter();
+						callback(&parent);
+					}
+				}
+			}
+
+			auto collider = pc->getCollider();
+			if (collCpy.intersects(collider))
 				return true;
 		}
 	}

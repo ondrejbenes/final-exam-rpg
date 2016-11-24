@@ -9,6 +9,7 @@
 #include "Console.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include "Scheduler.h"
 
 bool Engine::initialize()
 {
@@ -20,6 +21,7 @@ bool Engine::initialize()
 	_modules[GAME] = std::make_unique<Game>();
 	_modules[AUDIO] = std::make_unique<Audio>();
 	_modules[NETWORK] = std::make_unique<Network>();
+	_modules[SCHEDULER] = std::make_unique<Scheduler>();
 
 	auto success = true;
 	for (auto it = _modules.begin(); it != _modules.end(); ++it)

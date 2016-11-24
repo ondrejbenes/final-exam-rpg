@@ -33,7 +33,8 @@ void AnimationComponent::doCombatAnimation()
 		spriteSheetCell.x = 0;
 
 	// TODO make a cache
-	auto& sprite = parent.getComponent<GraphicsComponent>()->getActiveSprite();
+	auto gc = parent.getComponent<GraphicsComponent>();
+	auto& sprite = gc->getActiveSprite();
 	auto spriteWidth = sprite.getTexture()->getSize().x / 4;
 	auto spriteHeight = sprite.getTexture()->getSize().y / 4;
 	sprite.setTextureRect(
@@ -43,7 +44,7 @@ void AnimationComponent::doCombatAnimation()
 			spriteWidth,
 			spriteHeight));
 
-	sprite.setPosition(parent.getPosition());
+	sprite.setPosition(parent.getPosition() + gc->getSpriteOffset());
 }
 
 void AnimationComponent::doMoveAnimation() 
@@ -91,8 +92,6 @@ void AnimationComponent::doMoveAnimation()
 			spriteSheetCell.y * spriteHeight,
 			spriteWidth,
 			spriteHeight));
-
-	sprite.setPosition(parent.getPosition());
 }
 
 

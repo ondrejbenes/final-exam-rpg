@@ -4,6 +4,7 @@
 #include "Level.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <memory>
+#include "Tile.h"
 
 struct Controls
 {
@@ -18,15 +19,27 @@ class MainGame : public GamePhase
 	friend GamePhaseFactory;
 public:
 	static Controls CONTROLS;
-	const static sf::Vector2f arenaTeleportPosition;
+
+	static bool donkeyTextShown;
+
+	const static sf::Vector2f arenaTunnelEntrance;
+	const static sf::Vector2f arenaTunnelExit;
+
+	const static sf::Vector2f bronzeKeyUnlockTile;
+	const static sf::Vector2f bronzeKeyGateTile;
+
+	const static sf::Vector2f silverKeyUnlockTile;
+	const static sf::Vector2f silverKeyGateTile;
+
+	const static sf::Vector2f goldKeyUnlockTile;
+	const static sf::Vector2f goldKeyGateTile;
 
 	virtual ~MainGame();
 
 	void update() override;
 	void render(std::shared_ptr<sf::RenderWindow> window) override;
 
-	void handleInput();
-	void handleMovement();
+	void handlePlayerDeath();
 	bool loadLevel(const std::string& textureDefinitionFileName, const std::string& levelDefinitionFileName);
 
 protected:
@@ -34,21 +47,19 @@ protected:
 
 private:
 	Level _currentLevel;
-	sf::Clock _playerDeathTimer;
-	sf::Clock _levelCompleteTimer;
-	sf::Clock _teleportTimer;
-	bool _playerDied;
 	bool _levelComplete;
-	bool _teleported;
-	bool _teleportClockRestarted;
-	bool _teleportFadedOut;
-	bool _donkeyTextShown;
 
-	void showDonkeyText();
-	void teleportToArena();
+	bool _escapePressed;
 
-	void handlePlayerDeath();
+	std::vector<Tile*> _tilesToUpdate;
+
+	void attachTriggerCallbackToTile(Tile* tile, std::function<void(Entity*)> callback);
+
+	void handleInput();
+	void handleMovement();
+
 	void handleLevelComplete();
+	void returnToMainMenu();
 
 	void drawHealthBar(std::shared_ptr<sf::RenderWindow> window);
 	void loadControls();

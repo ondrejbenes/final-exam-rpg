@@ -1,6 +1,7 @@
 #pragma once
 #include "EntityComponent.h"
 #include <SFML/Graphics/Rect.hpp>
+#include "Trigger.h"
 
 // TODO remove DL etc after we have changed spritesheets for 4 directions
 enum MovementDirection { Down, Left, Right, Up };
@@ -25,12 +26,16 @@ public:
 
 	void setCollider(sf::FloatRect collider) { _collider = collider; }
 	sf::FloatRect& getCollider() { return _collider; }
+
+	std::vector<std::shared_ptr<Trigger>>& getTriggers() { return _triggers; }
 private:
 	bool _static;
 	
 	sf::Vector2f _velocity;
 	sf::Clock _sinceLastMove;
 	sf::FloatRect _collider;
+
+	std::vector<std::shared_ptr<Trigger>> _triggers;
 
 	bool hasCollision(const sf::Vector2f& newPosition) const;
 	void move();

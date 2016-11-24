@@ -15,27 +15,33 @@
 #include "PacketFactory.h"
 #include "Audio.h"
 #include "ChatBoard.h"
-
-#include <memory>
 #include "Renderer.h"
-#include <future>
 #include "VectorUtilities.h"
 #include "LevelLoader.h"
+#include "Scheduler.h"
 
-MainGame::MainGame() : 
-_playerDied(false), 
-_levelComplete(false),
-_teleported(false),
-_teleportClockRestarted(false),
-_teleportFadedOut(false),
-_donkeyTextShown(false)
+#include <memory>
+
+using namespace std::chrono_literals;
+
+MainGame::MainGame() :
+	_levelComplete(false),
+	_escapePressed(false)
 {
 	auto cursor = GetCursor();
 	SetCursor(LoadCursor(nullptr, IDC_WAIT));
 	EntityFactory factory;
 	auto player = factory.create<Player>();
 
+
+	// TODO load from XML
+	Tilemap::MAP_WIDTH = 8000;
+	Tilemap::MAP_HEIGHT = 8000;
+
+
 	auto entityManager = EntityManager::getInstance();
+	entityManager->clearCharacters();
+
 	entityManager->add(player);
 	//player->setPosition(sf::Vector2f(4250, 2550)); //TEST
 	player->setPosition(sf::Vector2f(600, 600));
@@ -55,28 +61,173 @@ _donkeyTextShown(false)
 	auto donkey = factory.createDonkey();
 	donkey->setPosition(sf::Vector2f(900, 600));
 	donkey->setName("donkey");
+
+	auto boundaryPos = donkey->getPosition() - sf::Vector2f(100, 100);
+	auto donkeySpriteBounds = donkey->getComponent<GraphicsComponent>()->getActiveSprite().getGlobalBounds();
+	auto boundarySize = sf::Vector2f(donkeySpriteBounds.width + 200, donkeySpriteBounds.height + 200);
+	auto donkeyTextTrigger = std::make_shared<Trigger>(sf::FloatRect(boundaryPos, boundarySize));
+	auto callback = std::make_shared<std::function<void(Entity*)>>(
+		[](Entity* enteringEntity)
+	{
+		if (typeid(*enteringEntity) != typeid(Player))
+			return;
+
+		if (MainGame::donkeyTextShown)
+			return;
+
+		MainGame::donkeyTextShown = true;
+
+		auto mainGame = GamePhaseManager::getInstance()->getCurrentPhase();
+
+		auto ui = mainGame->getUi();
+		auto chatBoard = dynamic_cast<ChatBoard*>(ui.getElementByName("chatBoard"));
+
+		chatBoard->addMessage("Shiny Donkey", "Hi. I'm the Shiney Donkey");
+
+		Blackboard::getInstance()->leaveCallback(
+			SCHEDULER,
+			[chatBoard](Module* target)
+		{
+			auto scheduler = dynamic_cast<Scheduler*>(target);
+			auto msg1 = [chatBoard]() {chatBoard->addMessage("Shiny Donkey", "You won't believe it, but I have a quest for you."); };
+			scheduler->schedule(msg1, NOW + 2s);
+			auto msg2 = [chatBoard]() {chatBoard->addMessage("Shiny Donkey", "You need to explore the island and look for keys."); };
+			scheduler->schedule(msg2, NOW + 4s);
+			auto msg3 = [chatBoard]() {chatBoard->addMessage("Shiny Donkey", "The keys will unlock the gate to the east of here."); };
+			scheduler->schedule(msg3, NOW + 6s);
+			auto msg4 = [chatBoard]() {chatBoard->addMessage("Shiny Donkey", "Then I need you to enter the tunnel."); };
+			scheduler->schedule(msg4, NOW + 8s);
+			auto msg5 = [chatBoard]() {chatBoard->addMessage("Shiny Donkey", "You will know what to do when you exit on the other side."); };
+			scheduler->schedule(msg5, NOW + 10s);
+		}
+		);
+	});
+	donkeyTextTrigger->setOnTriggerEnter(callback);
+	donkey->getComponent<PhysicsComponent>()->getTriggers().push_back(donkeyTextTrigger);
 	entityManager->add(donkey);
 
-	// loadLevel("Resources/Images/tiles.png", "Resources/Levels/FinalExamMap_v2.csv");
-	loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
+	loadLevel("Resources/Images/tiles.png", "Resources/Levels/FinalExamMap_v2.csv");
+	// loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
 
 	loadControls();
 	SetCursor(cursor);
 
+	auto arenaTeleportTile = entityManager->getTileAtPos(arenaTunnelEntrance);
+	attachTriggerCallbackToTile(arenaTeleportTile,
+		[](Entity* enteringEntity)
+	{
+		auto player = EntityManager::getInstance()->getLocalPlayer();
+		if (player->id != enteringEntity->id)
+			return;
+
+		Blackboard::getInstance()->leaveCallback(
+			RENDERER,
+			[](Module* target)
+		{
+			dynamic_cast<Renderer*>(target)->fadeOut(sf::seconds(3), "You found a tunnel and gathered the courage to go forward...");
+		}
+		);
+
+		Blackboard::getInstance()->leaveCallback(
+			SCHEDULER,
+			[](Module* target)
+		{
+			auto lambda = []()
+			{
+				Blackboard::getInstance()->leaveCallback(
+					RENDERER,
+					[](Module* target)
+				{
+					dynamic_cast<Renderer*>(target)->fadeIn(sf::seconds(3), "The tunnel lead you to an arena filled with deamons!");
+					auto entityManager = EntityManager::getInstance();
+					auto player = entityManager->getLocalPlayer();
+					entityManager->move(player, arenaTunnelExit);
+					player->setPosition(arenaTunnelExit);
+				});
+			};
+			dynamic_cast<Scheduler*>(target)->schedule(lambda, NOW + 2900ms);
+		}
+		);
+	});
+
+	// TODO remove duplicity
+	auto bronzeKeyGateUnlockTile = entityManager->getTileAtPos(bronzeKeyUnlockTile);
+	attachTriggerCallbackToTile(bronzeKeyGateUnlockTile,
+		[](Entity* enteringEntity)
+	{
+		auto em = EntityManager::getInstance();
+		auto player = em->getLocalPlayer();
+		if (player->id != enteringEntity->id)
+			return;
+
+		auto hasKey = false;
+		for (auto item : player->getInventory())
+			if (item->getName() == "Bronze Key")
+				hasKey = true;
+
+		if(hasKey)
+		{
+			auto gateTile = dynamic_cast<Tile*>(em->getTileAtPos(bronzeKeyGateTile));
+			gateTile->changeType(168, false);
+		}
+	});
+
+	auto silverKeyGateUnlockTile = entityManager->getTileAtPos(silverKeyUnlockTile);
+	attachTriggerCallbackToTile(silverKeyGateUnlockTile,
+		[](Entity* enteringEntity)
+	{
+		auto em = EntityManager::getInstance();
+		auto player = em->getLocalPlayer();
+		if (player->id != enteringEntity->id)
+			return;
+
+		auto hasKey = false;
+		for (auto item : player->getInventory())
+			if (item->getName() == "Silver Key")
+				hasKey = true;
+
+		if (hasKey)
+		{
+			auto gateTile = dynamic_cast<Tile*>(em->getTileAtPos(silverKeyGateTile));
+			gateTile->changeType(168, false);
+		}
+	});
+
+	auto goldKeyGateUnlockTile = entityManager->getTileAtPos(goldKeyUnlockTile);
+	attachTriggerCallbackToTile(goldKeyGateUnlockTile,
+		[](Entity* enteringEntity)
+	{
+		auto em = EntityManager::getInstance();
+		auto player = em->getLocalPlayer();
+		if (player->id != enteringEntity->id)
+			return;
+
+		auto hasKey = false;
+		for (auto item : player->getInventory())
+			if (item->getName() == "Gold Key")
+				hasKey = true;
+
+		if (hasKey)
+		{
+			auto gateTile = dynamic_cast<Tile*>(em->getTileAtPos(goldKeyGateTile));
+			gateTile->changeType(168, false);
+		}
+	});
+
 	Blackboard::getInstance()->leaveCallback(
 		AUDIO,
 		[](Module* target)
-		{
-			dynamic_cast<Audio*>(target)->playMusic(Audio::THEME_SONG);
-		}
+	{
+		dynamic_cast<Audio*>(target)->playMusic(Audio::THEME_SONG);
+	}
 	);
 
 	Blackboard::getInstance()->leaveCallback(
 		RENDERER,
 		[](Module* target)
-		{
-			dynamic_cast<Renderer*>(target)->fadeIn(sf::seconds(4), "You wake up on a beach, not remembering how you got there.");
-		}
+	{
+		dynamic_cast<Renderer*>(target)->fadeIn(sf::seconds(4), "You wake up on a beach, not remembering how you got there.");
+	}
 	);
 }
 
@@ -87,72 +238,36 @@ MainGame::~MainGame()
 
 void MainGame::update()
 {
+	if (_levelComplete)
+		return;
+
 	auto entityManager = EntityManager::getInstance();
-	auto player = entityManager->getLocalPlayer();
 
-	if (!_donkeyTextShown)
-	{
-		auto charaters = entityManager->getAllCharacters();
-		sf::Vector2f donkeyPos;
-
-		for (auto& x : charaters)
-		{
-			if (x->getName() == "donkey")
-				donkeyPos = x->getPosition();
-		}
-
-		if (VectorUtilities::calculateDistance(player->getPosition(), donkeyPos) < 50)
-		{
-			_donkeyTextShown = true;
-			showDonkeyText();
-		}
-	}
-
-	if (player->getStats()->current_hitpoints == 0 && !_playerDied)
-		handlePlayerDeath();
-
-	// TODO assync?
-	if (_playerDied && _playerDeathTimer.getElapsedTime() > sf::seconds(3))
-	{
-		GamePhaseManager::getInstance()->popPhase();
-		return;
-	}	
-
-	if (EntityManager::getInstance()->getAllCharacters().size() == 1 && !_levelComplete)
-		handleLevelComplete();
-
-	// TODO assync?
-	if (_levelComplete && _levelCompleteTimer.getElapsedTime() > sf::seconds(3))
-	{
-		GamePhaseManager::getInstance()->popPhase();
-		return;
-	}
-	
-	if(VectorUtilities::calculateDistance(player->getPosition(), sf::Vector2f(1100, 600)) < 100 && hasKeys())
-	{
-		if(!_teleportClockRestarted)
-		{
-			_teleportTimer.restart();
-			_teleportClockRestarted = true;
-		}
-		teleportToArena();
-	}
+	auto characters = entityManager->getAllCharacters();
 
 	handleInput();
 
-	auto characters = EntityManager::getInstance()->getAllCharacters();
 	for (auto it = characters.begin(); it != characters.end(); ++it)
 	{
-		if((*it)->getStats()->current_hitpoints != 0)
-			(*it)->update();		
+		if ((*it)->getStats()->current_hitpoints != 0)
+			(*it)->update();
 	}
+
+	for (auto it = _tilesToUpdate.begin(); it != _tilesToUpdate.end(); ++it)
+		(*it)->update();
+
+	//if (characters.size() == 2 && !_levelComplete) // 2 - player, donkey
+	//	handleLevelComplete();
+
+	if (_escapePressed)
+		returnToMainMenu();
 }
 
 void MainGame::render(std::shared_ptr<sf::RenderWindow> window)
 {
 	auto entityManager = EntityManager::getInstance();
 	auto player = entityManager->getLocalPlayer();
-	if(player == nullptr)
+	if (player == nullptr)
 		return;
 	auto playerPos = player->getPosition();
 	auto boundary = QuadTreeBoundary(playerPos.x - 800, playerPos.x + 800, playerPos.y - 500, playerPos.y + 500);
@@ -177,70 +292,54 @@ void MainGame::render(std::shared_ptr<sf::RenderWindow> window)
 	GamePhase::render(window);
 }
 
-void MainGame::showDonkeyText() 
+void MainGame::attachTriggerCallbackToTile(Tile* tile, std::function<void(Entity*)> callback)
 {
-	auto chatBoard = dynamic_cast<ChatBoard*>(_ui.getElementByName("chatBoard"));
-
-	chatBoard->addMessage("Shiny Donkey", "Hi. I'm the Shiney Donkey");
-	chatBoard->addMessage("Shiny Donkey", "You won't believe it, but I have a quest for you.");
-	chatBoard->addMessage("Shiny Donkey", "You need to explore the island and look for keys.");
-	chatBoard->addMessage("Shiny Donkey", "The keys will unlock the gate to the east of here.");
-	chatBoard->addMessage("Shiny Donkey", "Then I need you to enter the tunnel.");
-	chatBoard->addMessage("Shiny Donkey", "You will know what to do when you exit on the other side.");
+	auto tilePc = tile->getComponent<PhysicsComponent>();
+	auto boundary = sf::FloatRect(tilePc->getCollider());
+	auto trigger = std::make_shared<Trigger>(boundary);
+	trigger->setOnTriggerEnter(std::make_shared<std::function<void(Entity*)>>(callback));
+	tilePc->getTriggers().push_back(trigger);
+	_tilesToUpdate.push_back(tile);
 }
 
-void MainGame::teleportToArena() 
-{
-	auto player = EntityManager::getInstance()->getLocalPlayer();
-	if (!_teleportFadedOut)
-	{
-		Blackboard::getInstance()->leaveCallback(
-			RENDERER,
-			[](Module* target)
-		{
-			dynamic_cast<Renderer*>(target)->fadeOut(sf::seconds(3), "You found a tunnel and gathered the courage to go forward...");
-		}
-		);
-		_teleportFadedOut = true;
-	}
-	if(_teleportTimer.getElapsedTime().asSeconds() >= 2.9)
-	{
-		Blackboard::getInstance()->leaveCallback(
-			RENDERER,
-			[](Module* target)
-			{
-				dynamic_cast<Renderer*>(target)->fadeIn(sf::seconds(3), "The tunnel lead you to an arena filled with deamons!");
-			}
-		);
-		EntityManager::getInstance()->move(player, arenaTeleportPosition);
-		player->setPosition(arenaTeleportPosition);
-	}
-}
-
-void MainGame::handlePlayerDeath() 
+void MainGame::handlePlayerDeath()
 {
 	Blackboard::getInstance()->leaveCallback(
 		RENDERER,
 		[](Module* target)
-		{
-			dynamic_cast<Renderer*>(target)->fadeOut(sf::seconds(3), "You died! Game over!");
-		}
+	{
+		dynamic_cast<Renderer*>(target)->fadeOut(sf::seconds(3), "You died! Game over!");
+	}
 	);
-	_playerDeathTimer.restart();
-	_playerDied = true;
+
+	Blackboard::getInstance()->leaveCallback(
+		SCHEDULER,
+		[](Module* target)
+	{
+		auto lambda = []() {GamePhaseManager::getInstance()->popPhase(); };
+		dynamic_cast<Scheduler*>(target)->schedule(lambda, NOW + 2900ms);
+	}
+	);
 }
 
-void MainGame::handleLevelComplete() 
+void MainGame::handleLevelComplete()
 {
 	Blackboard::getInstance()->leaveCallback(
 		RENDERER,
 		[](Module* target)
-		{
-			dynamic_cast<Renderer*>(target)->fadeOut(sf::seconds(3), "You won!");
-		}
+	{
+		dynamic_cast<Renderer*>(target)->fadeOut(sf::seconds(3), "You won!");
+	}
 	);
+
+	Blackboard::getInstance()->leaveCallback(
+		SCHEDULER,
+		[](Module* target)
+	{
+		auto lambda = []() {GamePhaseManager::getInstance()->popPhase(); };
+		dynamic_cast<Scheduler*>(target)->schedule(lambda, NOW + 2900ms);
+	});
 	_levelComplete = true;
-	_levelCompleteTimer.restart();
 }
 
 // TODO create a new subclass of UiElement instead
@@ -279,21 +378,7 @@ void MainGame::handleInput()
 		case sf::Event::KeyPressed:
 			if (event.key.code == sf::Keyboard::Escape)
 			{
-				GamePhaseManager::getInstance()->popPhase();
-
-				if(Network::isServer())
-				{
-					Blackboard::getInstance()->leaveCallback(
-						NETWORK,
-						[](Module* target)
-						{
-							PacketFactory factory;
-							auto packet = factory.createGameOver();
-							dynamic_cast<Network*>(target)->broadcast(packet);
-						}
-					);
-				}
-
+				_escapePressed = true;
 				return;
 			}
 
@@ -337,7 +422,7 @@ void MainGame::handleInput()
 		}
 	}
 
-	if(!console->isVisible() && (!Network::isMultiplayer() || Network::isServer()))
+	if (!console->isVisible() && (!Network::isMultiplayer() || Network::isServer()))
 		handleMovement();
 }
 
@@ -394,11 +479,28 @@ void MainGame::loadControls()
 	CONTROLS.right = sf::Keyboard::Key(ConfigIO::readInt(L"controls", L"right"));
 }
 
-bool MainGame::hasKeys() 
+void MainGame::returnToMainMenu() {
+	GamePhaseManager::getInstance()->popPhase();
+
+	if (Network::isServer())
+	{
+		Blackboard::getInstance()->leaveCallback(
+			NETWORK,
+			[](Module* target)
+		{
+			PacketFactory factory;
+			auto packet = factory.createGameOver();
+			dynamic_cast<Network*>(target)->broadcast(packet);
+		}
+		);
+	}
+}
+
+bool MainGame::hasKeys()
 {
 	auto player = EntityManager::getInstance()->getLocalPlayer();
 	auto keysCount = 0;
-	for(auto& item : player->getInventory())
+	for (auto& item : player->getInventory())
 	{
 		if (item->getName() == "BronzeKey" || item->getName() == "SilverKey" || item->getName() == "GoldKey")
 			keysCount++;
@@ -409,4 +511,17 @@ bool MainGame::hasKeys()
 }
 
 Controls MainGame::CONTROLS = Controls();
-const sf::Vector2f MainGame::arenaTeleportPosition = sf::Vector2f(200, 500);
+
+const sf::Vector2f MainGame::arenaTunnelEntrance = sf::Vector2f(3200, 3296);
+const sf::Vector2f MainGame::arenaTunnelExit = sf::Vector2f(6016, 4288);
+
+const sf::Vector2f MainGame::bronzeKeyUnlockTile = sf::Vector2f(3200, 2752);
+const sf::Vector2f MainGame::bronzeKeyGateTile = sf::Vector2f(3200, 2784);
+
+const sf::Vector2f MainGame::silverKeyUnlockTile = sf::Vector2f(3200, 2912);
+const sf::Vector2f MainGame::silverKeyGateTile = sf::Vector2f(3200, 2944);
+
+const sf::Vector2f MainGame::goldKeyUnlockTile = sf::Vector2f(3200, 3168);
+const sf::Vector2f MainGame::goldKeyGateTile = sf::Vector2f(3200, 3200);
+
+bool MainGame::donkeyTextShown = false;

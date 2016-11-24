@@ -67,7 +67,7 @@ std::shared_ptr<Item> EntityFactory::createInventoryItem(const std::string& text
 
 Character* EntityFactory::createDonkey() 
 {
-	CharacterStats stats{0,0};
+	CharacterStats stats{1,1};
 	auto donkey = new Character(stats);
 
 	// TODO ResLoader

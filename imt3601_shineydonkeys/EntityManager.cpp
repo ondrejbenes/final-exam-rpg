@@ -1,4 +1,5 @@
 #include "EntityManager.h"
+#include "Tilemap.h"
 
 std::shared_ptr<EntityManager> EntityManager::getInstance()
 {
@@ -117,26 +118,23 @@ Tile* EntityManager::getTileAtPos(const sf::Vector2f& pos)
 	return ret;
 }
 
-// TODO remove magic constants
 EntityManager::EntityManager() :
 _localPlayer(nullptr),
-_characters(QuadTree(new QuadTreeBoundary(0.0, 8192.0, 0, 8192.0))),
-_tiles(QuadTree(new QuadTreeBoundary(0.0, 8192.0, 0, 8192.0)))
+_characters(QuadTree(new QuadTreeBoundary(0.0, Tilemap::MAP_WIDTH, 0, Tilemap::MAP_HEIGHT))),
+_tiles(QuadTree(new QuadTreeBoundary(0.0, Tilemap::MAP_WIDTH, 0, Tilemap::MAP_HEIGHT)))
 {
 
 }
 
 void EntityManager::clearCharacters()
 {
-	// TODO remove magic constants
-	_characters = QuadTree(new QuadTreeBoundary(0.0, 8192.0, 0, 8192.0));
+	_characters = QuadTree(new QuadTreeBoundary(0.0, Tilemap::MAP_WIDTH, 0, Tilemap::MAP_HEIGHT));
 	_localPlayer = nullptr;
 }
 
 void EntityManager::clearTiles()
 {
-	// TODO remove magic constants
-	_tiles = QuadTree(new QuadTreeBoundary(0.0, 8192.0, 0, 8192.0));
+	_tiles = QuadTree(new QuadTreeBoundary(0.0, Tilemap::MAP_WIDTH, 0, Tilemap::MAP_HEIGHT));
 }
 
 std::shared_ptr<EntityManager> EntityManager::_instance = nullptr;

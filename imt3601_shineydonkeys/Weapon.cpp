@@ -8,4 +8,4 @@ _attackSpeedMs(attackSpeedMs)
 
 }
 
-unsigned int Weapon::WEAPON_RANGE = 50;
+unsigned int Weapon::WEAPON_RANGE = 64;

@@ -27,7 +27,7 @@ bool Tilemap::loadFromFile(const std::string& textureFileName, const std::string
 	auto entityManager = EntityManager::getInstance();
 	entityManager->clearTiles();
 
-	std::vector<int> blockingTiles = { 163, 48, 49, 64, 65 };
+	std::vector<int> blockingTiles = { 73, 163, 48, 49, 64, 65 };
 
 	EntityFactory factory;
 
@@ -49,6 +49,8 @@ bool Tilemap::loadFromFile(const std::string& textureFileName, const std::string
 		{
 			auto tile = factory.create<Tile>();
 			auto type = stoi(types[column]);
+
+			// TODO call Tile.changeType to remove duplicity
 			tile->tileType = type;
 
 			if (find(begin(blockingTiles), end(blockingTiles), type) != end(blockingTiles))
@@ -82,7 +84,7 @@ bool Tilemap::loadFromFile(const std::string& textureFileName, const std::string
 			entityManager->add(tile);
 		}
 	}
-
+	// TODO need to load map size from XML file before we add tiles to EM
 	MAP_WIDTH = TILE_WIDTH * --column;
 	MAP_HEIGHT = TILE_HEIGHT * --row;
 

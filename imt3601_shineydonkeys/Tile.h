@@ -11,9 +11,9 @@ public:
 	int tileType;
 	bool  _blocking;
 
-	virtual ~Tile();
-
 	bool isBlocking() const { return _blocking; }
+
+	void changeType(unsigned int newType, bool blocking);
 
 protected:
 	Tile();

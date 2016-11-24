@@ -46,13 +46,15 @@ void Entity::setPosition(sf::Vector2f position)
 
 	auto gc = getComponent<GraphicsComponent>();
 	if(gc != nullptr)
-		gc->getActiveSprite().setPosition(position);
+	{
+		gc->getActiveSprite().setPosition(position + gc->getSpriteOffset());		
+	}
 
 	auto pc = getComponent<PhysicsComponent>();
 	if (pc != nullptr)
 	{
-		pc->getCollider().left = position.x;
-		pc->getCollider().top = position.y;
+		pc->getCollider().left = position.x + gc->getSpriteOffset().x;
+		pc->getCollider().top = position.y + gc->getSpriteOffset().y;
 	}
 }
 

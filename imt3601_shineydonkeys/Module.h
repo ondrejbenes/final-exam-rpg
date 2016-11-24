@@ -5,7 +5,8 @@ enum ModuleType
 	AUDIO,
 	GAME,
 	NETWORK,
-	RENDERER
+	RENDERER,
+	SCHEDULER
 };
 
 class Module

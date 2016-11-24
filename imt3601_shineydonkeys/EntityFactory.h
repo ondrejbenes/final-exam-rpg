@@ -54,16 +54,22 @@ inline Npc* EntityFactory::create<Npc>()
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
 
-	auto weapon = std::make_shared<Weapon>(10, 20, 1000);
+	auto weapon = std::make_shared<Weapon>(25, 50, 1000);
 	npc->setEquipedWeapon(weapon);
 	// npc->getInventory().push_back(weapon);
 
 	auto key = createInventoryItem("Resources/Images/Keys/BronzeKey.png");
 	key->setName("Bronze Key");
 	npc->getInventory().push_back(key);
+	auto skey = createInventoryItem("Resources/Images/Keys/SilverKey.png");
+	skey->setName("Silver Key");
+	npc->getInventory().push_back(skey);
+	auto gkey = createInventoryItem("Resources/Images/Keys/GoldKey.png");
+	gkey->setName("Gold Key");
+	npc->getInventory().push_back(gkey);
 
 	auto gc = new GraphicsComponent(*npc);
-	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite);
+	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite, 4);
 	gc->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
 	npc->addComponent(gc);
 
@@ -73,7 +79,10 @@ inline Npc* EntityFactory::create<Npc>()
 	npc->addComponent(new CombatComponent(*npc));
 
 	auto pc = new PhysicsComponent(*npc);
-	pc->setCollider(sprite.getGlobalBounds());
+	auto colliderRect = sf::FloatRect(sprite.getGlobalBounds());
+	colliderRect.width /= 4;
+	colliderRect.height /= 4;
+	pc->setCollider(colliderRect);
 	npc->addComponent(pc);
 
 	npc->addComponent(new AnimationComponent(*npc));
@@ -111,7 +120,7 @@ inline Player* EntityFactory::create<Player>()
 	sf::Sprite combatSprite;
 	combatSprite.setTexture(*combatTexture);
 	
-	auto sword = std::make_shared<Weapon>(50, 75, 1000);
+	auto sword = std::make_shared<Weapon>(25, 50, 1000);
 	initWeapon(sword, "Resources/Images/Weapons/Sword.png");
 	player->setEquipedWeapon(sword);
 	player->getInventory().push_back(sword);
@@ -124,15 +133,18 @@ inline Player* EntityFactory::create<Player>()
 	//player->getInventory().push_back(createInventoryItem("Resources/Images/Keys/GoldKey.png"));
 
 	auto gc = new GraphicsComponent(*player);
-	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite);
-	gc->addSprite(CombatComponent::COMBAT_SPRITE_NAME, combatSprite);
+	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite, 4);
+	gc->addSprite(CombatComponent::COMBAT_SPRITE_NAME, combatSprite, 4);
 	gc->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
 
 	player->addComponent(gc);
 	player->addComponent(new CombatComponent(*player));
 	
 	auto pc = new PhysicsComponent(*player);
-	pc->setCollider(sprite.getGlobalBounds());
+	auto colliderRect = sf::FloatRect(sprite.getGlobalBounds());
+	colliderRect.width /= 4;
+	colliderRect.height /= 4;
+	pc->setCollider(colliderRect);
 	player->addComponent(pc);
 
 	player->addComponent(new AnimationComponent(*player));
