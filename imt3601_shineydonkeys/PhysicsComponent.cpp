@@ -6,6 +6,7 @@
 #include "MainGame.h"
 #include "Tile.h"
 #include "GraphicsComponent.h"
+#include "Tilemap.h"
 
 PhysicsComponent::PhysicsComponent(Entity& parent, bool _static) : 
 EntityComponent(parent) ,
@@ -158,5 +159,6 @@ bool PhysicsComponent::hasCollision(const sf::Vector2f& newPosition) const
 
 const std::string PhysicsComponent::MOVE_SPRITE_NAME = "move";
 
-const sf::Vector2f PhysicsComponent::defaultVelocity = sf::Vector2f(200, 200);
+const sf::Vector2f PhysicsComponent::DEFAULT_PLAYER_VELOCITY = sf::Vector2f(225, 225);
+const sf::Vector2f PhysicsComponent::DEFAULT_NPC_VELOCITY = sf::Vector2f(150, 150);
 const sf::Vector2f PhysicsComponent::ZERO_VELOCITY = sf::Vector2f(0, 0);

@@ -21,6 +21,11 @@ AiPatrol::~AiPatrol()
 
 void AiPatrol::update()
 {
+	if (_timeSinceLastUpdate.getElapsedTime().asSeconds() >= UPDATE_FREQUENCY)
+		_timeSinceLastUpdate.restart();
+	else
+		return;
+
 	auto currentLocation = _aiComponent->getParent().getPosition();
 	if(VectorUtilities::calculateDistance(currentLocation, _movePoint) < 10)
 	{
@@ -28,7 +33,6 @@ void AiPatrol::update()
 		_movePoint = getNextMovePoint();
 	} else
 	{
-		// TODO don't call this every frame
 		setVelocityTowardsPosition(_movePoint);
 	}
 
@@ -39,43 +43,6 @@ void AiPatrol::update()
 		LOG_D("Going from Patrol to Attack ");
 		_aiComponent->ChangeState(new AiAttack(_aiComponent, _center, _patrolRadius));
 	}
-
-	//auto playerPos = EntityManager::getInstance()->getLocalPlayer()->getPosition();
-	//auto aiPos = _aiComponent->getParent().getPosition();
-
-	//if (isPlayerInRadius(sf::Vector2f(4120, 2310), 500))
-	//{
-	//	if (VectorUtilities::calculateDistance(playerPos, aiPos) > 100)
-	//		setVelocityTowardsPosition(playerPos);
-	//	else
-	//		_aiComponent->getParent().getComponent<PhysicsComponent>()->setVelocity(sf::Vector2f(0, 0));
-	//} 
-	//else
-	//{
-	//	auto pc = _aiComponent->getParent().getComponent<PhysicsComponent>();
-
-	//	if (framesInOneDirection > 60 * 1) // 60 FPS, 1 secs
-	//	{
-	//		int randVelocities[] = { -PhysicsComponent::defaultVelocity.x, 0, PhysicsComponent::defaultVelocity.x };
-	//		sf::Vector2f velocity;
-	//		velocity.x = randVelocities[rand() % 3];
-	//		velocity.y = randVelocities[rand() % 3];
-	//		if (rand() % 2)
-	//			velocity.x = 0;
-	//		else
-	//			velocity.y = 0;
-	//		pc->setVelocity(velocity);
-	//		framesInOneDirection = 0;
-	//	}
-
-	//	framesInOneDirection++;
-	//	if (test > 300)
-	//	{
-	//		_aiComponent->ChangeState(new AiAttack(_aiComponent));
-	//		test = 0;
-	//	}
-	//	else test++;
-	//}
 }
 
 sf::Vector2f AiPatrol::getNextMovePoint() const
@@ -88,3 +55,5 @@ sf::Vector2f AiPatrol::getNextMovePoint() const
 
 	return sf::Vector2f(newX, newY);
 }
+
+float AiPatrol::UPDATE_FREQUENCY = 1;

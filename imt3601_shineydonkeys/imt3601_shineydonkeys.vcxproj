@@ -197,7 +197,6 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Label.cpp" />
-    <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -206,7 +205,6 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClCompile Include="Minimap.cpp" />
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="Network.cpp" />
-    <ClCompile Include="NetworkInputComponent.cpp" />
     <ClCompile Include="Npc.cpp" />
     <ClCompile Include="PacketFactory.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
@@ -284,7 +282,6 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Label.h" />
-    <ClInclude Include="Level.h" />
     <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MainGame.h" />
@@ -292,7 +289,6 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClInclude Include="Minimap.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="Network.h" />
-    <ClInclude Include="NetworkInputComponent.h" />
     <ClInclude Include="Npc.h" />
     <ClInclude Include="PacketFactory.h" />
     <ClInclude Include="PhysicsComponent.h" />

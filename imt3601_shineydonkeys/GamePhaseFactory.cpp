@@ -114,6 +114,10 @@ Menu* GamePhaseFactory::createMainMenu()
 {
 	auto configFile = L"./Config/main_menu.ini";
 
+	auto gamenamelabel = createLabel(
+		configFile,
+		L"gamenamelabel");
+
 	auto singlePlayer = createButton(
 		configFile, 
 		L"singleplayer", 
@@ -168,6 +172,7 @@ Menu* GamePhaseFactory::createMainMenu()
 		});
 
 	auto menu = new Menu;
+	menu->_ui.addElement(gamenamelabel);
 	menu->_ui.addElement(singlePlayer);
 	menu->_ui.addElement(startMP);
 	menu->_ui.addElement(joinMP);

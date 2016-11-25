@@ -1,6 +1,6 @@
 #include "Tile.h"
-#include "GamePhaseFactory.h"
 #include "GraphicsComponent.h"
+#include "Tilemap.h"
 
 Tile::Tile() : tileType(-1), _blocking(false)
 {

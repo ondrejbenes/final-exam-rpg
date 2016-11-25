@@ -11,8 +11,11 @@ class PhysicsComponent : public EntityComponent
 public:	
 	static const std::string MOVE_SPRITE_NAME;
 
-	/* Default velocity in pixels per second */
-	static const sf::Vector2f defaultVelocity;
+	/* Default NPC velocity in pixels per second */
+	static const sf::Vector2f DEFAULT_NPC_VELOCITY;
+
+	/* Default Player velocity in pixels per second */
+	static const sf::Vector2f DEFAULT_PLAYER_VELOCITY;
 
 	/* Zero (still) velocity */
 	static const sf::Vector2f ZERO_VELOCITY;

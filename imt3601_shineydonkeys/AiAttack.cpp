@@ -35,6 +35,11 @@ void AiAttack::update()
 	{
 		if (VectorUtilities::calculateDistance(playerPos, aiPos) > Weapon::WEAPON_RANGE)
 		{
+			if (_moveTowardsPlayerClock.getElapsedTime().asMilliseconds() >= MOVE_TOWARDS_PLAYER_RECALC_FREQ_MS)
+				_moveTowardsPlayerClock.restart();
+			else
+				return;
+
 			setVelocityTowardsPosition(playerPos);
 			if (_parentCombatComp->isInCombat())
 			{
@@ -68,3 +73,5 @@ void AiAttack::update()
 	}
 
 }
+
+float AiAttack::MOVE_TOWARDS_PLAYER_RECALC_FREQ_MS = 500;

@@ -6,7 +6,7 @@
 
 #include <memory>
 
-#define DRAW_COLLIDERS 1
+#define DRAW_COLLIDERS 0
 
 class GraphicsComponent : public EntityComponent
 {

@@ -3,7 +3,6 @@
 #include "EntityManager.h"
 #include "EntityFactory.h"
 #include "Tilemap.h"
-#include "Level.h"
 #include "Game.h"
 #include "Blackboard.h"
 #include "GamePhaseManager.h"
@@ -43,20 +42,38 @@ MainGame::MainGame() :
 	entityManager->clearCharacters();
 
 	entityManager->add(player);
-	//player->setPosition(sf::Vector2f(4250, 2550)); //TEST
 	player->setPosition(sf::Vector2f(600, 600));
 	entityManager->setLocalPlayer(player);
 
-	auto npc = factory.create<Npc>();
-	//auto pos = sf::Vector2f(4120, 2310); //TESTs
+	auto npc1 = factory.create<Npc>();
 	auto pos = sf::Vector2f(250, 230);
-	npc->setPosition(pos);
-	auto pc = npc->getComponent<AiComponent>();
+	npc1->setPosition(pos);
+	auto ac = npc1->getComponent<AiComponent>();
 
 	if (!Network::isMultiplayer() || Network::isServer())
-		pc->ChangeState(new AiPatrol(pc, pos, 500));
+		ac->ChangeState(new AiPatrol(ac, pos, 500));
 
-	entityManager->add(npc);
+	entityManager->add(npc1);
+
+	auto npc2 = factory.create<Npc>();
+	pos = sf::Vector2f(450, 250);
+	npc2->setPosition(pos);
+	ac = npc2->getComponent<AiComponent>();
+
+	if (!Network::isMultiplayer() || Network::isServer())
+		ac->ChangeState(new AiPatrol(ac, pos, 500));
+
+	entityManager->add(npc2);
+
+	auto npc3 = factory.create<Npc>();
+	pos = sf::Vector2f(750, 230);
+	npc3->setPosition(pos);
+	ac = npc3->getComponent<AiComponent>();
+
+	if (!Network::isMultiplayer() || Network::isServer())
+		ac->ChangeState(new AiPatrol(ac, pos, 500));
+
+	entityManager->add(npc3);
 
 	auto donkey = factory.createDonkey();
 	donkey->setPosition(sf::Vector2f(900, 600));
@@ -106,12 +123,16 @@ MainGame::MainGame() :
 	donkey->getComponent<PhysicsComponent>()->getTriggers().push_back(donkeyTextTrigger);
 	entityManager->add(donkey);
 
+#ifdef  _DEBUG
+	loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
+#else
 	loadLevel("Resources/Images/tiles.png", "Resources/Levels/FinalExamMap_v2.csv");
-	// loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
+#endif
 
 	loadControls();
 	SetCursor(cursor);
 
+#ifndef _DEBUG
 	auto arenaTeleportTile = entityManager->getTileAtPos(arenaTunnelEntrance);
 	attachTriggerCallbackToTile(arenaTeleportTile,
 		[](Entity* enteringEntity)
@@ -221,6 +242,7 @@ MainGame::MainGame() :
 		dynamic_cast<Audio*>(target)->playMusic(Audio::THEME_SONG);
 	}
 	);
+#endif // notdef _DEBUG
 
 	Blackboard::getInstance()->leaveCallback(
 		RENDERER,
@@ -430,7 +452,7 @@ void MainGame::handleMovement()
 {
 	auto localPlayer = EntityManager::getInstance()->getLocalPlayer();
 	auto physicsComponent = localPlayer->getComponent<PhysicsComponent>();
-	auto defaultVelocity = PhysicsComponent::defaultVelocity;
+	auto defaultVelocity = PhysicsComponent::DEFAULT_PLAYER_VELOCITY;
 	sf::Vector2f newVelocity;
 
 	if (sf::Keyboard::isKeyPressed(CONTROLS.up))
@@ -454,15 +476,15 @@ void MainGame::handleMovement()
 		newVelocity = PhysicsComponent::ZERO_VELOCITY;
 	}
 
-	physicsComponent->setVelocity(newVelocity);
+	if(newVelocity != physicsComponent->getVelocity())
+		physicsComponent->setVelocity(newVelocity);
 }
 
 bool MainGame::loadLevel(const std::string& textureFileName, const std::string& levelDefinitionFileName)
 {
-	_currentLevel = Level();
-	_currentLevel.tilemap = new Tilemap();
+	auto tilemap = new Tilemap();
 	//LevelLoader();
-	if (!_currentLevel.tilemap->loadFromFile(textureFileName, levelDefinitionFileName))
+	if (!tilemap->loadFromFile(textureFileName, levelDefinitionFileName))
 	{
 		LOG_E("Failed to load level");
 		return  false;

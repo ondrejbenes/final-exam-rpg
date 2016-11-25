@@ -32,26 +32,27 @@ void AiState::setVelocityTowardsPosition(const sf::Vector2f& position)
 		if (yDiff > 0)
 		{
 			// go down
-			newVelocity = sf::Vector2f(0, 1 * PhysicsComponent::defaultVelocity.y);
+			newVelocity = sf::Vector2f(0, 1 * PhysicsComponent::DEFAULT_NPC_VELOCITY.y);
 		}
 		else
 		{
 			// go up
-			newVelocity = sf::Vector2f(0, -1 * PhysicsComponent::defaultVelocity.y);
+			newVelocity = sf::Vector2f(0, -1 * PhysicsComponent::DEFAULT_NPC_VELOCITY.y);
 		}
 	} 
 	else if (xDiff > 0)
 	{
 		// go right
-		newVelocity = sf::Vector2f(1 * PhysicsComponent::defaultVelocity.x, 0);
+		newVelocity = sf::Vector2f(1 * PhysicsComponent::DEFAULT_NPC_VELOCITY.x, 0);
 	}
 	else
 	{
 		// go left
-		newVelocity = sf::Vector2f(-1 * PhysicsComponent::defaultVelocity.x, 0);
+		newVelocity = sf::Vector2f(-1 * PhysicsComponent::DEFAULT_NPC_VELOCITY.x, 0);
 	}
 
-	pc->setVelocity(newVelocity);
+	if(newVelocity != pc->getVelocity())
+		pc->setVelocity(newVelocity);
 }
 
 bool AiState::isPlayerInRadius(const sf::Vector2f& center, const float radius) const

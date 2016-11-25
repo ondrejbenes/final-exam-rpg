@@ -13,6 +13,7 @@
 #include "PhysicsComponent.h"
 #include "GraphicsComponent.h"
 #include "MainGame.h"
+#include "Logger.h"
 
 CombatComponent::CombatComponent(Entity& parent) :
 EntityComponent(parent),
@@ -82,9 +83,13 @@ void CombatComponent::takeDamage(const unsigned int damage)
 
 	auto stats = dynamic_cast<Character*>(&getParent())->getStats(); 
 	stats->current_hitpoints = (damage > stats->current_hitpoints) ? 0U : (stats->current_hitpoints - damage);
-
+	
 	auto x = parent.getPosition().x;
 	auto y = parent.getPosition().y;
+
+	// TODO fix end combat when fighting multiple enemies and player dies
+	if(_other == nullptr)
+		return;
 
 	if (_other->getPosition().x > parent.getPosition().x)
 		x -= 25;

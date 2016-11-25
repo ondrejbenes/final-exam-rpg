@@ -1,10 +1,11 @@
 #pragma once
 
 #include "GamePhase.h"
-#include "Level.h"
-#include <SFML/Window/Keyboard.hpp>
-#include <memory>
 #include "Tile.h"
+
+#include <memory>
+
+#include <SFML/Window/Keyboard.hpp>
 
 struct Controls
 {
@@ -46,7 +47,6 @@ protected:
 	MainGame();
 
 private:
-	Level _currentLevel;
 	bool _levelComplete;
 
 	bool _escapePressed;

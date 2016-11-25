@@ -32,7 +32,6 @@ void Network::update()
 	for (auto it = callbacks.begin(); it != callbacks.end(); ++it)
 		(*it)(this);
 
-	// TODO weird?
 	if (!_isMultiplayer)
 		return;
 
@@ -106,6 +105,12 @@ void Network::initAsClient()
 
 void Network::broadcast(sf::Packet& packet)
 {
+	/*
+	std::string msg;
+	packet >> msg;
+	LOG_D("Broadcasting: " + msg);
+	*/
+
 	if (_isServer)
 	{
 		for (auto i = 0; i < _clients.size(); i++)
