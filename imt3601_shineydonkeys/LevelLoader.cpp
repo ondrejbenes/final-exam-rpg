@@ -47,4 +47,22 @@ LevelLoader::LevelLoader()
 
 }
 
+void LevelLoader::load(const std::string& definitionXml) const
+{
+	// load map size
+
+	// load tile size
+
+	// load list of blocking tiles
+
+	// load tiles and add them to EntityManager
+
+	// optional: load positions of gates, arena teleport etc.
+
+	// load player
+
+	// load npcs
+
+	// create donkey
+}
 

@@ -1,14 +1,8 @@
 #include "EntityFactory.h"
+
 #include <regex>
 
-EntityFactory::EntityFactory(){
-
-}
-
-EntityFactory::~EntityFactory(){
-
-}
-
+// TODO use XML instead?
 Entity* EntityFactory::createFromToString(std::string str)
 {
 	std::regex entityRegEx("Type: class ([[:w:]]+), Id: .*, Pos: ([[:d:]]+\.?[[:d:]]*);([[:d:]]+\.?[[:d:]]*)");
@@ -87,4 +81,47 @@ Character* EntityFactory::createDonkey()
 	donkey->addComponent(pc);
 	
 	return donkey;
+}
+
+Npc* EntityFactory::createNpcFromXml(const tinyxml2::XMLElement& element) 
+{
+	// create instance
+
+	// load stats
+
+	// create weapon
+
+	// create inventory items
+
+	// load texture
+
+	// create sprite
+
+	// create components (consider moving to constructor)
+
+	// set position
+
+	// set AI state
+
+}
+
+Player* EntityFactory::createPlayerFromXml(const tinyxml2::XMLElement& element) 
+{
+
+	// create instance
+
+	// load stats
+
+	// create weapon
+
+	// create inventory items
+
+	// load textures (move, combat)
+
+	// create sprites (move, combat)
+
+	// create components (consider moving to constructor)
+
+	// set position
+
 }

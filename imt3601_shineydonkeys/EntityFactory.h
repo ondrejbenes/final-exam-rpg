@@ -15,22 +15,21 @@
 #include "ConfigIO.h"
 
 #include <sstream>
+#include "tinyxml2.h"
 
 class EntityFactory
 {
-public:
-	EntityFactory();
-	virtual ~EntityFactory();
-
-	Entity* createFromToString(std::string str);
-	void initWeapon(std::shared_ptr<Item> weapon, const std::string& texturePath);
+public:	
 	template <typename T> 
 	T* create();
 
-	std::shared_ptr<Item> createInventoryItem(const std::string& texturePath);
-
-	// TODO seriously? :D
+	Entity* createFromToString(std::string str);
+	Npc* createNpcFromXml(const tinyxml2::XMLElement& element);
+	Player* createPlayerFromXml(const tinyxml2::XMLElement& element);
 	Character* createDonkey();
+private:
+	void initWeapon(std::shared_ptr<Item> weapon, const std::string& texturePath);
+	std::shared_ptr<Item> createInventoryItem(const std::string& texturePath);
 };
 
 template <typename T>
