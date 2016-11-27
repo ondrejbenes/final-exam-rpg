@@ -26,7 +26,7 @@ void AiState::setVelocityTowardsPosition(const sf::Vector2f& position)
 	auto yDiff = position.y - aiPos.y;
 
 	sf::Vector2f newVelocity;
-	if (abs(xDiff) < 10)
+	if (abs(xDiff) < 32)
 	{
 		// go up or down
 		if (yDiff > 0)

@@ -64,9 +64,6 @@
     <Filter Include="Source Files\Core\Module\Game">
       <UniqueIdentifier>{9c888a7c-ca2a-4d51-930c-c8989d8706da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Core\Module\Renderer">
-      <UniqueIdentifier>{f9059da1-ecc8-47c9-a84b-298a86194e01}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Core\Module\Network">
       <UniqueIdentifier>{f32c282d-239c-459b-b9b8-b88ad44d1213}</UniqueIdentifier>
     </Filter>
@@ -165,12 +162,6 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files\Core\Module\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files\Core\Module\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Core\Module\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="Console.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
@@ -243,9 +234,6 @@
     <ClCompile Include="AiState.cpp">
       <Filter>Source Files\Entity\Component\Ai</Filter>
     </ClCompile>
-    <ClCompile Include="AiIdle.cpp">
-      <Filter>Source Files\Entity\Component\Ai</Filter>
-    </ClCompile>
     <ClCompile Include="AiPatrol.cpp">
       <Filter>Source Files\Entity\Component\Ai</Filter>
     </ClCompile>
@@ -314,6 +302,12 @@
     </ClCompile>
     <ClCompile Include="UiElementFactory.cpp">
       <Filter>Source Files\Core\Module\Game\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files\Core\Module</Filter>
+    </ClCompile>
+    <ClCompile Include="AiIdle.cpp">
+      <Filter>Source Files\Entity\Component\Ai</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -405,12 +399,6 @@
     <ClInclude Include="Game.h">
       <Filter>Header Files\Core\Module\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Header Files\Core\Module\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\Core\Module\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="Console.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -486,9 +474,6 @@
     <ClInclude Include="AiState.h">
       <Filter>Header Files\Entity\Component\Ai</Filter>
     </ClInclude>
-    <ClInclude Include="AiIdle.h">
-      <Filter>Header Files\Entity\Component\Ai</Filter>
-    </ClInclude>
     <ClInclude Include="AiPatrol.h">
       <Filter>Header Files\Entity\Component\Ai</Filter>
     </ClInclude>
@@ -557,6 +542,12 @@
     </ClInclude>
     <ClInclude Include="UiElementFactory.h">
       <Filter>Header Files\Core\Module\Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files\Core\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="AiIdle.h">
+      <Filter>Header Files\Entity\Component\Ai</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

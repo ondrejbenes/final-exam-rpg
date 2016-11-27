@@ -16,8 +16,6 @@ public:
 	void update() override;
 	void draw(std::shared_ptr<sf::RenderWindow> window) override;
 	sf::FloatRect getBounds() override;
-
-	~DamageSplash();
 private:
 	unsigned int _damage;
 	sf::Time _lifetime = sf::seconds(2);

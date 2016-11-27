@@ -41,8 +41,7 @@ private:
 
 	// Server fields
 	sf::TcpListener _listener;
-	// TODO unique ptr?
-	std::vector<sf::TcpSocket*> _clients; 
+	std::vector<std::unique_ptr<sf::TcpSocket>> _clients; 
 	sf::SocketSelector _selector;
 
 	sf::Clock _refreshClock;

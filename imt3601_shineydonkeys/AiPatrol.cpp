@@ -14,11 +14,6 @@ _patrolRadius(patrolRadius)
 	_movePoint = getNextMovePoint();
 }
 
-AiPatrol::~AiPatrol()
-{
-
-}
-
 void AiPatrol::update()
 {
 	if (_timeSinceLastUpdate.getElapsedTime().asSeconds() >= UPDATE_FREQUENCY)

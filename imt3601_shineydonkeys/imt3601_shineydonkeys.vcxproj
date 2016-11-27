@@ -171,7 +171,6 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Blackboard.cpp" />
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="ChatBoard.cpp" />
     <ClCompile Include="Scheduler.cpp" />
@@ -256,7 +255,6 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClInclude Include="Audio.h" />
     <ClInclude Include="Blackboard.h" />
     <ClInclude Include="Button.h" />
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="ChatBoard.h" />
     <ClInclude Include="Scheduler.h" />

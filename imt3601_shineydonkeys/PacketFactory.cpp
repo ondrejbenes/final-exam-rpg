@@ -67,6 +67,18 @@ sf::Packet PacketFactory::createEnterCombat(unsigned entity1Id, unsigned entity2
 	return packet;
 }
 
+sf::Packet PacketFactory::createEndCombat(unsigned entityId) 
+{
+	std::stringstream ss;
+	ss << END_COMBAT;
+	ss << ATTRIBUTE_SEPARATOR;
+	ss << entityId;
+
+	sf::Packet packet;
+	packet << ss.str();
+	return packet;
+}
+
 sf::Packet PacketFactory::createTakeDamage(unsigned entityId, unsigned damage) 
 {
 	std::stringstream ss;

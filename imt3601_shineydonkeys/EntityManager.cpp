@@ -11,6 +11,8 @@ std::shared_ptr<EntityManager> EntityManager::getInstance()
 
 void EntityManager::add(Entity* entity)
 {
+	_entityById[entity->id] = entity;
+
 	auto entityAsNodeData = reinterpret_cast<QuadTreeNodeData*>(entity);
 	if (typeid(*entity) == typeid(Tile))
 		_tiles.add(entityAsNodeData);
@@ -74,13 +76,7 @@ Character* EntityManager::getCharacterAtPos(const sf::Vector2f& pos)
 
 Character* EntityManager::getCharacterById(unsigned int id) 
 {
-	// TODO refacor - map<id, char*>
-	auto all = getAllCharacters();
-	for (auto it = begin(all); it != end(all); ++it)
-		if ((*it)->id == id)
-			return *it;
-
-	return nullptr;
+	return dynamic_cast<Character*>(_entityById[id]);
 }
 
 std::vector<Tile*> EntityManager::getAllTiles()
@@ -121,13 +117,7 @@ Tile* EntityManager::getTileAtPos(const sf::Vector2f& pos)
 
 Tile* EntityManager::getTileById(unsigned id) 
 {
-	// TODO refacor - map<id, tile*> or common map with chars?
-	auto all = getAllTiles();
-	for (auto it = begin(all); it != end(all); ++it)
-		if ((*it)->id == id)
-			return *it;
-
-	return nullptr;
+	return dynamic_cast<Tile*>(_entityById[id]);
 }
 
 EntityManager::EntityManager() :

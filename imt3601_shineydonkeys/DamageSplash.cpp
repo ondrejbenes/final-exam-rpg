@@ -3,10 +3,9 @@
 #include "GamePhaseManager.h"
 #include "Logger.h"
 
-DamageSplash::DamageSplash(unsigned damage, float x, float y) :
+DamageSplash::DamageSplash(unsigned int damage, float x, float y) :
 _damage(damage)
 {
-	// TODO change to different font?
 	auto& font = ResourceLoader::getInstance()->getMenuFont();
 	auto fontSize = 16;
 
@@ -35,9 +34,4 @@ void DamageSplash::draw(std::shared_ptr<sf::RenderWindow> window)
 sf::FloatRect DamageSplash::getBounds()
 {
 	return _drawableText.getGlobalBounds();
-}
-
-DamageSplash::~DamageSplash()
-{
-
 }

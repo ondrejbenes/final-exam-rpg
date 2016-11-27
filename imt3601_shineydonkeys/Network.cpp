@@ -39,7 +39,6 @@ void Network::update()
 
 	auto phase = GamePhaseManager::getInstance()->getCurrentPhase();
 
-	// TODO Strategy patt?
 	if(typeid(*phase) == typeid(Menu))
 	{
 		if (_isServer)
@@ -61,7 +60,7 @@ void Network::clear()
 	_socket.disconnect();
 	
 	_selector.remove(_listener);
-	for (auto s : _clients)
+	for (auto& s : _clients)
 	{
 		s->disconnect();
 		_selector.remove(*s);		
@@ -151,7 +150,7 @@ void Network::updateServerMenu()
 	{
 		if (_selector.isReady(_listener))
 		{
-			auto socket = new sf::TcpSocket();
+			auto socket = std::make_unique<sf::TcpSocket>();
 			_listener.accept(*socket);
 			sf::Packet packet;
 			std::string id;
@@ -170,8 +169,8 @@ void Network::updateServerMenu()
 			auto& ui = GamePhaseManager::getInstance()->getCurrentPhase()->getUi();
 			ui.addElement(element);
 
-			_clients.push_back(socket);
 			_selector.add(*socket);
+			_clients.push_back(move(socket));
 		}		
 	}
 }
@@ -221,6 +220,15 @@ void Network::updateClientMainGame()
 		auto entity2 = entityManager->getCharacterById(stoi(tokens[2]));
 
 		entity1->getComponent<CombatComponent>()->startCombat(entity2);
+	}
+
+	if (packetType == END_COMBAT)
+	{
+		auto tokens = StringUtilities::split(msg, PacketFactory::ATTRIBUTE_SEPARATOR);
+		auto entityManager = EntityManager::getInstance();
+		auto entity = entityManager->getCharacterById(stoi(tokens[1]));
+
+		entity->getComponent<CombatComponent>()->endCombat();
 	}
 	
 	if (packetType == TAKE_DAMAGE)

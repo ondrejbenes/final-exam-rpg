@@ -98,6 +98,10 @@ void Engine::handleWindowEvents() const
 		case sf::Event::Closed:
 			dynamic_cast<Game*>(_modules.at(GAME).get())->stop();
 			break;
+		case sf::Event::Resized:
+			dynamic_cast<Renderer*>(_modules.at(RENDERER).get())->
+				resetWindowSize(sf::Vector2u(event.size.width, event.size.height));
+			break;
 		case sf::Event::MouseButtonReleased:
 		{
 			// translate window coordinates to map coordinates

@@ -8,17 +8,13 @@
 #include "ResourceLoader.h"
 #include "Logger.h"
 
-Renderer::Renderer(std::shared_ptr<sf::RenderWindow> mainWindow) : 
-Module(RENDERER), 
+Renderer::Renderer(std::shared_ptr<sf::RenderWindow> mainWindow) :
+Module(RENDERER),
 _mainWindow(mainWindow),
-_camera(1.0f)
+_zoom(1.0f)
 {
-
-}
-
-Renderer::~Renderer()
-{
-
+	_windowWidth = _mainWindow->getSize().x;
+	_windowHeight = _mainWindow->getSize().y;
 }
 
 bool Renderer::initialize()
@@ -37,35 +33,41 @@ void Renderer::update()
 void Renderer::render()
 {
 	GamePhaseManager::getInstance()->getCurrentPhase()->render(_mainWindow);
-	
+
 	auto console = Console::getInstance();
 	if (console->isVisible())
 		console->draw(_mainWindow);
 
 	auto player = EntityManager::getInstance()->getLocalPlayer();
+	auto view = _mainWindow->getView();
 
 	if (player != nullptr)
 	{
 		auto playerPos = player->getPosition();
-		// TODO remove magic constants
-		_camera.reset(sf::FloatRect(playerPos.x - 1280 / 2, playerPos.y - 720 / 2, 1280, 720));
-	} 
+		view.reset(sf::FloatRect(playerPos.x - _windowWidth / 2, playerPos.y - _windowHeight / 2, _windowWidth, _windowHeight));
+	}
 	else
 	{
-		_camera.reset(sf::FloatRect(0, 0, 1280, 720));
+		view.reset(sf::FloatRect(0, 0, _windowWidth, _windowHeight));
 	}
 
-	if(_fadeIn)
+	if (_fadeIn)
 		drawFadeIn();
 	if (_fadeOut)
 		drawFadeOut();
 
-	_camera.zoom(_camera.getZoom());
-	_camera.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
-	_mainWindow->setView(_camera);
+	// view.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
+	view.zoom(_zoom);
+	_mainWindow->setView(view);
 }
 
-void Renderer::fadeIn(const sf::Time& duration, const std::string& text) 
+void Renderer::resetWindowSize(const sf::Vector2u& newSize) 
+{
+	_windowWidth = newSize.x;
+	_windowHeight = newSize.y;
+}
+
+void Renderer::fadeIn(const sf::Time& duration, const std::string& text)
 {
 	_fadeIn = true;
 	_fadeOut = false;
@@ -75,14 +77,14 @@ void Renderer::fadeIn(const sf::Time& duration, const std::string& text)
 	_fadeText = sf::Text(text, font);
 }
 
-void Renderer::fadeOut(const sf::Time& duration, const std::string& text) 
+void Renderer::fadeOut(const sf::Time& duration, const std::string& text)
 {
 	_fadeIn = false;
 	_fadeOut = true;
 	_fadeDuration = duration;
 	_fadeClock.restart();
 	auto& font = ResourceLoader::getInstance()->getMenuFont();
-	_fadeText = sf::Text(text, font); 
+	_fadeText = sf::Text(text, font);
 }
 
 void Renderer::drawFadeIn() {
@@ -115,7 +117,7 @@ void Renderer::drawFadeOut() {
 		_fadeOut = false;
 	}
 	else
-	{		
+	{
 		_overlay.setPosition(_mainWindow->mapPixelToCoords(sf::Vector2i(0, 0)));
 
 		auto perc = std::min(1.0f, elapsedTime / float(_fadeDuration.asMilliseconds()));

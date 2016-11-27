@@ -20,12 +20,14 @@
 #include "Scheduler.h"
 
 #include <memory>
+#include "AiIdle.h"
 
 using namespace std::chrono_literals;
 
 MainGame::MainGame() :
 	_levelComplete(false),
-	_escapePressed(false)
+	_escapePressed(false),
+	_prevPlayerPos(sf::Vector2f())
 {
 	auto cursor = GetCursor();
 	SetCursor(LoadCursor(nullptr, IDC_WAIT));
@@ -53,7 +55,7 @@ MainGame::MainGame() :
 	auto ac = npc1->getComponent<AiComponent>();
 
 	if (!Network::isMultiplayer() || Network::isServer())
-		ac->ChangeState(new AiPatrol(ac, pos, 500));
+		ac->ChangeState(new AiIdle(ac, 200));
 
 	entityManager->add(npc1);
 
@@ -66,7 +68,7 @@ MainGame::MainGame() :
 		ac->ChangeState(new AiPatrol(ac, pos, 500));
 
 	entityManager->add(npc2);
-
+	/*
 	auto npc3 = factory.create<Npc>();
 	pos = sf::Vector2f(750, 230);
 	npc3->setPosition(pos);
@@ -75,7 +77,7 @@ MainGame::MainGame() :
 	if (!Network::isMultiplayer() || Network::isServer())
 		ac->ChangeState(new AiPatrol(ac, pos, 500));
 
-	entityManager->add(npc3);
+	entityManager->add(npc3);*/
 
 	auto donkey = factory.createDonkey();
 	donkey->setPosition(sf::Vector2f(900, 600));
@@ -294,14 +296,24 @@ void MainGame::render(std::shared_ptr<sf::RenderWindow> window)
 	if (player == nullptr)
 		return;
 	auto playerPos = player->getPosition();
-	auto boundary = QuadTreeBoundary(playerPos.x - 800, playerPos.x + 800, playerPos.y - 500, playerPos.y + 500);
-	auto tiles = entityManager->getTilesInInterval(boundary);
+
+	auto width = window->getSize().x / 1.9;
+	auto height = window->getSize().y / 1.8;
+	auto boundary = QuadTreeBoundary(playerPos.x - width, playerPos.x + width, playerPos.y - height, playerPos.y + height);
+	std::vector<Tile*> tiles;
+
+	if(playerPos == _prevPlayerPos)
+		tiles = _prevTiles;
+	else
+		tiles = entityManager->getTilesInInterval(boundary);
 	for (auto it = tiles.begin(); it != tiles.end(); ++it)
 	{
 		auto graphicsComponent = dynamic_cast<Entity*>(*it)->getComponent<GraphicsComponent>();
 		if (graphicsComponent != nullptr)
 			graphicsComponent->draw(window);
 	}
+	_prevTiles = tiles;
+	_prevPlayerPos = playerPos;
 
 	auto characters = entityManager->getCharactersInInterval(boundary);
 	for (auto it = characters.begin(); it != characters.end(); ++it)
@@ -540,32 +552,19 @@ void MainGame::returnToMainMenu() {
 	}
 }
 
-bool MainGame::hasKeys()
-{
-	auto player = EntityManager::getInstance()->getLocalPlayer();
-	auto keysCount = 0;
-	for (auto& item : player->getInventory())
-	{
-		if (item->getName() == "BronzeKey" || item->getName() == "SilverKey" || item->getName() == "GoldKey")
-			keysCount++;
-	}
-
-	// TODO chagne to 3
-	return keysCount >= 0;
-}
-
 Controls MainGame::CONTROLS = Controls();
 
-const sf::Vector2f MainGame::arenaTunnelEntrance = sf::Vector2f(3200, 3296);
-const sf::Vector2f MainGame::arenaTunnelExit = sf::Vector2f(6016, 4288);
+// TODO remove unlock tiles, change trigger areas
+sf::Vector2f MainGame::arenaTunnelEntrance = sf::Vector2f(3200, 3296);
+sf::Vector2f MainGame::arenaTunnelExit = sf::Vector2f(6016, 4288);
 
-const sf::Vector2f MainGame::bronzeKeyUnlockTile = sf::Vector2f(3200, 2752);
-const sf::Vector2f MainGame::bronzeKeyGateTile = sf::Vector2f(3200, 2784);
+sf::Vector2f MainGame::bronzeKeyUnlockTile = sf::Vector2f(3200, 2752);
+sf::Vector2f MainGame::bronzeKeyGateTile = sf::Vector2f(3200, 2784);
 
-const sf::Vector2f MainGame::silverKeyUnlockTile = sf::Vector2f(3200, 2912);
-const sf::Vector2f MainGame::silverKeyGateTile = sf::Vector2f(3200, 2944);
+sf::Vector2f MainGame::silverKeyUnlockTile = sf::Vector2f(3200, 2912);
+sf::Vector2f MainGame::silverKeyGateTile = sf::Vector2f(3200, 2944);
 
-const sf::Vector2f MainGame::goldKeyUnlockTile = sf::Vector2f(3200, 3168);
-const sf::Vector2f MainGame::goldKeyGateTile = sf::Vector2f(3200, 3200);
+sf::Vector2f MainGame::goldKeyUnlockTile = sf::Vector2f(3200, 3168);
+sf::Vector2f MainGame::goldKeyGateTile = sf::Vector2f(3200, 3200);
 
 bool MainGame::donkeyTextShown = false;

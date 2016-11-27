@@ -135,26 +135,12 @@ void CombatComponent::takeDamage(const unsigned int damage)
 			{
 				auto message = (*it)->getName() + " added to inventory";;
 				chatBoard->addMessage("System", message);
-				
-				if (Network::isServer())
-				{
-					Blackboard::getInstance()->leaveCallback(NETWORK,
-						[message](Module* target)
-					{
-						PacketFactory factory;
-						auto packet = factory.createChatMessage(std::string("System") + ": " + message);
-						auto network = dynamic_cast<Network*>(target);
-						network->broadcast(packet);
-					}
-					);
-				}
-
 				inventoryOfOther.push_back(*it);
 			}
 		} 
 		else
 		{
-			if (Network::isServer())
+			if (!Network::isMultiplayer() || Network::isServer())
 			{
 				auto phase = dynamic_cast<MainGame*>(GamePhaseManager::getInstance()->getCurrentPhase());
 				phase->handlePlayerDeath();

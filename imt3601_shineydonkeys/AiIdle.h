@@ -5,11 +5,13 @@
 class AiIdle : public AiState
 {
 public:
-	AiIdle(AiComponent* component);
-	~AiIdle();
+	static float UPDATE_FREQUENCY;
+
+	AiIdle(AiComponent* component, float attackRadius);
+
 	void update() override;
 private:
-	// TODO remove when we have smarter AI
-	int framesInOneDirection = 0;
+	float _attackRadius;
+	sf::Clock _timer;
 };
 

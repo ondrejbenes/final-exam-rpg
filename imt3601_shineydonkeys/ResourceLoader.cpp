@@ -17,6 +17,18 @@ std::shared_ptr<ResourceLoader> ResourceLoader::getInstance()
 	return instance;
 }
 
+std::shared_ptr<sf::Texture> ResourceLoader::getTexture(std::string filePath)
+{
+	if (_textures.find(filePath) != end(_textures))
+		return _textures[filePath].lock();
+
+	auto texture = std::make_shared<sf::Texture>();
+	if (!texture->loadFromFile(filePath))
+		LOG_E("Error loading texture: " + filePath);
+	_textures[filePath] = texture;
+	return _textures[filePath].lock();
+}
+
 const sf::Font& ResourceLoader::getMenuFont() const
 {
 	return _menuFont;

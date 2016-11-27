@@ -5,6 +5,7 @@
 #include "QuadTree.h"
 
 #include <memory>
+#include <map>
 
 // Forward declaration
 class Tile;
@@ -94,4 +95,6 @@ private:
 	Player* _localPlayer;
 	QuadTree _characters;
 	QuadTree _tiles;
+
+	std::map<unsigned int, Entity*> _entityById;
 };

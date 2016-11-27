@@ -23,17 +23,17 @@ public:
 
 	static bool donkeyTextShown;
 
-	const static sf::Vector2f arenaTunnelEntrance;
-	const static sf::Vector2f arenaTunnelExit;
+	static sf::Vector2f arenaTunnelEntrance;
+	static sf::Vector2f arenaTunnelExit;
 
-	const static sf::Vector2f bronzeKeyUnlockTile;
-	const static sf::Vector2f bronzeKeyGateTile;
+	static sf::Vector2f bronzeKeyUnlockTile;
+	static sf::Vector2f bronzeKeyGateTile;
 
-	const static sf::Vector2f silverKeyUnlockTile;
-	const static sf::Vector2f silverKeyGateTile;
+	static sf::Vector2f silverKeyUnlockTile;
+	static sf::Vector2f silverKeyGateTile;
 
-	const static sf::Vector2f goldKeyUnlockTile;
-	const static sf::Vector2f goldKeyGateTile;
+	static sf::Vector2f goldKeyUnlockTile;
+	static sf::Vector2f goldKeyGateTile;
 
 	virtual ~MainGame();
 
@@ -52,6 +52,8 @@ private:
 	bool _escapePressed;
 
 	std::vector<Tile*> _tilesToUpdate;
+	std::vector<Tile*> _prevTiles;
+	sf::Vector2f _prevPlayerPos;
 
 	void attachTriggerCallbackToTile(Tile* tile, std::function<void(Entity*)> callback);
 	void broadcastGameOverMessage();
@@ -63,6 +65,4 @@ private:
 
 	void drawHealthBar(std::shared_ptr<sf::RenderWindow> window);
 	void loadControls();
-
-	bool hasKeys();
 };
