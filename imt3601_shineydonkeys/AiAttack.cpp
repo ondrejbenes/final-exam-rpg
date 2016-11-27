@@ -7,6 +7,7 @@
 #include "Logger.h"
 #include "CombatComponent.h"
 #include "EntityFactory.h"
+#include "Blackboard.h"
 
 AiAttack::AiAttack(AiComponent* component, sf::Vector2f center, float attackRadius) :
 AiState(component),
@@ -55,11 +56,40 @@ void AiAttack::update()
 			{
 				_parentCombatComp->startCombat(player);
 
+				auto aiId = _aiComponent->getParent().id;
+				auto playerId = player->id;
+
+				Blackboard::getInstance()->leaveCallback(
+					NETWORK,
+					[aiId, playerId](Module* target)
+					{
+						PacketFactory factory;
+						auto network = dynamic_cast<Network*>(target);
+
+						auto startCombatPacket = factory.createEnterCombat(aiId, playerId);
+						network->broadcast(startCombatPacket);
+					}
+				);
+
 				if (_otherCombatComp == nullptr)
 					_otherCombatComp = player->getComponent<CombatComponent>();
 
 				if (!_otherCombatComp->isInCombat())
-					_otherCombatComp->startCombat(_parentAsChar);		
+				{
+					_otherCombatComp->startCombat(_parentAsChar);
+
+					Blackboard::getInstance()->leaveCallback(
+						NETWORK,
+						[aiId, playerId](Module* target)
+					{
+						PacketFactory factory;
+						auto network = dynamic_cast<Network*>(target);
+
+						auto startCombatPacket = factory.createEnterCombat(playerId, aiId);
+						network->broadcast(startCombatPacket);
+					}
+					);
+				}	
 
 				_aiComponent->getParent().getComponent<PhysicsComponent>()->setVelocity(
 					PhysicsComponent::ZERO_VELOCITY);

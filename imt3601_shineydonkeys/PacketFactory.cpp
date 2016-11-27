@@ -53,27 +53,31 @@ sf::Packet PacketFactory::createPositionChange(unsigned entityId, const sf::Vect
 	return packet;
 }
 
-sf::Packet PacketFactory::createEnterCombat(unsigned entityId) 
+sf::Packet PacketFactory::createEnterCombat(unsigned entity1Id, unsigned entity2Id)
 {
+	std::stringstream ss;
+	ss << ENTER_COMBAT;
+	ss << ATTRIBUTE_SEPARATOR;
+	ss << entity1Id;
+	ss << ATTRIBUTE_SEPARATOR;
+	ss << entity2Id;
+
 	sf::Packet packet;
-	packet << ENTER_COMBAT;
-
-	return packet;
-}
-
-sf::Packet PacketFactory::createLeaveCombat(unsigned entityId) 
-{
-	sf::Packet packet;
-	packet << LEAVE_COMBAT;
-
+	packet << ss.str();
 	return packet;
 }
 
 sf::Packet PacketFactory::createTakeDamage(unsigned entityId, unsigned damage) 
 {
-	sf::Packet packet;
-	packet << TAKE_DAMAGE;
+	std::stringstream ss;
+	ss << TAKE_DAMAGE;
+	ss << ATTRIBUTE_SEPARATOR;
+	ss << entityId;
+	ss << ATTRIBUTE_SEPARATOR;
+	ss << damage;
 
+	sf::Packet packet;
+	packet << ss.str();
 	return packet;
 }
 

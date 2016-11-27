@@ -46,9 +46,6 @@ void CombatComponent::update()
 	if (attackTimer.getElapsedTime().asMilliseconds() < weapon->getAttackSpeedMs())
 		return;
 	attackTimer.restart();
-	auto damageModifier = rand() % (weapon->getMaxDamage() - weapon->getMinDamage());
-	auto damage = weapon->getMinDamage() + damageModifier;
-	_otherCombatComp->takeDamage(damage);
 
 	Blackboard::getInstance()->leaveCallback(
 		AUDIO,
@@ -57,6 +54,13 @@ void CombatComponent::update()
 			dynamic_cast<Audio*>(target)->playSound(Audio::WEAPON_SLASH);
 		}
 	);
+
+	if (Network::isMultiplayer() && !Network::isServer())
+		return;
+
+	auto damageModifier = rand() % (weapon->getMaxDamage() - weapon->getMinDamage());
+	auto damage = weapon->getMinDamage() + damageModifier;
+	_otherCombatComp->takeDamage(damage);
 }
 
 void CombatComponent::startCombat(Character* other)
@@ -78,6 +82,21 @@ void CombatComponent::endCombat()
 
 void CombatComponent::takeDamage(const unsigned int damage)
 {
+	if (Network::isServer())
+	{
+		auto id = parent.id;
+
+		Blackboard::getInstance()->leaveCallback(NETWORK,
+			[id, damage](Module* target)
+		{
+			PacketFactory factory;
+			auto packet = factory.createTakeDamage(id, damage);
+			auto network = dynamic_cast<Network*>(target);
+			network->broadcast(packet);
+		}
+		);
+	}
+
 	std::stringstream ss;
 	auto parent = getParent();
 
@@ -116,24 +135,30 @@ void CombatComponent::takeDamage(const unsigned int damage)
 			{
 				auto message = (*it)->getName() + " added to inventory";;
 				chatBoard->addMessage("System", message);
-
-				Blackboard::getInstance()->leaveCallback(NETWORK,
-					[message](Module* target)
+				
+				if (Network::isServer())
+				{
+					Blackboard::getInstance()->leaveCallback(NETWORK,
+						[message](Module* target)
 					{
 						PacketFactory factory;
 						auto packet = factory.createChatMessage(std::string("System") + ": " + message);
 						auto network = dynamic_cast<Network*>(target);
 						network->broadcast(packet);
 					}
-				);
+					);
+				}
 
 				inventoryOfOther.push_back(*it);
 			}
 		} 
 		else
 		{
-			auto phase = dynamic_cast<MainGame*>(GamePhaseManager::getInstance()->getCurrentPhase());
-			phase->handlePlayerDeath();
+			if (Network::isServer())
+			{
+				auto phase = dynamic_cast<MainGame*>(GamePhaseManager::getInstance()->getCurrentPhase());
+				phase->handlePlayerDeath();
+			}
 		}
 
 		Blackboard::getInstance()->leaveCallback(

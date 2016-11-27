@@ -189,9 +189,6 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files\Core\Module\Game\GamePhase</Filter>
     </ClCompile>
-    <ClCompile Include="GameState.cpp">
-      <Filter>Source Files\Core\Module\Game\GameState</Filter>
-    </ClCompile>
     <ClCompile Include="GameStateLoader.cpp">
       <Filter>Source Files\Core\Module\Game\GameState</Filter>
     </ClCompile>
@@ -431,9 +428,6 @@
     </ClInclude>
     <ClInclude Include="GamePhase.h">
       <Filter>Header Files\Core\Module\Game\GamePhase</Filter>
-    </ClInclude>
-    <ClInclude Include="GameState.h">
-      <Filter>Header Files\Core\Module\Game\GameState</Filter>
     </ClInclude>
     <ClInclude Include="GameStateLoader.h">
       <Filter>Header Files\Core\Module\Game\GameState</Filter>

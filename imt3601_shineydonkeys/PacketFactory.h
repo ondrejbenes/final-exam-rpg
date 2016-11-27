@@ -12,7 +12,6 @@ enum PacketType
 	POSITION_CHANGE,
 	STATS_CHANGE,
 	ENTER_COMBAT,
-	LEAVE_COMBAT,
 	TAKE_DAMAGE,
 	CHAT,
 	TILE_SPRITE_CHANGE
@@ -26,10 +25,8 @@ public:
 
 	sf::Packet createVelocityChange(unsigned int entityId, const sf::Vector2f& newVelocity);
 	sf::Packet createPositionChange(unsigned int entityId, const sf::Vector2f& newPosition);
-	//sf::Packet createStatsChange(unsigned int entityId, const CharacterStats& stats);
 	
-	sf::Packet createEnterCombat(unsigned int entityId);
-	sf::Packet createLeaveCombat(unsigned int entityId);
+	sf::Packet createEnterCombat(unsigned int entityId, unsigned entity2Id);
 	sf::Packet createTakeDamage(unsigned int entityId, unsigned int damage);
 
 	sf::Packet createChatMessage(const std::string& message);

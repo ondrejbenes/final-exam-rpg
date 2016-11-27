@@ -1,13 +1,10 @@
 #pragma once
 
 #include "Module.h"
-#include "GameState.h"
 
 class Game : public Module
 {
 public:
-	GameState gameState;
-
 	Game();
 	virtual ~Game();
 	bool initialize() override;

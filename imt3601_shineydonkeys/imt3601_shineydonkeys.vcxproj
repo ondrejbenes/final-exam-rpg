@@ -189,7 +189,6 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClCompile Include="GamePhase.cpp" />
     <ClCompile Include="GamePhaseFactory.cpp" />
     <ClCompile Include="GamePhaseManager.cpp" />
-    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameStateLoader.cpp" />
     <ClCompile Include="GameStateSaver.cpp" />
     <ClCompile Include="GraphicsComponent.cpp" />
@@ -275,7 +274,6 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClInclude Include="GamePhase.h" />
     <ClInclude Include="GamePhaseFactory.h" />
     <ClInclude Include="GamePhaseManager.h" />
-    <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateLoader.h" />
     <ClInclude Include="GameStateSaver.h" />
     <ClInclude Include="GraphicsComponent.h" />
