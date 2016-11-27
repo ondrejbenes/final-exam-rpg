@@ -16,18 +16,13 @@ Tilemap::~Tilemap()
 
 }
 
-int Tilemap::generate()
-{
-
-	return 0;
-}
 
 bool Tilemap::loadFromFile(const std::string& textureFileName, const std::string& levelDefinitionFileName)
 {
 	auto entityManager = EntityManager::getInstance();
 	entityManager->clearTiles();
 
-	std::vector<int> blockingTiles = { 73, 163, 48, 49, 64, 65 };
+
 
 	EntityFactory factory;
 
@@ -53,7 +48,7 @@ bool Tilemap::loadFromFile(const std::string& textureFileName, const std::string
 			// TODO call Tile.changeType to remove duplicity
 			tile->tileType = type;
 
-			if (find(begin(blockingTiles), end(blockingTiles), type) != end(blockingTiles))
+			if (find(begin(BLOCKING_TILES), end(BLOCKING_TILES), type) != end(BLOCKING_TILES))
 				tile->_blocking = true;
 
 			auto x = column * TILE_WIDTH;
@@ -100,3 +95,5 @@ unsigned int Tilemap::TILE_HEIGHT = 32;
 
 unsigned int Tilemap::MAP_WIDTH = 0;
 unsigned int Tilemap::MAP_HEIGHT = 0;
+
+std::vector<unsigned> Tilemap::BLOCKING_TILES = std::vector<unsigned>();

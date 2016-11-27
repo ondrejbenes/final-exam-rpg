@@ -1,151 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Level>
- <TileMap>
-  <BlockingTilesID>486,287,310,312,335,244,311,288</BlockingTilesID>
-  <Tiles 
-link ="Resources/Levels/DONTUSETHISFinalExamMap.csv"/>
- </TileMap>
- <Player>
-  <Position>
-600,600</Position>
-  <HitPoints>
-1000</HitPoints>
-  <MinimumDamage>
-10</MinimumDamage>
-  <MaximumDamage>20</MaximumDamage>
- </Player>
- 
-<NPCs>
-
-<NPC>
-<Position>
-250, 230</Position>
-<Sprite link= "Resources/Images/Npc1.png"/>
-<HitPoints>
-150</HitPoints>
-</NPC>
-
-<NPC>
-<Position>
-1000,1000</Position>
-<Sprite link = "Resources/Images/Npc2.png"/>
-<HitPoints>
-200</HitPoints>
-
-</NPC>
-
-<NPC>
-<Position>
-2000,1500</Position>
-<Sprite link = "Resources/Images/Npc3.png"/>
-<HitPoints>
-300</HitPoints>
-</NPC>
-
-<NPC>
-<Position>
-2000,750</Position>
-<Sprite link = "Resources/Images/Npc4.png"/>
-<HitPoints>
-700</HitPoints>
-</NPC>
-
-<NPC>
-<Position>
-2500,800</Position>
-<Sprite link = "Resources/Images/BossDeamon.png"/>
-<HitPoints>
-1500</HitPoints>
-</NPC>
-</NPCs>
-
-<Weapons>
-
-<Weapons_player>
-
-<Weapon_Basic>
-<MinimumDamage>
-10</MinimumDamage>
-<Speed>
-<MaximumDamage>
-25</MaximumDamage>
-1000</Speed>
-</Weapon_Basic>
-
-<Weapon_Extra_1>
-<MinimumDamage>
-15</MinimumDamage>
-<MaximumDamage>
-40</MaximumDamage>
-<Speed>
-1500</Speed>
-<Image link = "Resources/Images/weapon1.png"/>
-</Weapon_Extra_1>
-
-<Weapon_Extra_2>
-<MinimumDamage>
-50</MinimumDamage>
-<MaximumDamage>
-100</MaximumDamage>
-<Speed>
-2000</Speed>
-<Image link = "Resources/Images/weapon2.png"/>
-</Weapon_Extra_2>
-
-</Weapons_player>
-
-<Weapon_NPC>
-
-<NPC_Weapon>
-<MinimumDamage>
-7</MinimumDamage>
-<MaximumDamage>
-14</MaximumDamage>
-<AttackSpeed>
-750</AttackSpeed>
-</NPC_Weapon>
-
-<NPC_Weapon>
-<MinimumDamage>
-10</MinimumDamage>
-<MaximumDamage>
-20</MaximumDamage>
-<AttackSpeed>
-1100</AttackSpeed>
-</NPC_Weapon>
-
-<NPC_Weapon>
-<MinimumDamage>
-10</MinimumDamage>
-<MaximumDamage>
-20</MaximumDamage>
-<AttackSpeed>
-1500</AttackSpeed>
-</NPC_Weapon>
-
-<NPC_Weapon>
-<MinimumDamage>
-3</MinimumDamage>
-<MaximumDamage>
-5</MaximumDamage>
-<AttackSpeed>
-2100</AttackSpeed>
-</NPC_Weapon>
-<NPC_Weapon>
-
-<MinimumDamage>
-25</MinimumDamage>
-<MaximumDamage>
-45</MaximumDamage>
-<AttackSpeed>
-500</AttackSpeed>
-</NPC_Weapon>
-
-</Weapon_NPC>
-
-</Weapons>
-
+	<TileMap>
+		<Size>
+			<MapSize Width="8000" Height="4800"/>
+			<TileSize Width="32" Height="32"/>
+		</Size>
+		<BlockingTilesID>486,287,310,312,335,244,311,288</BlockingTilesID>
+		<Tiles definition="Resources/Levels/DONTUSETHISFinalExamMap.csv" tiles="Resources/Images/tiles.png"/>
+		<SpecialTiles>
+			<arenaTunnelEntrance x="3200" y="3328"/>
+			<arenaTunnelExit x="7232" y="4096"/>
+			<Bronze x="3200" y="2784"/>
+			<Silver x="3200" y="3200"/>
+			<Gold x="3200" y="3328"/>
+		</SpecialTiles>
+	</TileMap>
+	<Player>
+		<Inventory>
+			<Item/>
+		</Inventory>
+		<Position>600,600</Position>
+		<HitPoints>1000</HitPoints>
+		<MinimumDamage>10</MinimumDamage>
+		<MaximumDamage>20</MaximumDamage>
+	</Player>
+	<NPCs>
+		<NPC>
+			<Position>250, 230</Position>
+			<Sprite link="Resources/Images/Npc1.png"/>
+			<HitPoints>150</HitPoints>
+		</NPC>
+		<NPC>
+			<Position>1000,1000</Position>
+			<Sprite link="Resources/Images/Npc2.png"/>
+			<HitPoints>200</HitPoints>
+		</NPC>
+		<NPC>
+			<Position>2000,1500</Position>
+			<Sprite link="Resources/Images/Npc3.png"/>
+			<HitPoints>300</HitPoints>
+		</NPC>
+		<NPC>
+			<Position>2000,750</Position>
+			<Sprite link="Resources/Images/Npc4.png"/>
+			<HitPoints>700</HitPoints>
+		</NPC>
+		<NPC>
+			<Position>2500,800</Position>
+			<Sprite link="Resources/Images/BossDeamon.png"/>
+			<HitPoints>1500</HitPoints>
+		</NPC>
+	</NPCs>
+	<Items>
+		<Weapons>
+			<Weapon name = "Scimitar">
+				<MinimumDamage>10</MinimumDamage>
+				<MaximumDamage>25</MaximumDamage>
+				<Speed>1000</Speed>
+				<Image link="Resources/Images/Weapons/Scimitar.png"/>
+			</Weapon>
+			<Weapon name = "Sword">
+				<MinimumDamage>15</MinimumDamage>
+				<MaximumDamage>40</MaximumDamage>
+				<Speed>1500</Speed>
+				<Image link="Resources/Images/Weapons/Sword.png"/>
+			</Weapon>
+			<Weapon name = "Axe">
+				<MinimumDamage>50</MinimumDamage>
+				<MaximumDamage>100</MaximumDamage>
+				<Speed>2000</Speed>
+				<Image link="Resources/Images/Weapons/Axe.png"/>
+			</Weapon>
+			<Weapon name = "NPC_Common">
+				<MinimumDamage>7</MinimumDamage>
+				<MaximumDamage>14</MaximumDamage>
+				<AttackSpeed>750</AttackSpeed>
+			</Weapon>
+			<Weapon name = "NPC_FirstMiniBoss">
+				<MinimumDamage>10</MinimumDamage>
+				<MaximumDamage>20</MaximumDamage>
+				<AttackSpeed>1100</AttackSpeed>
+			</Weapon>
+			<Weapon name = "NPC_SecondMiniBoss">
+				<MinimumDamage>10</MinimumDamage>
+				<MaximumDamage>20</MaximumDamage>
+				<AttackSpeed>1500</AttackSpeed>
+			</Weapon>
+			<Weapon name = "NPC_ThirdMiniBoss">
+				<MinimumDamage>5</MinimumDamage>
+				<MaximumDamage>50</MaximumDamage>
+				<AttackSpeed>750</AttackSpeed>
+			</Weapon>
+			<Weapon name = "NPC_DeamonDog">
+				<MinimumDamage>3</MinimumDamage>
+				<MaximumDamage>5</MaximumDamage>
+				<AttackSpeed>2100</AttackSpeed>
+			</Weapon>
+			<Weapon name = "NPC_FinalBoss">
+				<MinimumDamage>25</MinimumDamage>
+				<MaximumDamage>45</MaximumDamage>
+				<AttackSpeed>500</AttackSpeed>
+			</Weapon>
+		</Weapons>
+		<Keys>
+			<Bronze name="Bronze Key" image="Resources/Images/Keys/BronzeKey.png"/>
+			<Silver name="Silver Key" image="Resources/Images/Keys/SilverKey.png"/>
+			<Gold name="Gold Key" image="Resources/Images/Keys/GoldKey.png"/>
+		</Keys>
+	</Items>
 </Level>
-
-

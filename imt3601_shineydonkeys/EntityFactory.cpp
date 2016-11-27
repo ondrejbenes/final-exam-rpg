@@ -1,6 +1,7 @@
 #include "EntityFactory.h"
 
 #include <regex>
+#include "LevelLoader.h"
 
 // TODO use XML instead?
 Entity* EntityFactory::createFromToString(std::string str)
@@ -83,27 +84,81 @@ Character* EntityFactory::createDonkey()
 	return donkey;
 }
 
-Npc* EntityFactory::createNpcFromXml(const tinyxml2::XMLElement& element) 
+Npc* EntityFactory::createNpcFromXml(const tinyxml2::XMLElement& element, const std::shared_ptr<Weapon>& weaponName)
 {
-	// create instance
+	CharacterStats stats;
+	
+	
+	auto positionX = std::stof(element.FirstChildElement("Position")->Attribute("x"));
+	auto positionY = std::stof(element.FirstChildElement("Position")->Attribute("y"));
+	//auto usedWeapon = element.FirstChildElement("UsedWeapon")->Attribute("name");
 
 	// load stats
+	stats.max_hitpoints = std::stoi(element.FirstChildElement("Hitpoints")->GetText());
+	stats.current_hitpoints = stats.max_hitpoints;
 
-	// create weapon
+	auto NPCspriteLoc = element.FirstChildElement("Sprite")->Attribute("link");
 
-	// create inventory items
-
-	// load texture
-
-	// create sprite
-
-	// create components (consider moving to constructor)
+	auto npc = new Npc(stats);
 
 	// set position
+	npc->setPosition(sf::Vector2f(positionX, positionY));
 
-	// set AI state
+	// load texture
+	auto texture = new sf::Texture;
+	if (!texture->loadFromFile(NPCspriteLoc))
+		LOG_E("Error: could not load player image");
+	sf::Sprite sprite;
+	sprite.setTexture(*texture);
 
-	return nullptr;
+	npc->setEquipedWeapon(weaponName);
+
+	//TODO: put AI state in XML 
+
+	auto aiState = element.FirstChildElement("StartingAiState")->Attribute("Type");
+
+	if (aiState == "1") {}
+		//Change state to whatever
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+
+
+	// set inventory items
+
+
+	// create sprite
+	auto gc = new GraphicsComponent(*npc);
+	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite, 4);
+	gc->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
+	npc->addComponent(gc);
+
+	// create components (consider moving to constructor)
+	if (!Network::isMultiplayer() || Network::isServer())
+		npc->addComponent(new AiComponent(*npc));
+
+	npc->addComponent(new CombatComponent(*npc));
+
+	auto pc = new PhysicsComponent(*npc);
+	auto colliderRect = sf::FloatRect(sprite.getGlobalBounds());
+	colliderRect.width /= 4;
+	colliderRect.height /= 4;
+	pc->setCollider(colliderRect);
+	npc->addComponent(pc);
+
+	npc->addComponent(new AnimationComponent(*npc));
+
+	return npc;
 }
 
 Player* EntityFactory::createPlayerFromXml(const tinyxml2::XMLElement& element) 

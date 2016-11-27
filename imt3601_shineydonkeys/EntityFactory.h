@@ -24,10 +24,10 @@ public:
 	T* create();
 
 	Entity* createFromToString(std::string str);
-	Npc* createNpcFromXml(const tinyxml2::XMLElement& element);
+	Npc* createNpcFromXml(const tinyxml2::XMLElement& element, const std::shared_ptr<Weapon>& weaponName);
 	Player* createPlayerFromXml(const tinyxml2::XMLElement& element);
 	Character* createDonkey();
-private:
+	//Npc* createNpcFromXml(const tinyxml2::XMLElement& element, const tinyxml2::XMLAttribute& weaponName);
 	void initWeapon(std::shared_ptr<Item> weapon, const std::string& texturePath);
 	std::shared_ptr<Item> createInventoryItem(const std::string& texturePath);
 };
