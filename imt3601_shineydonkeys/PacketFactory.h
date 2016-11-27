@@ -14,7 +14,8 @@ enum PacketType
 	ENTER_COMBAT,
 	LEAVE_COMBAT,
 	TAKE_DAMAGE,
-	CHAT
+	CHAT,
+	TILE_SPRITE_CHANGE
 };
 
 class PacketFactory
@@ -32,6 +33,8 @@ public:
 	sf::Packet createTakeDamage(unsigned int entityId, unsigned int damage);
 
 	sf::Packet createChatMessage(const std::string& message);
+
+	sf::Packet createChangeTileSprite(unsigned int tileId, unsigned int tileType, bool blocking);
 
 	const static char ATTRIBUTE_SEPARATOR = ';';
 };

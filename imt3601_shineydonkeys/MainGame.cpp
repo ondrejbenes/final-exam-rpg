@@ -29,14 +29,16 @@ MainGame::MainGame() :
 {
 	auto cursor = GetCursor();
 	SetCursor(LoadCursor(nullptr, IDC_WAIT));
-	EntityFactory factory;
-	auto player = factory.create<Player>();
 
 
 	// TODO load from XML
 	Tilemap::MAP_WIDTH = 8000;
 	Tilemap::MAP_HEIGHT = 8000;
 
+	Entity::nextId = 0;
+
+	EntityFactory factory;
+	auto player = factory.create<Player>();
 
 	auto entityManager = EntityManager::getInstance();
 	entityManager->clearCharacters();
@@ -326,6 +328,8 @@ void MainGame::attachTriggerCallbackToTile(Tile* tile, std::function<void(Entity
 
 void MainGame::handlePlayerDeath()
 {
+	broadcastGameOverMessage();
+
 	Blackboard::getInstance()->leaveCallback(
 		RENDERER,
 		[](Module* target)
@@ -346,6 +350,8 @@ void MainGame::handlePlayerDeath()
 
 void MainGame::handleLevelComplete()
 {
+	broadcastGameOverMessage();
+
 	Blackboard::getInstance()->leaveCallback(
 		RENDERER,
 		[](Module* target)
@@ -362,6 +368,22 @@ void MainGame::handleLevelComplete()
 		dynamic_cast<Scheduler*>(target)->schedule(lambda, NOW + 2900ms);
 	});
 	_levelComplete = true;
+}
+
+void MainGame::broadcastGameOverMessage()
+{
+	if (Network::isServer())
+	{
+		Blackboard::getInstance()->leaveCallback(
+			NETWORK,
+			[](Module* target)
+		{
+			PacketFactory factory;
+			auto packet = factory.createGameOver();
+			dynamic_cast<Network*>(target)->broadcast(packet);
+		}
+		);
+	}
 }
 
 // TODO create a new subclass of UiElement instead

@@ -39,9 +39,17 @@ sf::Packet PacketFactory::createVelocityChange(unsigned entityId, const sf::Vect
 
 sf::Packet PacketFactory::createPositionChange(unsigned entityId, const sf::Vector2f& newPosition) 
 {
-	sf::Packet packet;
-	packet << POSITION_CHANGE;
+	std::stringstream ss;
+	ss << POSITION_CHANGE;
+	ss << ATTRIBUTE_SEPARATOR;
+	ss << entityId;
+	ss << ATTRIBUTE_SEPARATOR;
+	ss << newPosition.x;
+	ss << ATTRIBUTE_SEPARATOR;
+	ss << newPosition.y;
 
+	sf::Packet packet;
+	packet << ss.str();
 	return packet;
 }
 
@@ -75,6 +83,22 @@ sf::Packet PacketFactory::createChatMessage(const std::string& message)
 	ss << CHAT;
 	ss << ATTRIBUTE_SEPARATOR;
 	ss << message;
+
+	sf::Packet packet;
+	packet << ss.str();
+	return packet;
+}
+
+sf::Packet PacketFactory::createChangeTileSprite(unsigned tileId, unsigned tileType, bool blocking) 
+{
+	std::stringstream ss;
+	ss << TILE_SPRITE_CHANGE;
+	ss << ATTRIBUTE_SEPARATOR;
+	ss << tileId;
+	ss << ATTRIBUTE_SEPARATOR;
+	ss << tileType;
+	ss << ATTRIBUTE_SEPARATOR;
+	ss << blocking;
 
 	sf::Packet packet;
 	packet << ss.str();

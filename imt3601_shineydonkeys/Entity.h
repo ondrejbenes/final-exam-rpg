@@ -1,4 +1,5 @@
 #pragma once
+
 #include "EntityComponent.h"
 #include "QuadTreeNodeData.h"
 
@@ -14,6 +15,7 @@ class Entity : public QuadTreeNodeData
 {
 	friend EntityFactory;
 public:
+	static unsigned int nextId;
 	const unsigned int id;
 
 	virtual ~Entity();
@@ -43,8 +45,6 @@ protected:
 	void addComponent(EntityComponent* component);
 	void removeComponent(EntityComponent* component);
 private:
-	static unsigned int nextId;
-
 	std::string name;
 };
 

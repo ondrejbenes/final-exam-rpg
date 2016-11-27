@@ -4,6 +4,7 @@
 static class TimeUtilities
 {
 public:
-	static std::string getCurrentTimeAndDate();
+	static std::string getCurrentDate();
+	static std::string getCurrentTime();
 };
 

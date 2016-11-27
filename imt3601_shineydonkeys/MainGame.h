@@ -54,7 +54,7 @@ private:
 	std::vector<Tile*> _tilesToUpdate;
 
 	void attachTriggerCallbackToTile(Tile* tile, std::function<void(Entity*)> callback);
-
+	void broadcastGameOverMessage();
 	void handleInput();
 	void handleMovement();
 

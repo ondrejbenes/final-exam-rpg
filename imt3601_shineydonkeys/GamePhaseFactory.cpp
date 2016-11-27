@@ -114,11 +114,11 @@ Menu* GamePhaseFactory::createMainMenu()
 {
 	auto configFile = L"./Config/main_menu.ini";
 
-	auto gamenamelabel = createLabel(
+	auto gamenamelabel = _uiElementFactory.createLabel(
 		configFile,
 		L"gamenamelabel");
 
-	auto singlePlayer = createButton(
+	auto singlePlayer = _uiElementFactory.createButton(
 		configFile, 
 		L"singleplayer", 
 		[&](UiElement* source, const sf::Event& event)
@@ -132,7 +132,7 @@ Menu* GamePhaseFactory::createMainMenu()
 			GamePhaseManager::getInstance()->pushPhase(createMainGame());
 		});
 
-	auto startMP = createButton(
+	auto startMP = _uiElementFactory.createButton(
 		configFile,
 		L"startMP",
 		[&](UiElement* source, const sf::Event& event)
@@ -147,19 +147,19 @@ Menu* GamePhaseFactory::createMainMenu()
 			GamePhaseManager::getInstance()->pushPhase(createStartMultiPlayerGame());
 		});
 
-	auto joinMP = createButton(
+	auto joinMP = _uiElementFactory.createButton(
 		configFile,
 		L"joinMP",
 		[&](UiElement* source, const sf::Event& event)
 		{ GamePhaseManager::getInstance()->pushPhase(createJoinMultiPlayerGame()); });
 
-	auto options = createButton(
+	auto options = _uiElementFactory.createButton(
 		configFile,
 		L"options",
 		[&](UiElement* source, const sf::Event& event) 
 		{ GamePhaseManager::getInstance()->pushPhase(createOptions()); });
 
-	auto exit = createButton(
+	auto exit = _uiElementFactory.createButton(
 		configFile,
 		L"exit",
 		[](UiElement* source, const sf::Event& event)
@@ -186,15 +186,15 @@ Menu* GamePhaseFactory::createStartMultiPlayerGame()
 {
 	auto configFile = L"./Config/startMP.ini";
 
-	auto ip = createLabel(configFile, L"ip");
+	auto ip = _uiElementFactory.createLabel(configFile, L"ip");
 
 	auto ipStr = "Your IP is: " + sf::IpAddress::getLocalAddress().toString();
 	auto ipAsBtn = dynamic_cast<Label*>(ip);
 	ipAsBtn->setText(ipStr);
 
-	auto spectratorsHeader = createLabel(configFile, L"spectratorsHeader");
+	auto spectratorsHeader = _uiElementFactory.createLabel(configFile, L"spectratorsHeader");
 
-	auto start = createButton(
+	auto start = _uiElementFactory.createButton(
 		configFile,
 		L"start",
 		[&](UiElement* source, const sf::Event& event)
@@ -214,7 +214,7 @@ Menu* GamePhaseFactory::createStartMultiPlayerGame()
 			GamePhaseManager::getInstance()->pushPhase(createMainGame());
 		});
 
-	auto back = createButton(
+	auto back = _uiElementFactory.createButton(
 		configFile,
 		L"back",
 		[](UiElement* source, const sf::Event& event) 
@@ -233,12 +233,12 @@ Menu* GamePhaseFactory::createJoinMultiPlayerGame()
 {
 	auto configFile = L"./Config/joinMP.ini";
 
-	auto ip = createLabel(configFile, L"serverIpLabel");
+	auto ip = _uiElementFactory.createLabel(configFile, L"serverIpLabel");
 
-	auto serverIpTextBox = createTextBox(configFile, L"serverIpTextBox");
+	auto serverIpTextBox = _uiElementFactory.createTextBox(configFile, L"serverIpTextBox");
 	serverIpTextBox->setName("serverIp");
 
-	auto connect = createButton(
+	auto connect = _uiElementFactory.createButton(
 		configFile,
 		L"connect",
 		[&](UiElement* source, const sf::Event& event)
@@ -256,7 +256,7 @@ Menu* GamePhaseFactory::createJoinMultiPlayerGame()
 				});
 		});
 
-	auto back = createButton(
+	auto back = _uiElementFactory.createButton(
 		configFile,
 		L"back",
 		[](UiElement* source, const sf::Event& event)
@@ -281,53 +281,53 @@ Menu* GamePhaseFactory::createJoinMultiPlayerGame()
 
 Menu* GamePhaseFactory::createOptions()
 {
-	auto controlsHeader = createLabel(L"./Config/options.ini", L"controlsHeader");
+	auto controlsHeader = _uiElementFactory.createLabel(L"./Config/options.ini", L"controlsHeader");
 
-	auto moveLeftKey = createButton(
+	auto moveLeftKey = _uiElementFactory.createButton(
 		L"./Config/options.ini",
 		L"moveLeftKey",
 		[](UiElement* source, const sf::Event& event) 
 		{ /* only set this element as focused*/ });
-	moveLeftKey->setOnKeyPressed(createChangeKeyButton(L"left"));
+	moveLeftKey->setOnKeyPressed(_uiElementFactory.createChangeKeyButton(L"left"));
 
-	auto moveRightKey = createButton(
+	auto moveRightKey = _uiElementFactory.createButton(
 		L"./Config/options.ini",
 		L"moveRightKey",
 		[](UiElement* source, const sf::Event& event)
 	{ /* only set this element as focused*/ });
-	moveRightKey->setOnKeyPressed(createChangeKeyButton(L"right"));
+	moveRightKey->setOnKeyPressed(_uiElementFactory.createChangeKeyButton(L"right"));
 
-	auto moveUpKey = createButton(
+	auto moveUpKey = _uiElementFactory.createButton(
 		L"./Config/options.ini",
 		L"moveUpKey",
 		[](UiElement* source, const sf::Event& event)
 	{ /* only set this element as focused*/ });
-	moveUpKey->setOnKeyPressed(createChangeKeyButton(L"up"));
+	moveUpKey->setOnKeyPressed(_uiElementFactory.createChangeKeyButton(L"up"));
 
-	auto moveDownKey = createButton(
+	auto moveDownKey = _uiElementFactory.createButton(
 		L"./Config/options.ini",
 		L"moveDownKey",
 		[](UiElement* source, const sf::Event& event)
 	{ /* only set this element as focused*/ });
-	moveDownKey->setOnKeyPressed(createChangeKeyButton(L"down"));
+	moveDownKey->setOnKeyPressed(_uiElementFactory.createChangeKeyButton(L"down"));
 
-	auto audioHeader = createLabel(L"./Config/options.ini",	L"audioHeader");
+	auto audioHeader = _uiElementFactory.createLabel(L"./Config/options.ini",	L"audioHeader");
 
-	auto soundVolumeLabel = createLabel(L"./Config/options.ini", L"soundVolumeLabel");
-	auto soundVolumeTextBox = createTextBox(L"./Config/options.ini", L"soundVolumeTextBox");
+	auto soundVolumeLabel = _uiElementFactory.createLabel(L"./Config/options.ini", L"soundVolumeLabel");
+	auto soundVolumeTextBox = _uiElementFactory.createTextBox(L"./Config/options.ini", L"soundVolumeTextBox");
 	soundVolumeTextBox->setName("soundVolume");
 
-	auto musicVolumeLabel = createLabel(L"./Config/options.ini", L"musicVolumeLabel");
-	auto musicVolumeTextBox = createTextBox(L"./Config/options.ini", L"musicVolumeTextBox");
+	auto musicVolumeLabel = _uiElementFactory.createLabel(L"./Config/options.ini", L"musicVolumeLabel");
+	auto musicVolumeTextBox = _uiElementFactory.createTextBox(L"./Config/options.ini", L"musicVolumeTextBox");
 	musicVolumeTextBox->setName("musicVolume");
 
-	auto characterHeader = createLabel(L"./Config/options.ini", L"characterHeader");
-	auto characterNameLabel = createLabel(L"./Config/options.ini", L"characterNameLabel");
+	auto characterHeader = _uiElementFactory.createLabel(L"./Config/options.ini", L"characterHeader");
+	auto characterNameLabel = _uiElementFactory.createLabel(L"./Config/options.ini", L"characterNameLabel");
 
-	auto characterNameTextBox = createTextBox(L"./Config/options.ini", L"characterNameTextBox");
+	auto characterNameTextBox = _uiElementFactory.createTextBox(L"./Config/options.ini", L"characterNameTextBox");
 	characterNameTextBox->setName("playerName");
 
-	auto appearance = createLabel(L"./Config/options.ini", L"appearance");
+	auto appearance = _uiElementFactory.createLabel(L"./Config/options.ini", L"appearance");
 
 	// TODO res loader
 	auto currSpriteNumber = ConfigIO::readInt(L"player", L"sprite", 1);
@@ -343,7 +343,7 @@ Menu* GamePhaseFactory::createOptions()
 	playerImage->setPosition(sf::Vector2f(x, y));
 	playerImage->setName("playerImage");
 
-	auto previousAppearance = createButton(
+	auto previousAppearance = _uiElementFactory.createButton(
 		L"./Config/options.ini",
 		L"previousAppearance",
 		[](UiElement* source, const sf::Event& event)
@@ -366,7 +366,7 @@ Menu* GamePhaseFactory::createOptions()
 		}
 	);
 
-	auto nextAppearance = createButton(
+	auto nextAppearance = _uiElementFactory.createButton(
 		L"./Config/options.ini",
 		L"nextAppearance",
 		[](UiElement* source, const sf::Event& event)
@@ -389,7 +389,7 @@ Menu* GamePhaseFactory::createOptions()
 		}
 	);
 
-	auto back = createButton(
+	auto back = _uiElementFactory.createButton(
 		L"./Config/options.ini",
 		L"back",
 		[](UiElement* source, const sf::Event& event)
@@ -448,79 +448,4 @@ Menu* GamePhaseFactory::createOptions()
 	options->_ui.addElement(back);
 
 	return options;
-}
-
-// TODO make label a member of button class?
-Button* GamePhaseFactory::createButton(const wchar_t* configFile, const wchar_t* configSectionName, UiCallback onClick)
-{
-	auto text = ConfigIO::readString(configSectionName, L"text", L"???", configFile);
-	auto& font = ResourceLoader::getInstance()->getMenuFont();
-	auto fontSize = ConfigIO::readInt(configSectionName, L"fontSize", 20, configFile);
-	auto x = ConfigIO::readInt(configSectionName, L"x", 20, configFile);
-	auto y = ConfigIO::readInt(configSectionName, L"y", 20, configFile);
-
-	auto uiElement = new Button(text, font, fontSize);
-	uiElement->setOnClick(new UiCallback(onClick));
-	uiElement->setPosition(sf::Vector2f(x, y));
-
-	return uiElement;
-}
-
-Label* GamePhaseFactory::createLabel(const wchar_t* configFile, const wchar_t* configSectionName) 
-{
-	auto text = ConfigIO::readString(configSectionName, L"text", L"???", configFile);
-	auto& font = ResourceLoader::getInstance()->getMenuFont();
-	auto fontSize = ConfigIO::readInt(configSectionName, L"fontSize", 20, configFile);
-	auto x = ConfigIO::readInt(configSectionName, L"x", 20, configFile);
-	auto y = ConfigIO::readInt(configSectionName, L"y", 20, configFile);
-
-	auto uiElement = new Label(text, font, fontSize);
-	uiElement->setPosition(sf::Vector2f(x, y));
-
-	return uiElement;
-}
-
-TextBox* GamePhaseFactory::createTextBox(const wchar_t* configFile, const wchar_t* configSectionName)
-{
-	auto text = ConfigIO::readString(configSectionName, L"text", L"???", configFile);
-	auto& font = ResourceLoader::getInstance()->getMenuFont();
-	auto fontSize = ConfigIO::readInt(configSectionName, L"fontSize", 20, configFile);
-	auto x = ConfigIO::readInt(configSectionName, L"x", 20, configFile);
-	auto y = ConfigIO::readInt(configSectionName, L"y", 20, configFile);
-
-	auto uiElement = new TextBox(font, text, fontSize);
-	uiElement->setPosition(sf::Vector2f(x, y));
-
-	return uiElement;
-}
-
-UiCallback* GamePhaseFactory::createChangeKeyButton(const std::wstring& moveDirection)
-{
-	auto lambda = [moveDirection](UiElement* source, const sf::Event& event)
-	{
-		auto sfCode = event.key.code;
-		ConfigIO::writeInt(L"controls", moveDirection.c_str(), sfCode);
-
-		std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-
-		auto humanReadable = new char[20];
-		StringUtilities::SFKeyToString(sfCode, humanReadable);
-		std::stringstream ss;
-		ss << "Move " << converter.to_bytes(moveDirection) << ": " << humanReadable;
-		delete humanReadable;
-
-		auto btnText = ss.str();
-		auto sourceAsBtn = dynamic_cast<Button*>(source);
-		sourceAsBtn->setText(btnText);
-
-		std::wstring btnTextAsWStr;
-		btnTextAsWStr.assign(btnText.begin(), btnText.end());
-
-		std::wstringstream wss;
-		wss << L"move" << wchar_t(towupper(moveDirection[0])) << std::nouppercase << moveDirection.substr(1) << L"Key";
-
-		ConfigIO::writeString(wss.str().c_str(), L"text", btnTextAsWStr.c_str(), L"./Config/options.ini");
-	};
-
-	return new UiCallback(lambda);
 }

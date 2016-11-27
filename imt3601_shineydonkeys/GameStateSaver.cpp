@@ -18,7 +18,7 @@ GameStateSaver::~GameStateSaver()
 void GameStateSaver::quickSave()
 {
 	std::stringstream ss;
-	ss << TimeUtilities::getCurrentTimeAndDate() << "\n";
+	ss << TimeUtilities::getCurrentDate() << " " << TimeUtilities::getCurrentTime() << "\n";
 
 	auto characters = EntityManager::getInstance()->getAllCharacters();
 	for (auto it = characters.begin(); it != characters.end(); ++it)

@@ -78,6 +78,9 @@ public:
 	/* Returns Tile located at pos, or nullptr, if none was found */
 	Tile* getTileAtPos(const sf::Vector2f& pos);
 
+	/* Returns Tile with the given Id */
+	Tile* getTileById(unsigned int id);
+
 	/* Celars the underlaying QuadTree, all Characters will be removed. */
 	void clearCharacters();
 

@@ -315,6 +315,9 @@
     <ClCompile Include="LevelLoader.cpp">
       <Filter>Source Files\Core\Module\Game\Level</Filter>
     </ClCompile>
+    <ClCompile Include="UiElementFactory.cpp">
+      <Filter>Source Files\Core\Module\Game\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\Player.png">
@@ -557,6 +560,9 @@
     </ClInclude>
     <ClInclude Include="Trigger.h">
       <Filter>Header Files\Entity\Component\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="UiElementFactory.h">
+      <Filter>Header Files\Core\Module\Game\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

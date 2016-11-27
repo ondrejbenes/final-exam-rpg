@@ -7,6 +7,7 @@
 #include "Tile.h"
 #include "GraphicsComponent.h"
 #include "Tilemap.h"
+#include "Logger.h"
 
 PhysicsComponent::PhysicsComponent(Entity& parent, bool _static) : 
 EntityComponent(parent) ,
@@ -39,14 +40,24 @@ void PhysicsComponent::setVelocity(sf::Vector2f velocity)
 {
 	this->_velocity = velocity;
 
+	if(!Network::isServer())
+		return;
+
+	auto position = parent.getPosition();
 	auto id = parent.id;
+
 	Blackboard::getInstance()->leaveCallback(
 		NETWORK,
-		[id, velocity](Module* target)
+		[id, velocity, position](Module* target)
 		{
 			PacketFactory factory;
-			auto packet = factory.createVelocityChange(id, velocity);
-			dynamic_cast<Network*>(target)->broadcast(packet);
+			auto network = dynamic_cast<Network*>(target);
+
+			auto positionPacket = factory.createPositionChange(id, position);
+			network->broadcast(positionPacket);
+
+			auto velocityPacket = factory.createVelocityChange(id, velocity);
+			network->broadcast(velocityPacket);
 		}
 	);
 }

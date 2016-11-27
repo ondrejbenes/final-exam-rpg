@@ -12,6 +12,7 @@
 #include <regex>
 #include "PhysicsComponent.h"
 #include "ChatBoard.h"
+#include "ConfigIO.h"
 
 Network::Network() : 
 Module(NETWORK)
@@ -96,7 +97,7 @@ void Network::initAsClient()
 	_socket.setBlocking(false);
 
 	sf::Packet packet;
-	packet << "YOWZA";
+	packet << ConfigIO::readString(L"player", L"name");
 	_socket.send(packet);
 
 	_isServer = false;
@@ -105,11 +106,11 @@ void Network::initAsClient()
 
 void Network::broadcast(sf::Packet& packet)
 {
-	/*
+	
 	std::string msg;
 	packet >> msg;
 	LOG_D("Broadcasting: " + msg);
-	*/
+	
 
 	if (_isServer)
 	{
@@ -156,19 +157,18 @@ void Network::updateServerMenu()
 			if (socket->receive(packet) == sf::Socket::Done)
 				packet >> id;
 			LOG_D(id);
-			/*
-			std::stringstream ss;
-			ss << "spectrator" << int(_clients.size()) + 1;
-			auto uiElelementName = ss.str();
 
-			auto uiElement = GamePhaseManager::getInstance()->getCurrentPhase()->getUi().getElementByName(uiElelementName);
-			if (uiElement != nullptr)
-			{
-				auto elementAsBtn = dynamic_cast<Button*>(uiElement);
-				auto originalStr = elementAsBtn->getText();
-				elementAsBtn->setText(originalStr + id);				
-			}
-			*/
+			auto x = 510;
+			auto y = 100 + 50 * _clients.size();
+
+			UiElementFactory factory;
+			auto element = factory.createLabel(L"", L"");
+			element->setPosition(sf::Vector2f(x, y));
+			element->setText(id);
+
+			auto& ui = GamePhaseManager::getInstance()->getCurrentPhase()->getUi();
+			ui.addElement(element);
+
 			_clients.push_back(socket);
 			_selector.add(*socket);
 		}		
@@ -184,6 +184,8 @@ void Network::updateClientMainGame()
 
 	std::string msg;
 	packet >> msg;
+
+	LOG_D("Received: " + msg);
 	
 	auto packetType = decodeMessage(msg);
 
@@ -200,6 +202,16 @@ void Network::updateClientMainGame()
 		charater->getComponent<PhysicsComponent>()->setVelocity(velocity);
 	}
 
+	if (packetType == POSITION_CHANGE)
+	{
+		auto tokens = StringUtilities::split(msg, PacketFactory::ATTRIBUTE_SEPARATOR);
+		auto entityManager = EntityManager::getInstance();
+		auto charater = entityManager->getCharacterById(stoi(tokens[1]));
+		auto position = sf::Vector2f(stof(tokens[2]), stof(tokens[3]));
+		entityManager->move(charater, position);
+		charater->setPosition(position);
+	}
+
 	if (packetType == CHAT)
 	{
 		auto tokens = StringUtilities::split(msg, PacketFactory::ATTRIBUTE_SEPARATOR);
@@ -207,11 +219,18 @@ void Network::updateClientMainGame()
 		auto msgTokens = StringUtilities::split(tokens[1], ':');
 		chatBoard->addMessage(msgTokens[0], msgTokens[1]);
 	}
+
+	if (packetType == TILE_SPRITE_CHANGE)
+	{
+		auto tokens = StringUtilities::split(msg, PacketFactory::ATTRIBUTE_SEPARATOR);
+		auto tile = EntityManager::getInstance()->getTileById(stoi(tokens[1]));
+		tile->changeType(stoi(tokens[2]), stoi(tokens[3]));
+	}
 }
 
 void Network::updateServerMainGame()
 {
-	if (_selector.wait(sf::seconds(0.01)))
+	if (_selector.wait(sf::milliseconds(1)))
 	{
 		if (!_selector.isReady(_listener))
 		{
@@ -260,8 +279,7 @@ PacketType Network::decodeMessage(std::string msg) {
 	}
 	else if (regex_search(msg, match, reg2))
 	{
-		auto tokens = StringUtilities::split(msg, PacketFactory::ATTRIBUTE_SEPARATOR);
-		packetType = stoi(tokens[0]);
+		packetType = stoi(msg.substr(0, msg.find(';')));
 	}
 	else
 	{

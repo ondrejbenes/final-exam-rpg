@@ -1,5 +1,6 @@
 #include "EntityManager.h"
 #include "Tilemap.h"
+#include "Tile.h"
 
 std::shared_ptr<EntityManager> EntityManager::getInstance()
 {
@@ -116,6 +117,17 @@ Tile* EntityManager::getTileAtPos(const sf::Vector2f& pos)
 		ret = reinterpret_cast<Tile*>(tile);
 
 	return ret;
+}
+
+Tile* EntityManager::getTileById(unsigned id) 
+{
+	// TODO refacor - map<id, tile*> or common map with chars?
+	auto all = getAllTiles();
+	for (auto it = begin(all); it != end(all); ++it)
+		if ((*it)->id == id)
+			return *it;
+
+	return nullptr;
 }
 
 EntityManager::EntityManager() :

@@ -8,9 +8,10 @@ void Logger::log(const char severity, std::string callerClass, const char* calle
 {
 	std::stringstream ss;
 	ss << 
-		TimeUtilities::getCurrentTimeAndDate() << " " << 
+		TimeUtilities::getCurrentDate() << " " <<
+		TimeUtilities::getCurrentTime() << " " <<
 		severity << " " << 
-		callerClass << "::" << 
+		callerClass << " " << "::" << 
 		callerFunction << "(), line " << 
 		line << "\t" << 
 		message << "\n";
@@ -20,6 +21,15 @@ void Logger::log(const char severity, std::string callerClass, const char* calle
 	ofs.close();
 
 	#ifdef _DEBUG
-		std::cout << ss.str();
+		ss.str(std::string());
+
+		ss <<
+			TimeUtilities::getCurrentTime() << " " <<
+			severity << " " <<
+			callerClass << "\t " << 
+			line << "\t" <<
+			message << "\n";
+
+;		std::cout << ss.str();
 	#endif
 }

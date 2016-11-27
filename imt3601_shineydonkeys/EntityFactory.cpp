@@ -103,6 +103,7 @@ Npc* EntityFactory::createNpcFromXml(const tinyxml2::XMLElement& element)
 
 	// set AI state
 
+	return nullptr;
 }
 
 Player* EntityFactory::createPlayerFromXml(const tinyxml2::XMLElement& element) 
@@ -124,4 +125,5 @@ Player* EntityFactory::createPlayerFromXml(const tinyxml2::XMLElement& element)
 
 	// set position
 
+	return nullptr;
 }
