@@ -16,23 +16,17 @@ _patrolRadius(patrolRadius)
 
 void AiPatrol::update()
 {
-	if (_timeSinceLastUpdate.getElapsedTime().asSeconds() >= UPDATE_FREQUENCY)
-		_timeSinceLastUpdate.restart();
-	else
+	if (_timeSinceLastUpdate.getElapsedTime().asSeconds() < UPDATE_FREQUENCY)
 		return;
 
+	_timeSinceLastUpdate.restart();
+	
 	auto currentLocation = _aiComponent->getParent().getPosition();
-	if(VectorUtilities::calculateDistance(currentLocation, _movePoint) < 10)
-	{
-		// TODO AI needs to wait a couple of seconds after getting to the move point
+	if(VectorUtilities::calculateDistance(currentLocation, _movePoint) < CHANGE_MOVE_POINT_DISTANCE)
 		_movePoint = getNextMovePoint();
-	} else
-	{
+	else
 		setVelocityTowardsPosition(_movePoint);
-	}
 
-	// TODO Different aggresion -> modify the _patrolRaidus
-	// TODO move center, _patrolRadius etc to the Character class
 	if (isPlayerInRadius(_center, _patrolRadius))
 	{
 		LOG_D("Going from Patrol to Attack ");
@@ -52,3 +46,4 @@ sf::Vector2f AiPatrol::getNextMovePoint() const
 }
 
 float AiPatrol::UPDATE_FREQUENCY = 1;
+unsigned AiPatrol::CHANGE_MOVE_POINT_DISTANCE = 10;

@@ -19,11 +19,6 @@ AiAttack::AiAttack(AiComponent* component, sf::Vector2f center, float attackRadi
 	_parentAsChar = dynamic_cast<Character*>(&_aiComponent->getParent());
 }
 
-AiAttack::~AiAttack()
-{
-
-}
-
 void AiAttack::update()
 {
 	auto player = EntityManager::getInstance()->getLocalPlayer();

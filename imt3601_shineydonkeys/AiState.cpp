@@ -12,11 +12,6 @@ AiState::AiState(AiComponent* component): _aiComponent(component)
 
 }
 
-AiState::~AiState()
-{
-
-}
-
 void AiState::setVelocityTowardsPosition(const sf::Vector2f& position)
 {
 	auto ai = _aiComponent->getParent();
