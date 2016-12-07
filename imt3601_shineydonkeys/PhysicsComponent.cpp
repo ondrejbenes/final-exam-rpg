@@ -22,7 +22,6 @@ void PhysicsComponent::update()
 	if(!_static)
 		move();
 
-	// TODO a bit strange to handle enter outside and leave inside
 	std::vector<Entity*> toUnregister;
 	for (auto trigger : _triggers)
 	{
@@ -72,7 +71,27 @@ void PhysicsComponent::move()
 	auto ellapsed = _sinceLastMove.restart().asSeconds();
 	auto newPosition = parent.getPosition() + _velocity * ellapsed;
 
-	if(hasCollision(newPosition))
+	if (_velocity.x > 0)
+		_direction = Right;
+	else if (_velocity.x < 0)
+		_direction = Left;
+	else if (_velocity.y > 0)
+		_direction = Down;
+	else if (_velocity.y < 0)
+		_direction = Up;
+
+	// TODO better way to look for tiles (and characters) to check
+	auto radius = 32;
+	auto boundary = QuadTreeBoundary(newPosition.x - radius, newPosition.x + radius, newPosition.y - radius, newPosition.y + radius);
+	const auto& tilesToCheck = EntityManager::getInstance()->getTilesInInterval(boundary);
+
+	radius = 128;
+	boundary = QuadTreeBoundary(newPosition.x - radius, newPosition.x + radius, newPosition.y - radius, newPosition.y + radius);
+	const auto& charactersToCheck = EntityManager::getInstance()->getCharactersInInterval(boundary);
+
+	checkTriggers(newPosition, tilesToCheck, charactersToCheck);
+
+	if(hasCollision(newPosition, tilesToCheck, charactersToCheck))
 	{
 		_velocity = sf::Vector2f(0, 0);
 		return;
@@ -81,45 +100,16 @@ void PhysicsComponent::move()
 	parent.setPosition(newPosition);
 }
 
-bool PhysicsComponent::hasCollision(const sf::Vector2f& newPosition) const
+bool PhysicsComponent::hasCollision(const sf::Vector2f& newPosition, const std::vector<Tile*>& tilesToCheck, const std::vector<Character*>& charactersToCheck) const
 {
-	// TODO better way to look for tiles (and characters) to check
-
 	auto diff = newPosition - parent.getPosition();
 	auto collCpy = sf::FloatRect(_collider);
 	collCpy.left += diff.x;
 	collCpy.top += diff.y;
-
-	auto radius = 32;
-	auto boundary = QuadTreeBoundary(newPosition.x - radius, newPosition.x + radius, newPosition.y - radius, newPosition.y + radius);
-
-	auto tilesToCheck = EntityManager::getInstance()->getTilesInInterval(boundary);
-
-	/*int tileX = int(newPosition.x) / Tilemap::TILE_WIDTH * Tilemap::TILE_WIDTH;
-	int tileY = int(newPosition.y) / Tilemap::TILE_HEIGHT * Tilemap::TILE_HEIGHT;
-
-	auto tile = EntityManager::getInstance()->getTileAtPos(sf::Vector2f(tileX, tileY));*/
-	
-	for (auto tile : tilesToCheck)
+			
+	for (auto& tile : tilesToCheck)
 	{
 		auto pc = tile->getComponent<PhysicsComponent>();
-
-		// TODO check colliders somewhere else
-		auto& triggers = pc->getTriggers();
-		for (auto trigger : triggers)
-		{
-			if (_collider.intersects(trigger->getBoundary()))
-			{
-				auto& registeredEntities = trigger->getRegisteredEntities();
-				auto result = find(begin(registeredEntities), end(registeredEntities), &parent);
-				if(result == end(registeredEntities))
-				{					
-					trigger->registerEntity(&parent);
-					auto callback = *trigger->getOnTriggerEnter();
-					callback(&parent);
-				}
-			}
-		}
 
 		if (tile != nullptr && tile->isBlocking())
 		{
@@ -129,12 +119,48 @@ bool PhysicsComponent::hasCollision(const sf::Vector2f& newPosition) const
 		}
 	}
 
-	// TODO duplicity
-	radius = 128;
-	boundary = QuadTreeBoundary(newPosition.x - radius, newPosition.x + radius, newPosition.y - radius, newPosition.y + radius);
-	auto charactersToCheck = EntityManager::getInstance()->getCharactersInInterval(boundary);
+	for (auto& character : charactersToCheck)
+	{
+		if (character->id != parent.id && character != nullptr)
+		{
+			auto pc = character->getComponent<PhysicsComponent>();
 
-	for (auto character : charactersToCheck)
+			auto collider = pc->getCollider();
+			if (collCpy.intersects(collider))
+				return true;
+		}
+	}
+
+	if (newPosition.x < 0 || newPosition.x > Tilemap::MAP_WIDTH || newPosition.y < 0 || newPosition.y > Tilemap::MAP_HEIGHT)
+		return true;
+
+	return false;
+}
+
+void PhysicsComponent::checkTriggers(const sf::Vector2f& newPosition, const std::vector<Tile*>& tilesToCheck, const std::vector<Character*>& charactersToCheck) const
+{
+	for (auto& tile : tilesToCheck)
+	{
+		auto pc = tile->getComponent<PhysicsComponent>();
+
+		auto& triggers = pc->getTriggers();
+		for (auto trigger : triggers)
+		{
+			if (_collider.intersects(trigger->getBoundary()))
+			{
+				auto& registeredEntities = trigger->getRegisteredEntities();
+				auto result = find(begin(registeredEntities), end(registeredEntities), &parent);
+				if (result == end(registeredEntities))
+				{
+					trigger->registerEntity(&parent);
+					auto callback = *trigger->getOnTriggerEnter();
+					callback(&parent);
+				}
+			}
+		}
+	}
+
+	for (auto& character : charactersToCheck)
 	{
 		if (character->id != parent.id && character != nullptr)
 		{
@@ -155,17 +181,8 @@ bool PhysicsComponent::hasCollision(const sf::Vector2f& newPosition) const
 					}
 				}
 			}
-
-			auto collider = pc->getCollider();
-			if (collCpy.intersects(collider))
-				return true;
 		}
 	}
-
-	if (newPosition.x < 0 || newPosition.x > Tilemap::MAP_WIDTH || newPosition.y < 0 || newPosition.y > Tilemap::MAP_HEIGHT)
-		return true;
-
-	return false;
 }
 
 const std::string PhysicsComponent::MOVE_SPRITE_NAME = "move";

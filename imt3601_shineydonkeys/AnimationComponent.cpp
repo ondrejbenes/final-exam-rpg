@@ -25,6 +25,8 @@ void AnimationComponent::doCombatAnimation()
 {
 	checkIncrementCellX(COMBAT_ANIMATION_PERIOD_MS);
 
+	checkChangeCellY();
+
 	setTextureRect();
 }
 
@@ -39,19 +41,7 @@ void AnimationComponent::doMoveAnimation()
 	}
 	else
 	{
-		auto direction = Down;
-		if (velocity.x > 0)
-			direction = Right;
-		else if (velocity.x < 0)
-			direction = Left;
-		else if (velocity.y > 0)
-			direction = Down;
-		else if (velocity.y < 0)
-			direction = Up;
-
-		if (spriteSheetCell.y != direction)
-			spriteSheetCell.x = 0;
-		spriteSheetCell.y = direction;
+		checkChangeCellY();
 	}
 	checkIncrementCellX(MOVE_ANIMATION_PERIOD_MS);
 
@@ -64,6 +54,16 @@ void AnimationComponent::checkIncrementCellX(const sf::Time& animationPeriod)
 	{
 		spriteSheetCell.x = spriteSheetCell.x == 3 ? 0 : ++spriteSheetCell.x;
 		_animationTimer.restart();
+	}
+}
+
+void AnimationComponent::checkChangeCellY() {
+	auto direction = parent.getComponent<PhysicsComponent>()->getDirection();
+
+	if (spriteSheetCell.y != direction)
+	{
+		spriteSheetCell.x = 0;
+		spriteSheetCell.y = direction;
 	}
 }
 

@@ -1,9 +1,12 @@
 #pragma once
+
 #include "EntityComponent.h"
-#include <SFML/Graphics/Rect.hpp>
 #include "Trigger.h"
 
-// TODO remove DL etc after we have changed spritesheets for 4 directions
+#include <SFML/Graphics/Rect.hpp>
+#include "Character.h"
+#include "Tile.h"
+
 enum MovementDirection { Down, Left, Right, Up };
 
 class PhysicsComponent : public EntityComponent
@@ -24,6 +27,8 @@ public:
 
 	void update() override;
 
+	MovementDirection getDirection() const { return _direction; }
+
 	sf::Vector2f getVelocity();
 	void setVelocity(sf::Vector2f velocity);
 
@@ -34,12 +39,14 @@ public:
 private:
 	bool _static;
 	
+	MovementDirection _direction;
 	sf::Vector2f _velocity;
 	sf::Clock _sinceLastMove;
 	sf::FloatRect _collider;
 
 	std::vector<std::shared_ptr<Trigger>> _triggers;
 
-	bool hasCollision(const sf::Vector2f& newPosition) const;
+	bool hasCollision(const sf::Vector2f& newPosition, const std::vector<Tile*>& tilesToCheck, const std::vector<Character*>& charactersToCheck) const;
+	void checkTriggers(const sf::Vector2f& newPosition, const std::vector<Tile*>& tilesToCheck, const std::vector<Character*>& charactersToCheck) const;
 	void move();
 };

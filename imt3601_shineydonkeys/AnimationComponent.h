@@ -10,7 +10,6 @@ public:
 	explicit AnimationComponent(Entity& parent);
 
 	void update() override;
-	void checkIncrementCellX(const sf::Time& animationPeriod);
 private:
 	sf::Vector2i spriteSheetCell;
 	sf::Clock _animationTimer;
@@ -18,6 +17,9 @@ private:
 	static sf::Time COMBAT_ANIMATION_PERIOD_MS;
 
 	void doCombatAnimation();
-	void setTextureRect();
 	void doMoveAnimation();
+
+	void checkIncrementCellX(const sf::Time& animationPeriod);
+	void checkChangeCellY();
+	void setTextureRect();
 };

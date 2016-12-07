@@ -96,4 +96,4 @@ unsigned int Tilemap::TILE_HEIGHT = 32;
 unsigned int Tilemap::MAP_WIDTH = 0;
 unsigned int Tilemap::MAP_HEIGHT = 0;
 
-std::vector<unsigned> Tilemap::BLOCKING_TILES = std::vector<unsigned>();
+std::vector<unsigned> Tilemap::BLOCKING_TILES = { 73, 163, 48, 49, 64, 65 };
