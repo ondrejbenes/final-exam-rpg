@@ -3,6 +3,7 @@
 #include "EntityComponent.h"
 #include "QuadTreeNodeData.h"
 
+#include <map>
 #include <vector>
 
 #include <SFML/System.hpp>
@@ -17,8 +18,6 @@ class Entity : public QuadTreeNodeData
 public:
 	static unsigned int nextId;
 	const unsigned int id;
-
-	virtual ~Entity();
 
 	virtual void update();
 
@@ -35,31 +34,20 @@ public:
 	void setX(double x) override { position.x = x; }
 	void setY(double y) override { position.y = y; }
 	
-	const std::string& getName() const { return name; }
-	void setName(const std::string& name) { this->name = name; }
+	const std::string& getName() const { return _name; }
+	void setName(const std::string& name) { this->_name = name; }
 protected:
 	sf::Vector2f position;
-	std::vector<EntityComponent*> components;
+	std::map<const char*, EntityComponent*> components;
 
 	Entity();
 	void addComponent(EntityComponent* component);
-	void removeComponent(EntityComponent* component);
 private:
-	std::string name;
+	std::string _name;
 };
 
 template <typename T>
 T* Entity::getComponent()
 {
-	// TODO use cache so that we don't have to cycle during each frame
-
-	auto typeToGet = typeid(T).name();
-	for(auto it  = components.begin(); it != components.end(); ++it)
-	{
-		auto currentType = typeid(**it).name();
-		if (strcmp(typeToGet, currentType) == 0)
-			return const_cast<T*>(dynamic_cast<T*>(*it));
-	}
-
-	return nullptr;
+	return const_cast<T*>(dynamic_cast<T*>(components[typeid(T).name()]));
 }

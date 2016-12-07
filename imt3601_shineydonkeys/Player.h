@@ -8,9 +8,6 @@ class Player : public Character
 {
 	friend EntityFactory;
 
-public:
-	virtual ~Player();
-
 protected:
 	explicit Player(CharacterStats stats);
 };

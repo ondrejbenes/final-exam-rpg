@@ -38,7 +38,7 @@ void GraphicsComponent::draw(std::shared_ptr<sf::RenderWindow> window) const
 
 			auto parentAsChar = dynamic_cast<Character*>(&parent);
 			auto stats = parentAsChar->getStats();
-			auto percentage = stats->current_hitpoints / float(stats->max_hitpoints);
+			auto percentage = stats.current_hitpoints / float(stats.max_hitpoints);
 			auto currentHpRect = sf::RectangleShape(sf::Vector2f(sprite.getGlobalBounds().width * percentage, 4));
 			currentHpRect.setFillColor(sf::Color::Green);
 			currentHpRect.setPosition(parent.getPosition().x, parent.getPosition().y - 10);

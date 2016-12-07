@@ -4,10 +4,3 @@ Player::Player(CharacterStats stats) : Character(stats)
 {
 
 }
-
-
-
-Player::~Player()
-{
-
-}

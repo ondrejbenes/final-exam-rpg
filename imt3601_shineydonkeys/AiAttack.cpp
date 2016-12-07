@@ -22,7 +22,7 @@ AiAttack::AiAttack(AiComponent* component, sf::Vector2f center, float attackRadi
 void AiAttack::update()
 {
 	auto player = EntityManager::getInstance()->getLocalPlayer();
-	if (player->getStats()->current_hitpoints == 0)
+	if (player->getStats().current_hitpoints == 0)
 		return;
 	auto playerPos = player->getPosition();
 	auto aiPos = _aiComponent->getParent().getPosition();

@@ -275,7 +275,7 @@ void MainGame::update()
 
 	for (auto it = characters.begin(); it != characters.end(); ++it)
 	{
-		if ((*it)->getStats()->current_hitpoints != 0)
+		if ((*it)->getStats().current_hitpoints != 0)
 			(*it)->update();
 	}
 
@@ -413,7 +413,7 @@ void MainGame::drawHealthBar(std::shared_ptr<sf::RenderWindow> window)
 
 	auto player = EntityManager::getInstance()->getLocalPlayer();
 	auto stats = player->getStats();
-	auto percentage = stats->current_hitpoints / float(stats->max_hitpoints);
+	auto percentage = stats.current_hitpoints / float(stats.max_hitpoints);
 	auto currentHpRect = sf::RectangleShape(sf::Vector2f(width * percentage, height));
 	currentHpRect.setFillColor(sf::Color::Green);
 	currentHpRect.setPosition(x, y);

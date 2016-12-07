@@ -100,8 +100,8 @@ void CombatComponent::takeDamage(const unsigned int damage)
 	std::stringstream ss;
 	auto parent = getParent();
 
-	auto stats = dynamic_cast<Character*>(&getParent())->getStats(); 
-	stats->current_hitpoints = (damage > stats->current_hitpoints) ? 0U : (stats->current_hitpoints - damage);
+	auto& stats = dynamic_cast<Character*>(&getParent())->getStats(); 
+	stats.current_hitpoints = (damage > stats.current_hitpoints) ? 0U : (stats.current_hitpoints - damage);
 	
 	auto x = parent.getPosition().x;
 	auto y = parent.getPosition().y;
@@ -119,7 +119,7 @@ void CombatComponent::takeDamage(const unsigned int damage)
 	auto& ui = GamePhaseManager::getInstance()->getCurrentPhase()->getUi();
 	ui.addElement(new DamageSplash(damage, x, y));
 
-	if (stats->current_hitpoints == 0)
+	if (stats.current_hitpoints == 0)
 	{
 		auto entityManager = EntityManager::getInstance();
 		auto player = entityManager->getLocalPlayer();
