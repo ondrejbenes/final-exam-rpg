@@ -23,28 +23,9 @@ void AnimationComponent::update()
 
 void AnimationComponent::doCombatAnimation() 
 {
-	if (_animationTimer.getElapsedTime() > COMBAT_ANIMATION_PERIOD_MS)
-	{
-		spriteSheetCell.x++;
-		_animationTimer.restart();
-	}
+	checkIncrementCellX(COMBAT_ANIMATION_PERIOD_MS);
 
-	if (spriteSheetCell.x == 4)
-		spriteSheetCell.x = 0;
-
-	// TODO make a cache
-	auto gc = parent.getComponent<GraphicsComponent>();
-	auto& sprite = gc->getActiveSprite();
-	auto spriteWidth = sprite.getTexture()->getSize().x / 4;
-	auto spriteHeight = sprite.getTexture()->getSize().y / 4;
-	sprite.setTextureRect(
-		sf::IntRect(
-			spriteSheetCell.x * spriteWidth,
-			spriteSheetCell.y * spriteHeight,
-			spriteWidth,
-			spriteHeight));
-
-	sprite.setPosition(parent.getPosition() + gc->getSpriteOffset());
+	setTextureRect();
 }
 
 void AnimationComponent::doMoveAnimation() 
@@ -72,16 +53,21 @@ void AnimationComponent::doMoveAnimation()
 			spriteSheetCell.x = 0;
 		spriteSheetCell.y = direction;
 	}
+	checkIncrementCellX(MOVE_ANIMATION_PERIOD_MS);
 
-	if (_animationTimer.getElapsedTime() > MOVE_ANIMATION_PERIOD_MS)
+	setTextureRect();
+}
+
+void AnimationComponent::checkIncrementCellX(const sf::Time& animationPeriod)
+{
+	if (_animationTimer.getElapsedTime() > animationPeriod)
 	{
-		spriteSheetCell.x++;
+		spriteSheetCell.x = spriteSheetCell.x == 3 ? 0 : ++spriteSheetCell.x;
 		_animationTimer.restart();
 	}
+}
 
-	if (spriteSheetCell.x == 4)
-		spriteSheetCell.x = 0;
-
+void AnimationComponent::setTextureRect() {
 	// TODO make a cache
 	auto& sprite = parent.getComponent<GraphicsComponent>()->getActiveSprite();
 	auto spriteWidth = sprite.getTexture()->getSize().x / 4;
@@ -93,7 +79,6 @@ void AnimationComponent::doMoveAnimation()
 			spriteWidth,
 			spriteHeight));
 }
-
 
 sf::Time AnimationComponent::MOVE_ANIMATION_PERIOD_MS = sf::milliseconds(100);
 sf::Time AnimationComponent::COMBAT_ANIMATION_PERIOD_MS = sf::milliseconds(250);
