@@ -6,11 +6,6 @@ _onClick(nullptr),
 _onkeyPressed(nullptr),
 _onTextEntered(nullptr) {}
 
-UiElement::~UiElement()
-{
-	
-}
-
 void UiElement::setPosition(const sf::Vector2f& pos)
 {
 	this->_position.x = pos.x;

@@ -10,7 +10,6 @@ class TextBox : public UiElement
 public:
 	TextBox(const sf::Font& font, const std::string& text = "", unsigned int fontSize = 16, const sf::Color& textColor = sf::Color::White);
 
-	void update() override;
 	void draw(std::shared_ptr<sf::RenderWindow> window) override;
 	sf::FloatRect getBounds() override;
 	void setPosition(const sf::Vector2f& pos) override;

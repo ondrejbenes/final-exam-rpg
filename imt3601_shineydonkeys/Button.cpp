@@ -13,8 +13,6 @@ Button::Button(const std::string& text, const sf::Font& font, unsigned int fontS
 	_background.setFillColor(backgroundColor);
 }
 
-void Button::update() {}
-
 void Button::draw(std::shared_ptr<sf::RenderWindow> window)
 {
 	window->draw(_background);

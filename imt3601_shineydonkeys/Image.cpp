@@ -5,11 +5,6 @@ Image::Image(sf::Texture* texture)
 	_sprite.setTexture(*texture);
 }
 
-void Image::update() 
-{
-
-}
-
 void Image::draw(std::shared_ptr<sf::RenderWindow> window) 
 {
 	window->draw(_sprite);

@@ -11,11 +11,6 @@ ChatBoard::ChatBoard()
 	_input = "";
 }
 
-void ChatBoard::update() 
-{
-
-}
-
 void ChatBoard::draw(std::shared_ptr<sf::RenderWindow> window) 
 {
 	auto view = window->getView();

@@ -15,20 +15,17 @@ _damage(damage)
 	_drawableText.setStyle(sf::Text::Style::Bold);
 }
 
-void DamageSplash::update()
+void DamageSplash::draw(std::shared_ptr<sf::RenderWindow> window)
 {
 	auto elapsedTime = _visibleForMs.getElapsedTime().asSeconds();
 	auto newY = _drawableText.getPosition().y - elapsedTime * 10;
 	_drawableText.setPosition(_drawableText.getPosition().x, newY);
 	_drawableText.setFillColor(sf::Color(255, 255, 255, 255 - 255 * (elapsedTime / _lifetime.asSeconds())));
-	
+
 	if (elapsedTime > _lifetime.asSeconds())
 		GamePhaseManager::getInstance()->getCurrentPhase()->getUi().removeElement(this);
-}
-
-void DamageSplash::draw(std::shared_ptr<sf::RenderWindow> window)
-{
-	window->draw(_drawableText);
+	else
+		window->draw(_drawableText);
 }
 
 sf::FloatRect DamageSplash::getBounds()

@@ -10,7 +10,6 @@ class Minimap : public UiElement
 public:
 	explicit Minimap(sf::Texture* texture);
 
-	void update() override;
 	void draw(std::shared_ptr<sf::RenderWindow> window) override;
 	sf::FloatRect getBounds() override;
 private:

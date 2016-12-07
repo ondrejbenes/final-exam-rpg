@@ -7,11 +7,6 @@ Inventory::Inventory()
 	_background = sf::RectangleShape(sf::Vector2f(width, height));
 }
 
-void Inventory::update() 
-{
-
-}
-
 void Inventory::draw(std::shared_ptr<sf::RenderWindow> window) 
 {
 	auto rectPos = window->mapPixelToCoords(sf::Vector2i(0, 0));

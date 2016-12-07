@@ -6,8 +6,6 @@ Label::Label(const std::string& text, const sf::Font& font, unsigned int fontSiz
 	_drawableText.setFillColor(fillColor);
 }
 
-void Label::update() {}
-
 void Label::draw(std::shared_ptr<sf::RenderWindow> window)
 {
 	window->draw(_drawableText);

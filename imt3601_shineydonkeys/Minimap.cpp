@@ -18,11 +18,6 @@ Minimap::Minimap(sf::Texture* texture)
 	_playerPosition.setFillColor(sf::Color::Magenta);
 }
 
-void Minimap::update() 
-{
-
-}
-
 void Minimap::draw(std::shared_ptr<sf::RenderWindow> window) 
 {
 	auto view = window->getView();

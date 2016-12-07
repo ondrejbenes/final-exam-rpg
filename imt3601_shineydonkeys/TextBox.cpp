@@ -26,31 +26,29 @@ TextBox::TextBox(const sf::Font& font, const std::string& text, unsigned fontSiz
 	);
 }
 
-void TextBox::update() 
+void TextBox::draw(std::shared_ptr<sf::RenderWindow> window) 
 {
-	if(!_focused)
+	window->draw(_outline);
+	
+	if (!_focused)
 		return;
 
-	if(_verticalLineBlinkTimer.getElapsedTime() >= blinkFreq)
+	if (_verticalLineBlinkTimer.getElapsedTime() >= blinkFreq)
 	{
 		_verticalLineBlinkTimer.restart();
-		if(showingVerticalLine)
+		if (showingVerticalLine)
 		{
 			std::string currStr = _drawableText.getString();
 			currStr.replace(currStr.find('|'), 1, "");
 			_drawableText.setString(currStr);
-		} 
+		}
 		else
 		{
 			_drawableText.setString(_drawableText.getString() + '|');
 		}
 		showingVerticalLine = !showingVerticalLine;
 	}
-}
 
-void TextBox::draw(std::shared_ptr<sf::RenderWindow> window) 
-{
-	window->draw(_outline);
 	window->draw(_drawableText);
 }
 

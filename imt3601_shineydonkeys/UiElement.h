@@ -13,10 +13,7 @@ class UiElement
 {
 public:
 	UiElement();
-	virtual ~UiElement();
 
-	// TODO ugly to make it pure virtual
-	virtual void update() = 0;
 	virtual void draw(std::shared_ptr<sf::RenderWindow> window) = 0;
 	virtual sf::FloatRect getBounds() = 0;
 	

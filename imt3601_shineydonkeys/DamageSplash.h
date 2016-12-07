@@ -13,7 +13,6 @@ class DamageSplash : public UiElement
 public:
 	DamageSplash(unsigned int damage, float x, float y);
 
-	void update() override;
 	void draw(std::shared_ptr<sf::RenderWindow> window) override;
 	sf::FloatRect getBounds() override;
 private:
