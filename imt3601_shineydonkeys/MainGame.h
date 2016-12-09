@@ -63,6 +63,5 @@ private:
 	void handleLevelComplete();
 	void returnToMainMenu();
 
-	void drawHealthBar(std::shared_ptr<sf::RenderWindow> window);
 	void loadControls();
 };

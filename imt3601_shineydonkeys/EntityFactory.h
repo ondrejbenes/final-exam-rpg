@@ -16,6 +16,7 @@
 
 #include <sstream>
 #include "tinyxml2.h"
+#include "ResourceLoader.h"
 
 class EntityFactory
 {
@@ -46,10 +47,7 @@ inline Npc* EntityFactory::create<Npc>()
 	stats.current_hitpoints = 300;
 	auto npc = new Npc(stats);
 
-	// TODO ResLoader
-	auto texture = new sf::Texture;
-	if (!texture->loadFromFile("Resources/Images/Npc1.png"))
-		LOG_E("Error: could not load player image");
+	auto texture = ResourceLoader::getInstance()->getTexture("Resources/Images/Npc1.png");
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
 

@@ -5,6 +5,36 @@
 Inventory::Inventory()
 {
 	_background = sf::RectangleShape(sf::Vector2f(width, height));
+
+	auto inventoryLambda = [](UiElement* source, const sf::Event& event)
+	{
+		auto inventory = dynamic_cast<Inventory*>(source);
+		auto bounds = inventory->getBounds();
+
+		auto x = event.mouseButton.x - bounds.left;
+		auto y = event.mouseButton.y - bounds.top;
+
+		auto column = floor(x / (width / iconsPerRow));
+		auto row = floor(y / (height / (maxItems / iconsPerRow)));
+
+		auto itemToHighlight = unsigned(row * iconsPerRow + column);
+
+		auto player = EntityManager::getInstance()->getLocalPlayer();
+		auto playerInventory = player->getInventory();
+
+		if (playerInventory.size() <= itemToHighlight)
+			return;
+
+		auto item = playerInventory[itemToHighlight];
+
+		if (typeid(*item) == typeid(Weapon))
+		{
+			inventory->setHighlightedItem(itemToHighlight);
+			player->setEquipedWeapon(std::dynamic_pointer_cast<Weapon>(item));
+		}
+	};
+	
+	setOnClick(new UiCallback(inventoryLambda));
 }
 
 void Inventory::draw(std::shared_ptr<sf::RenderWindow> window) 

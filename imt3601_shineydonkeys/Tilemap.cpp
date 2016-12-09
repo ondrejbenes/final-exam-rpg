@@ -1,39 +1,22 @@
 #include "Tilemap.h"
-#include "Logger.h"
 #include "EntityManager.h"
 #include "EntityFactory.h"
 #include "StringUtilities.h"
+#include "ResourceLoader.h"
 
 #include <fstream>
-
-Tilemap::Tilemap()
-{
-	
-}
-
-Tilemap::~Tilemap()
-{
-
-}
-
 
 bool Tilemap::loadFromFile(const std::string& textureFileName, const std::string& levelDefinitionFileName)
 {
 	auto entityManager = EntityManager::getInstance();
 	entityManager->clearTiles();
-
-
-
+	
 	EntityFactory factory;
 
-	// TODO shared ptr?s
-	auto tileMap = new sf::Texture();
-	if (!tileMap->loadFromFile(textureFileName))
-		LOG_E("Failed to load TileMap texture");
+	auto tileMap = ResourceLoader::getInstance()->getTexture(textureFileName);
 
 	auto tilesPerRow = tileMap->getSize().x / TILE_HEIGHT;
 
-	// TODO handle file not found, use ResourceLoader
 	std::ifstream input(levelDefinitionFileName);
 	auto row = 0;
 	auto column = 0;
@@ -45,7 +28,6 @@ bool Tilemap::loadFromFile(const std::string& textureFileName, const std::string
 			auto tile = factory.create<Tile>();
 			auto type = stoi(types[column]);
 
-			// TODO call Tile.changeType to remove duplicity
 			tile->tileType = type;
 
 			if (find(begin(BLOCKING_TILES), end(BLOCKING_TILES), type) != end(BLOCKING_TILES))
@@ -66,7 +48,6 @@ bool Tilemap::loadFromFile(const std::string& textureFileName, const std::string
 			graphicsComponent->addSprite(TILE_SPRITE_NAME, tileImage);
 			graphicsComponent->setActiveSprite(TILE_SPRITE_NAME);
 
-			// TODO ugly
 			sf::FloatRect collider;
 			collider.height = TILE_HEIGHT;
 			collider.width = TILE_WIDTH;

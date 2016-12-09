@@ -6,22 +6,20 @@
 #include "Module.h"
 #include "Game.h"
 #include "ConfigIO.h"
-#include "Button.h"
-#include "StringUtilities.h"
 #include "Network.h"
 #include "PacketFactory.h"
 #include "TextBox.h"
 #include "Audio.h"
 #include "Image.h"
 #include "Minimap.h"
+#include "ChatBoard.h"
+#include "Inventory.h"
 
 #include <sstream>
 #include <codecvt>
 
 #include <SFML/Network/IpAddress.hpp>
-#include "ChatBoard.h"
-#include "Inventory.h"
-#include "EntityManager.h"
+#include "PlayerHealthBar.h"
 
 MainGame* GamePhaseFactory::createMainGame()
 {
@@ -30,42 +28,7 @@ MainGame* GamePhaseFactory::createMainGame()
 		LOG_E("Error loading minimap texture");
 	auto minimap = new Minimap(texture);
 
-	auto lambda = [](UiElement* source, const sf::Event& event)
-	{
-		auto chatBoard = dynamic_cast<ChatBoard*>(source);
-
-		if (!chatBoard->isFocused())
-			return;
-
-		auto& input = chatBoard->getInput();
-
-		if (event.text.unicode == 8) // backspace
-			input = input.substr(0, input.length() - 1);
-		else if (event.text.unicode == 13) // enter
-		{
-			auto playerName = ConfigIO::readString(L"player", L"name", L"Player");
-			chatBoard->addMessage(playerName, input);
-			auto msg = playerName + ": " + input;
-			input = "";
-			// TODO terrible encapsulation
-			
-			Blackboard::getInstance()->leaveCallback(NETWORK,
-				[msg](Module* target)
-				{
-					PacketFactory factory;
-					auto packet = factory.createChatMessage(msg);
-					auto network = dynamic_cast<Network*>(target);
-					network->broadcast(packet);
-				}
-			);
-		}
-		else
-			input += event.text.unicode;
-
-	};
 	auto chatBoard = new ChatBoard();
-	// TODO directly to chatboard?
-	chatBoard->setOnTextEntered(new UiCallback(lambda));
 	chatBoard->setName("chatBoard");
 
 	chatBoard->addMessage("Shiny Donkey", "Hey you! Come here.");
@@ -73,39 +36,13 @@ MainGame* GamePhaseFactory::createMainGame()
 	auto inventory = new Inventory();
 	inventory->setHighlightedItem(0);
 
-	auto inventoryLambda = [](UiElement* source, const sf::Event& event)
-	{
-		auto inventory = dynamic_cast<Inventory*>(source);
-		auto bounds = inventory->getBounds();
-
-		auto x = event.mouseButton.x - bounds.left;
-		auto y = event.mouseButton.y - bounds.top;
-
-		auto column = floor(x / (Inventory::width / Inventory::iconsPerRow));
-		auto row = floor(y / (Inventory::height / (Inventory::maxItems / Inventory::iconsPerRow)));
-
-		auto itemToHighlight = unsigned(row * Inventory::iconsPerRow + column);
-
-		auto player = EntityManager::getInstance()->getLocalPlayer();
-		auto playerInventory = player->getInventory();
-
-		if (playerInventory.size() <= itemToHighlight)
-			return;
-
-		auto item = playerInventory[itemToHighlight];
-
-		if(typeid(*item) == typeid(Weapon))
-		{
-			inventory->setHighlightedItem(itemToHighlight);
-			player->setEquipedWeapon(std::dynamic_pointer_cast<Weapon>(item));
-		}
-	};
-	inventory->setOnClick(new UiCallback(inventoryLambda));
+	auto healthBar = new PlayerHealthBar(sf::Vector2f(320, 48));
 
 	auto mainGame = new MainGame;
 	mainGame->_ui.addElement(minimap);
 	mainGame->_ui.addElement(chatBoard);
 	mainGame->_ui.addElement(inventory);
+	mainGame->_ui.addElement(healthBar);
 
 	return mainGame;
 }

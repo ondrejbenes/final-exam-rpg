@@ -309,6 +309,9 @@
     <ClCompile Include="AiIdle.cpp">
       <Filter>Source Files\Entity\Component\Ai</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerHealthBar.cpp">
+      <Filter>Source Files\Core\Module\Game\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\Player.png">
@@ -548,6 +551,9 @@
     </ClInclude>
     <ClInclude Include="AiIdle.h">
       <Filter>Header Files\Entity\Component\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerHealthBar.h">
+      <Filter>Header Files\Core\Module\Game\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,12 @@ ResourceLoader::ResourceLoader()
 		LOG_E("Could not menu load font");
 }
 
+ResourceLoader::~ResourceLoader() 
+{
+	for (auto texture : _textures)
+		delete texture.second;
+}
+
 std::shared_ptr<ResourceLoader> ResourceLoader::getInstance()
 {
 	if (instance == nullptr)
@@ -17,16 +23,16 @@ std::shared_ptr<ResourceLoader> ResourceLoader::getInstance()
 	return instance;
 }
 
-std::shared_ptr<sf::Texture> ResourceLoader::getTexture(std::string filePath)
+sf::Texture* ResourceLoader::getTexture(std::string filePath)
 {
 	if (_textures.find(filePath) != end(_textures))
-		return _textures[filePath].lock();
+		return _textures[filePath];
 
-	auto texture = std::make_shared<sf::Texture>();
+	auto texture = new sf::Texture;
 	if (!texture->loadFromFile(filePath))
 		LOG_E("Error loading texture: " + filePath);
 	_textures[filePath] = texture;
-	return _textures[filePath].lock();
+	return _textures[filePath];
 }
 
 const sf::Font& ResourceLoader::getMenuFont() const

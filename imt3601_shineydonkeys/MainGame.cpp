@@ -322,9 +322,7 @@ void MainGame::render(std::shared_ptr<sf::RenderWindow> window)
 		if (graphicsComponent != nullptr)
 			graphicsComponent->draw(window);
 	}
-
-	drawHealthBar(window);
-
+	
 	GamePhase::render(window);
 }
 
@@ -396,30 +394,6 @@ void MainGame::broadcastGameOverMessage()
 		}
 		);
 	}
-}
-
-// TODO create a new subclass of UiElement instead
-void MainGame::drawHealthBar(std::shared_ptr<sf::RenderWindow> window)
-{
-	auto width = window->getSize().x / 4;
-	auto height = 48;
-	auto view = window->getView();
-	auto x = view.getCenter().x - view.getSize().x / 2;
-	auto y = view.getCenter().y + view.getSize().y / 2 - height;
-
-	auto fullHpRect = sf::RectangleShape(sf::Vector2f(width, height));
-	fullHpRect.setFillColor(sf::Color::Red);
-	fullHpRect.setPosition(x, y);
-
-	auto player = EntityManager::getInstance()->getLocalPlayer();
-	auto stats = player->getStats();
-	auto percentage = stats.current_hitpoints / float(stats.max_hitpoints);
-	auto currentHpRect = sf::RectangleShape(sf::Vector2f(width * percentage, height));
-	currentHpRect.setFillColor(sf::Color::Green);
-	currentHpRect.setPosition(x, y);
-
-	window->draw(fullHpRect);
-	window->draw(currentHpRect);
 }
 
 void MainGame::handleInput()

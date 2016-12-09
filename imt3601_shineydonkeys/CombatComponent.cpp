@@ -106,7 +106,6 @@ void CombatComponent::takeDamage(const unsigned int damage)
 	auto x = parent.getPosition().x;
 	auto y = parent.getPosition().y;
 
-	// TODO fix end combat when fighting multiple enemies and player dies
 	if(_other == nullptr)
 		return;
 

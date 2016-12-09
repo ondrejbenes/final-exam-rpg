@@ -25,7 +25,6 @@ void Tile::changeType(unsigned newType, bool blocking)
 
 	auto id = this->id;
 
-	// TODO not really nice to have it here
 	if (Network::isServer())
 	{
 		Blackboard::getInstance()->leaveCallback(

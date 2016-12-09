@@ -173,6 +173,7 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="ChatBoard.cpp" />
+    <ClCompile Include="PlayerHealthBar.cpp" />
     <ClCompile Include="Scheduler.cpp" />
     <ClCompile Include="Trigger.cpp" />
     <ClCompile Include="CombatComponent.cpp" />
@@ -257,6 +258,7 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClInclude Include="Button.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="ChatBoard.h" />
+    <ClInclude Include="PlayerHealthBar.h" />
     <ClInclude Include="Scheduler.h" />
     <ClInclude Include="Trigger.h" />
     <ClInclude Include="CombatComponent.h" />

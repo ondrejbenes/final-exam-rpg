@@ -3,12 +3,47 @@
 #include <sstream>
 #include "Blackboard.h"
 #include "Network.h"
+#include "ConfigIO.h"
 
 ChatBoard::ChatBoard()
 {
 	_background.setSize(sf::Vector2f(width, height));
-
 	_input = "";
+
+	auto lambda = [](UiElement* source, const sf::Event& event)
+	{
+		auto chatBoard = dynamic_cast<ChatBoard*>(source);
+
+		if (!chatBoard->isFocused())
+			return;
+
+		auto& input = chatBoard->getInput();
+
+		if (event.text.unicode == 8) // backspace
+			input = input.substr(0, input.length() - 1);
+		else if (event.text.unicode == 13) // enter
+		{
+			auto playerName = ConfigIO::readString(L"player", L"name", L"Player");
+			chatBoard->addMessage(playerName, input);
+			auto msg = playerName + ": " + input;
+			input = "";
+
+			Blackboard::getInstance()->leaveCallback(NETWORK,
+				[msg](Module* target)
+				{
+					PacketFactory factory;
+					auto packet = factory.createChatMessage(msg);
+					auto network = dynamic_cast<Network*>(target);
+					network->broadcast(packet);
+				}
+			);
+		}
+		else
+			input += event.text.unicode;
+
+	};
+
+	setOnTextEntered(new UiCallback(lambda));
 }
 
 void ChatBoard::draw(std::shared_ptr<sf::RenderWindow> window) 

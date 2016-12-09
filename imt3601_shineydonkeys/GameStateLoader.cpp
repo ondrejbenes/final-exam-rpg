@@ -44,7 +44,6 @@ void GameStateLoader::quickLoad()
 			{
 				if(typeid(*entity) == typeid(Player))
 				{
-					// TODO if we have multiplayer, we may have problems here (modifying save file structure may be easiest fix):
 					entityManager->setLocalPlayer(dynamic_cast<Player*>(entity));
 					entityManager->add(entity);
 				}
