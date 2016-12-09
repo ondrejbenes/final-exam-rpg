@@ -8,13 +8,9 @@ class Menu : public GamePhase
 {
 	friend GamePhaseFactory;
 public:
-	virtual ~Menu();
-
 	void update() override;
-	void render(std::shared_ptr<sf::RenderWindow> window) override;
 protected:
-	Menu();
+	Menu(){}
 
 	void handleInput();
-	void handleKeyPressed(const sf::Event& event);
 };

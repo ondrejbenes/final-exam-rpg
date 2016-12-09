@@ -11,10 +11,6 @@ class GamePhase
 {
 	friend GamePhaseFactory;
 public:
-	virtual ~GamePhase();
-
-	// virtual bool initialize() = 0;
-
 	virtual void render(std::shared_ptr<sf::RenderWindow> window);
 	virtual void update() = 0;
 
@@ -22,8 +18,11 @@ public:
 protected:
 	UI _ui;
 
-	GamePhase();
+	GamePhase(){}
+
+	void handleGuiEvent(const sf::Event& event);
 
 	void handleMouseReleased(const sf::Event& event);
 	void handleTextEntered(const sf::Event& event);
+	void handleKeyPressed(const sf::Event& event);
 };

@@ -442,12 +442,8 @@ void MainGame::handleInput()
 		case sf::Event::TextEntered:
 			if (console->isVisible())
 				console->handleEvent(event);
-			handleTextEntered(event);
-			break;
-		case sf::Event::MouseButtonReleased:
-			handleMouseReleased(event);
-			break;
 		default:
+			handleGuiEvent(event);
 			break;
 		}
 	}
