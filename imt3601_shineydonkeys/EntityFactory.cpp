@@ -139,7 +139,7 @@ Npc* EntityFactory::createNpcFromXml(const tinyxml2::XMLElement& element, const 
 
 	// create sprite
 	auto gc = new GraphicsComponent(*npc);
-	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite, 4);
+	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite, sf::Vector2u(4, 4));
 	gc->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
 	npc->addComponent(gc);
 

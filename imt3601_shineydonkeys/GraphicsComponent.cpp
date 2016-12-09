@@ -54,18 +54,25 @@ void GraphicsComponent::update()
 
 }
 
-void GraphicsComponent::addSprite(const std::string& name, sf::Sprite sprite, unsigned int cellCount)
+void GraphicsComponent::addSprite(const std::string& name, sf::Sprite sprite, const sf::Vector2u& cellsCount)
 {
 	auto it = find_if(begin(_sprites), end(_sprites), [name](const std::shared_ptr<SpriteWrapper>& other) {return other->name == name; });
 	if(it == end(_sprites))
 	{
 		auto bounds = sprite.getGlobalBounds();
-		auto xOffset = -(bounds.width / cellCount / 2);
-		auto yOffset = -(bounds.height / cellCount / 2);
+		auto xOffset = -(bounds.width / cellsCount.x / 2);
+		auto yOffset = -(bounds.height / cellsCount.y / 2);
 		auto spriteOffset = sf::Vector2f(xOffset, yOffset);
 
-		_sprites.push_back(std::make_shared<SpriteWrapper>(name, sprite, cellCount, spriteOffset));
+		_sprites.push_back(std::make_shared<SpriteWrapper>(name, sprite, cellsCount, spriteOffset));
 	}
+}
+
+void GraphicsComponent::changeActiveSpriteTexRect(const sf::Vector2u& cell) 
+{
+	auto coord = cell.x + 1000 * cell.y;
+	auto& rec = _activeSprite->texRecCashe[coord];
+	_activeSprite->sprite.setTextureRect(rec);
 }
 
 void GraphicsComponent::setActiveSprite(const std::string& name)
@@ -83,4 +90,28 @@ sf::Sprite& GraphicsComponent::getActiveSprite() const
 const sf::Vector2f& GraphicsComponent::getSpriteOffset() const 
 {
 	return _activeSprite->offset;
+}
+
+GraphicsComponent::SpriteWrapper::SpriteWrapper(std::string name, sf::Sprite sprite, const sf::Vector2u& cellsCount, sf::Vector2f offset)
+	: name(name),
+	sprite(sprite),
+	cellsCount(cellsCount),
+	offset(offset) 
+{
+	auto spriteWidth = sprite.getTexture()->getSize().x / cellsCount.x;
+	auto spriteHeight = sprite.getTexture()->getSize().y / cellsCount.y;
+
+	for(auto y = 0; y < cellsCount.x; y++)
+	{
+		for (auto x = 0; x < cellsCount.y; x++)
+		{
+			auto coord = x + 1000 * y;
+
+			texRecCashe[coord] = sf::IntRect(
+				x * spriteWidth,
+				y * spriteHeight,
+				spriteWidth,
+				spriteHeight);
+		}
+	}
 }

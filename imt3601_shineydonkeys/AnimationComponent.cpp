@@ -68,16 +68,8 @@ void AnimationComponent::checkChangeCellY() {
 }
 
 void AnimationComponent::setTextureRect() {
-	// TODO make a cache
-	auto& sprite = parent.getComponent<GraphicsComponent>()->getActiveSprite();
-	auto spriteWidth = sprite.getTexture()->getSize().x / 4;
-	auto spriteHeight = sprite.getTexture()->getSize().y / 4;
-	sprite.setTextureRect(
-		sf::IntRect(
-			spriteSheetCell.x * spriteWidth,
-			spriteSheetCell.y * spriteHeight,
-			spriteWidth,
-			spriteHeight));
+	parent.getComponent<GraphicsComponent>()->changeActiveSpriteTexRect(
+		sf::Vector2u(spriteSheetCell.x,	spriteSheetCell.y));
 }
 
 sf::Time AnimationComponent::MOVE_ANIMATION_PERIOD_MS = sf::milliseconds(100);

@@ -66,7 +66,7 @@ inline Npc* EntityFactory::create<Npc>()
 	npc->getInventory().push_back(gkey);
 
 	auto gc = new GraphicsComponent(*npc);
-	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite, 4);
+	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite, sf::Vector2u(4, 4));
 	gc->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
 	npc->addComponent(gc);
 
@@ -130,8 +130,8 @@ inline Player* EntityFactory::create<Player>()
 	//player->getInventory().push_back(createInventoryItem("Resources/Images/Keys/GoldKey.png"));
 
 	auto gc = new GraphicsComponent(*player);
-	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite, 4);
-	gc->addSprite(CombatComponent::COMBAT_SPRITE_NAME, combatSprite, 4);
+	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite, sf::Vector2u(4, 4));
+	gc->addSprite(CombatComponent::COMBAT_SPRITE_NAME, combatSprite, sf::Vector2u(4, 4));
 	gc->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
 
 	player->addComponent(gc);
