@@ -243,7 +243,8 @@ void Network::updateClientMainGame()
 	if (packetType == CHAT)
 	{
 		auto tokens = StringUtilities::split(msg, PacketFactory::ATTRIBUTE_SEPARATOR);
-		auto chatBoard = dynamic_cast<ChatBoard*>(GamePhaseManager::getInstance()->getCurrentPhase()->getUi().getElementByName("chatBoard"));
+		const auto& chatBoard = GamePhaseManager::getInstance()->getCurrentPhase()
+			->getUi().getElementByName<ChatBoard>("chatBoard");
 		auto msgTokens = StringUtilities::split(tokens[1], ':');
 		chatBoard->addMessage(msgTokens[0], msgTokens[1]);
 	}
@@ -283,7 +284,8 @@ void Network::updateServerMainGame()
 						if (packetType == CHAT)
 						{
 							auto tokens = StringUtilities::split(msg, PacketFactory::ATTRIBUTE_SEPARATOR);
-							auto chatBoard = dynamic_cast<ChatBoard*>(GamePhaseManager::getInstance()->getCurrentPhase()->getUi().getElementByName("chatBoard"));
+							auto chatBoard = GamePhaseManager::getInstance()->getCurrentPhase()
+								->getUi().getElementByName<ChatBoard>("chatBoard");
 							auto msgTokens = StringUtilities::split(tokens[1], ':');
 							chatBoard->addMessage(msgTokens[0], msgTokens[1]);
 						}

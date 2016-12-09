@@ -7,7 +7,7 @@
 #include <sstream>
 
 
-Button* UiElementFactory::createButton(const wchar_t* configFile, const wchar_t* configSectionName, UiCallback onClick)
+std::shared_ptr<Button> UiElementFactory::createButton(const wchar_t* configFile, const wchar_t* configSectionName, UiCallback onClick)
 {
 	auto text = ConfigIO::readString(configSectionName, L"text", L"???", configFile);
 	auto& font = ResourceLoader::getInstance()->getMenuFont();
@@ -15,14 +15,14 @@ Button* UiElementFactory::createButton(const wchar_t* configFile, const wchar_t*
 	auto x = ConfigIO::readInt(configSectionName, L"x", 20, configFile);
 	auto y = ConfigIO::readInt(configSectionName, L"y", 20, configFile);
 
-	auto uiElement = new Button(text, font, fontSize);
+	auto uiElement = std::make_shared<Button>(text, font, fontSize);
 	uiElement->setOnClick(new UiCallback(onClick));
 	uiElement->setPosition(sf::Vector2f(x, y));
 
 	return uiElement;
 }
 
-Label* UiElementFactory::createLabel(const wchar_t* configFile, const wchar_t* configSectionName)
+std::shared_ptr<Label> UiElementFactory::createLabel(const wchar_t* configFile, const wchar_t* configSectionName)
 {
 	auto text = ConfigIO::readString(configSectionName, L"text", L"???", configFile);
 	auto& font = ResourceLoader::getInstance()->getMenuFont();
@@ -30,13 +30,13 @@ Label* UiElementFactory::createLabel(const wchar_t* configFile, const wchar_t* c
 	auto x = ConfigIO::readInt(configSectionName, L"x", 20, configFile);
 	auto y = ConfigIO::readInt(configSectionName, L"y", 20, configFile);
 
-	auto uiElement = new Label(text, font, fontSize);
+	auto uiElement = std::make_shared<Label>(text, font, fontSize);
 	uiElement->setPosition(sf::Vector2f(x, y));
 
 	return uiElement;
 }
 
-TextBox* UiElementFactory::createTextBox(const wchar_t* configFile, const wchar_t* configSectionName)
+std::shared_ptr<TextBox> UiElementFactory::createTextBox(const wchar_t* configFile, const wchar_t* configSectionName)
 {
 	auto text = ConfigIO::readString(configSectionName, L"text", L"???", configFile);
 	auto& font = ResourceLoader::getInstance()->getMenuFont();
@@ -44,7 +44,7 @@ TextBox* UiElementFactory::createTextBox(const wchar_t* configFile, const wchar_
 	auto x = ConfigIO::readInt(configSectionName, L"x", 20, configFile);
 	auto y = ConfigIO::readInt(configSectionName, L"y", 20, configFile);
 
-	auto uiElement = new TextBox(font, text, fontSize);
+	auto uiElement = std::make_shared<TextBox>(font, text, fontSize);
 	uiElement->setPosition(sf::Vector2f(x, y));
 
 	return uiElement;

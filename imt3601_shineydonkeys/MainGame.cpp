@@ -100,8 +100,7 @@ MainGame::MainGame() :
 
 		auto mainGame = GamePhaseManager::getInstance()->getCurrentPhase();
 
-		auto ui = mainGame->getUi();
-		auto chatBoard = dynamic_cast<ChatBoard*>(ui.getElementByName("chatBoard"));
+		auto chatBoard = mainGame->getUi().getElementByName<ChatBoard>("chatBoard");
 
 		chatBoard->addMessage("Shiny Donkey", "Hi. I'm the Shiney Donkey");
 

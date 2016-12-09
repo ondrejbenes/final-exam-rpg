@@ -14,6 +14,9 @@
 #include "GraphicsComponent.h"
 #include "MainGame.h"
 #include "Logger.h"
+#include "Scheduler.h"
+
+using namespace std::chrono_literals;
 
 CombatComponent::CombatComponent(Entity& parent) :
 EntityComponent(parent),
@@ -114,9 +117,17 @@ void CombatComponent::takeDamage(const unsigned int damage)
 	else
 		x += 25;
 
-	// TODO memory leak
 	auto& ui = GamePhaseManager::getInstance()->getCurrentPhase()->getUi();
-	ui.addElement(new DamageSplash(damage, x, y));
+	auto dmgSplash = std::make_shared<DamageSplash>(damage, x, y);
+	ui.addElement(dmgSplash);
+	Blackboard::getInstance()->leaveCallback(SCHEDULER, [dmgSplash](Module* module)
+	{
+		dynamic_cast<Scheduler*>(module)->schedule([dmgSplash]()
+		{
+			GamePhaseManager::getInstance()->getCurrentPhase()->getUi().removeElement(dmgSplash);
+		}, NOW + 2s);
+	});
+
 
 	if (stats.current_hitpoints == 0)
 	{
@@ -129,7 +140,7 @@ void CombatComponent::takeDamage(const unsigned int damage)
 			auto loot = parentAsCharacter->getInventory();
 			auto& inventoryOfOther = entityManager->getLocalPlayer()->getInventory();
 
-			auto chatBoard = dynamic_cast<ChatBoard*>(ui.getElementByName("chatBoard"));
+			auto chatBoard = ui.getElementByName<ChatBoard>("chatBoard");
 			for (auto it = begin(loot); it != end(loot); ++it)
 			{
 				auto message = (*it)->getName() + " added to inventory";;

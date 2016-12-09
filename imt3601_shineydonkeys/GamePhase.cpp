@@ -47,7 +47,7 @@ void GamePhase::handleMouseReleased(const sf::Event& event)
 			_ui.setFocusedElement(*it);
 			auto callback = (*it)->getOnClick();
 			if (callback != nullptr)
-				(*callback)(*it, event);
+				(*callback)(it->get(), event);
 		}
 	}
 
@@ -64,7 +64,7 @@ void GamePhase::handleTextEntered(const sf::Event& event)
 
 	auto callback = focusedElement->getOnTextEntered();
 	if (callback != nullptr)
-		(*callback)(focusedElement, event);
+		(*callback)(focusedElement.get(), event);
 }
 
 void GamePhase::handleKeyPressed(const sf::Event& event)
@@ -75,5 +75,5 @@ void GamePhase::handleKeyPressed(const sf::Event& event)
 
 	auto callback = focusedElement->getOnKeyPressed();
 	if (callback != nullptr)
-		(*callback)(focusedElement, event);
+		(*callback)(focusedElement.get(), event);
 }

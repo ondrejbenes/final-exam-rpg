@@ -26,19 +26,19 @@ MainGame* GamePhaseFactory::createMainGame()
 	auto texture = new sf::Texture();
 	if (!texture->loadFromFile("Resources/Images/minimap2.png"))
 		LOG_E("Error loading minimap texture");
-	auto minimap = new Minimap(texture);
+	auto minimap = std::make_shared<Minimap>(texture);
 
-	auto chatBoard = new ChatBoard();
+	auto chatBoard = std::make_shared<ChatBoard>();
 	chatBoard->setName("chatBoard");
 
 	chatBoard->addMessage("Shiny Donkey", "Hey you! Come here.");
 
-	auto inventory = new Inventory();
+	auto inventory = std::make_shared<Inventory>();
 	inventory->setHighlightedItem(0);
 
-	auto healthBar = new PlayerHealthBar(sf::Vector2f(320, 48));
+	auto healthBar = std::make_shared<PlayerHealthBar>(sf::Vector2f(320, 48));
 
-	auto mainGame = new MainGame;
+	auto mainGame = new MainGame();
 	mainGame->_ui.addElement(minimap);
 	mainGame->_ui.addElement(chatBoard);
 	mainGame->_ui.addElement(inventory);
@@ -126,7 +126,7 @@ Menu* GamePhaseFactory::createStartMultiPlayerGame()
 	auto ip = _uiElementFactory.createLabel(configFile, L"ip");
 
 	auto ipStr = "Your IP is: " + sf::IpAddress::getLocalAddress().toString();
-	auto ipAsBtn = dynamic_cast<Label*>(ip);
+	auto ipAsBtn = std::dynamic_pointer_cast<Label>(ip);
 	ipAsBtn->setText(ipStr);
 
 	auto spectratorsHeader = _uiElementFactory.createLabel(configFile, L"spectratorsHeader");
@@ -185,8 +185,8 @@ Menu* GamePhaseFactory::createJoinMultiPlayerGame()
 				[](Module* target)
 				{
 					auto networkModule = dynamic_cast<Network*>(target);
-					auto textBox = GamePhaseManager::getInstance()->getCurrentPhase()->getUi().getElementByName("serverIp");
-					auto ipAsStr = dynamic_cast<TextBox*>(textBox)->getText();
+					auto textBox = GamePhaseManager::getInstance()->getCurrentPhase()->getUi().getElementByName<TextBox>("serverIp");
+					auto ipAsStr = textBox->getText();
 					LOG_I("Connecting to: " + ipAsStr);
 					networkModule->setServerIp(sf::IpAddress(ipAsStr));
 					networkModule->initAsClient();
@@ -274,7 +274,7 @@ Menu* GamePhaseFactory::createOptions()
 	auto texture = new sf::Texture();
 	if (!texture->loadFromFile(ss.str()))
 		LOG_E("Error loading small player texture");
-	auto playerImage = new Image(texture);
+	auto playerImage = std::make_shared<Image>(texture);
 	auto x = ConfigIO::readInt(L"appearanceImage", L"x", 20, L"./Config/options.ini");
 	auto y = ConfigIO::readInt(L"appearanceImage", L"y", 20, L"./Config/options.ini");
 	playerImage->setPosition(sf::Vector2f(x, y));
@@ -298,8 +298,8 @@ Menu* GamePhaseFactory::createOptions()
 				LOG_E("Error loading small player texture");
 
 			auto image = GamePhaseManager::getInstance()->getCurrentPhase()
-				->getUi().getElementByName("playerImage");
-			dynamic_cast<Image*>(image)->changeTexture(texture);
+				->getUi().getElementByName<Image>("playerImage");
+			image->changeTexture(texture);
 		}
 	);
 
@@ -321,8 +321,8 @@ Menu* GamePhaseFactory::createOptions()
 			LOG_E("Error loading small player texture");
 
 		auto image = GamePhaseManager::getInstance()->getCurrentPhase()
-			->getUi().getElementByName("playerImage");
-		dynamic_cast<Image*>(image)->changeTexture(texture);
+			->getUi().getElementByName<Image>("playerImage");
+		image->changeTexture(texture);
 		}
 	);
 
@@ -332,8 +332,8 @@ Menu* GamePhaseFactory::createOptions()
 		[](UiElement* source, const sf::Event& event)
 		{
 			auto textBox = GamePhaseManager::getInstance()->getCurrentPhase()
-				->getUi().getElementByName("playerName");
-			auto playerName = dynamic_cast<TextBox*>(textBox)->getText();
+				->getUi().getElementByName<TextBox>("playerName");
+			auto playerName = textBox->getText();
 
 			std::wstring playerNameAsWStr;
 			playerNameAsWStr.assign(playerName.begin(), playerName.end());
@@ -342,14 +342,14 @@ Menu* GamePhaseFactory::createOptions()
 			ConfigIO::writeString(L"player", L"name", playerNameAsWStr.c_str());
 
 			textBox = GamePhaseManager::getInstance()->getCurrentPhase()
-				->getUi().getElementByName("soundVolume");
-			auto volume = stoi(dynamic_cast<TextBox*>(textBox)->getText());
+				->getUi().getElementByName<TextBox>("soundVolume");
+			auto volume = stoi(textBox->getText());
 			ConfigIO::writeInt(L"soundVolumeTextBox", L"text", volume, L"./Config/options.ini");
 			ConfigIO::writeInt(L"audio", L"soundVolume", volume);
 
 			textBox = GamePhaseManager::getInstance()->getCurrentPhase()
-				->getUi().getElementByName("musicVolume");
-			volume = stoi(dynamic_cast<TextBox*>(textBox)->getText());
+				->getUi().getElementByName<TextBox>("musicVolume");
+			volume = stoi(textBox->getText());
 			ConfigIO::writeInt(L"musicVolumeTextBox", L"text", volume, L"./Config/options.ini");
 			ConfigIO::writeInt(L"audio", L"musicVolume", volume);
 

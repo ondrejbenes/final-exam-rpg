@@ -10,15 +10,28 @@ public:
 	UI();
 	virtual ~UI();
 
-	void addElement(UiElement* element);
-	void removeElement(UiElement* element);
-	std::vector<UiElement*> getElements() const { return _elements; }
+	void addElement(std::shared_ptr<UiElement> element);
+	void removeElement(std::shared_ptr<UiElement> element);
+	std::vector<std::shared_ptr<UiElement>> getElements() const { return _elements; }
 
-	UiElement* getElementByName(const std::string& name);
+	template<class T>
+	std::shared_ptr<T> getElementByName(const std::string& name);
 
-	UiElement* getFocusedElement() const { return _focusedElement; }
-	void setFocusedElement(UiElement* element);
+	std::shared_ptr<UiElement> getFocusedElement() const { return _focusedElement; }
+	void setFocusedElement(std::shared_ptr<UiElement> element);
 private:
-	std::vector<UiElement*> _elements;
-	UiElement* _focusedElement;
+	std::vector<std::shared_ptr<UiElement>> _elements;
+	std::shared_ptr<UiElement> _focusedElement;
 };
+
+template <class T>
+std::shared_ptr<T> UI::getElementByName(const std::string& name) 
+{
+	std::shared_ptr<T> ret = nullptr;
+
+	for (auto element : _elements)
+		if (element->getName() == name)
+			ret = std::dynamic_pointer_cast<T>(element);
+
+	return ret;
+}
