@@ -58,7 +58,7 @@ public:
 	 * \param interval Boundary in which to search
 	 * \return Vector of Charaters in the interval
 	 */
-	std::vector<Character*> getCharactersInInterval(QuadTreeBoundary& interval);
+	std::vector<Character*> getCharactersInInterval(const QuadTreeBoundary& interval);
 	
 	/* Returns Charater located at pos, or nullptr, if none was found */
 	Character* getCharacterAtPos(const sf::Vector2f& pos);
@@ -74,7 +74,7 @@ public:
 	* \param interval Boundary in which to search
 	* \return Vector of Tiles in the interval
 	*/
-	std::vector<Tile*> getTilesInInterval(QuadTreeBoundary& interval);
+	std::vector<Tile*> getTilesInInterval(const QuadTreeBoundary& interval);
 	
 	/* Returns Tile located at pos, or nullptr, if none was found */
 	Tile* getTileAtPos(const sf::Vector2f& pos);

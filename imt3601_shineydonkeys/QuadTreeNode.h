@@ -1,6 +1,7 @@
 #pragma once
 
 #include "QuadTreeNodeData.h"
+#include "QuadTreeBoundary.h"
 
 #include <vector>
 
@@ -12,7 +13,7 @@ class QuadTreeNode
 public:
 	friend QuadTree;
 
-	QuadTreeNode(int depth, QuadTreeBoundary* boundary, QuadTreeNode* parent);
+	QuadTreeNode(int depth, QuadTreeBoundary boundary, QuadTreeNode* parent);
 	~QuadTreeNode();
 
 	QuadTreeNode* getChildInDirection(std::string direction);
@@ -22,17 +23,17 @@ public:
 	bool hasSiblingWithChildren();
 	QuadTreeNode* getSiblingWithData();
 private:
-	int _depth;
+	unsigned _depth;
 	QuadTreeNodeData* _data;
 	QuadTreeNode* _parent;
-	QuadTreeBoundary* _boundary;
-	std::vector<QuadTreeNode*>* _children;
+	QuadTreeBoundary _boundary;
+	std::vector<QuadTreeNode*> _children;
 	QuadTreeNode* _northWest;
 	QuadTreeNode* _northEast;
 	QuadTreeNode* _southWest;
 	QuadTreeNode* _southEast;
 
 	void initChildren();
-	QuadTreeBoundary* getQudrant(std::string direction);
+	QuadTreeBoundary getQudrant(std::string direction);
 };
 

@@ -43,7 +43,7 @@ std::vector<Character*> EntityManager::getAllCharacters()
 	std::vector<Character*> characters;
 
 	auto boundary = QuadTreeBoundary(_characters.getBoundaryCpy());
-	auto chars = _characters.getInInterval(&boundary);
+	auto chars = _characters.getInInterval(boundary);
 
 	for (auto it = chars.begin(); it != chars.end(); ++it)
 		characters.push_back(static_cast<Character*>(*it));
@@ -51,11 +51,11 @@ std::vector<Character*> EntityManager::getAllCharacters()
 	return characters;
 }
 
-std::vector<Character*> EntityManager::getCharactersInInterval(QuadTreeBoundary& interval)
+std::vector<Character*> EntityManager::getCharactersInInterval(const QuadTreeBoundary& interval)
 {
 	std::vector<Character*> characters;
 
-	auto charactersAsNodeData = _characters.getInInterval(&interval);
+	auto charactersAsNodeData = _characters.getInInterval(interval);
 
 	for (auto it = charactersAsNodeData.begin(); it != charactersAsNodeData.end(); ++it)
 		characters.push_back(static_cast<Character*>(*it));
@@ -84,7 +84,7 @@ std::vector<Tile*> EntityManager::getAllTiles()
 	std::vector<Tile*> tiles;
 
 	auto boundary = QuadTreeBoundary(_tiles.getBoundaryCpy());
-	auto tilesAsNodeData = _tiles.getInInterval(&boundary);
+	auto tilesAsNodeData = _tiles.getInInterval(boundary);
 
 	for (auto it = tilesAsNodeData.begin(); it != tilesAsNodeData.end(); ++it)
 		tiles.push_back(reinterpret_cast<Tile*>(*it));
@@ -92,11 +92,11 @@ std::vector<Tile*> EntityManager::getAllTiles()
 	return tiles;
 }
 
-std::vector<Tile*> EntityManager::getTilesInInterval(QuadTreeBoundary& interval)
+std::vector<Tile*> EntityManager::getTilesInInterval(const QuadTreeBoundary& interval)
 {
 	std::vector<Tile*> tiles;
 
-	auto tilesAsNodeData = _tiles.getInInterval(&interval);
+	auto tilesAsNodeData = _tiles.getInInterval(interval);
 
 	for (auto it = tilesAsNodeData.begin(); it != tilesAsNodeData.end(); ++it)
 		tiles.push_back(reinterpret_cast<Tile*>(*it));
@@ -122,21 +122,21 @@ Tile* EntityManager::getTileById(unsigned id)
 
 EntityManager::EntityManager() :
 _localPlayer(nullptr),
-_characters(QuadTree(new QuadTreeBoundary(0.0, Tilemap::MAP_WIDTH, 0, Tilemap::MAP_HEIGHT))),
-_tiles(QuadTree(new QuadTreeBoundary(0.0, Tilemap::MAP_WIDTH, 0, Tilemap::MAP_HEIGHT)))
+_characters(QuadTree(QuadTreeBoundary(0.0, Tilemap::MAP_WIDTH, 0, Tilemap::MAP_HEIGHT))),
+_tiles(QuadTree(QuadTreeBoundary(0.0, Tilemap::MAP_WIDTH, 0, Tilemap::MAP_HEIGHT)))
 {
 
 }
 
 void EntityManager::clearCharacters()
 {
-	_characters = QuadTree(new QuadTreeBoundary(0.0, Tilemap::MAP_WIDTH, 0, Tilemap::MAP_HEIGHT));
+	_characters = QuadTree(QuadTreeBoundary(0.0, Tilemap::MAP_WIDTH, 0, Tilemap::MAP_HEIGHT));
 	_localPlayer = nullptr;
 }
 
 void EntityManager::clearTiles()
 {
-	_tiles = QuadTree(new QuadTreeBoundary(0.0, Tilemap::MAP_WIDTH, 0, Tilemap::MAP_HEIGHT));
+	_tiles = QuadTree(QuadTreeBoundary(0.0, Tilemap::MAP_WIDTH, 0, Tilemap::MAP_HEIGHT));
 }
 
 std::shared_ptr<EntityManager> EntityManager::_instance = nullptr;

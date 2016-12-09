@@ -4,7 +4,7 @@
 #include "Logger.h"
 #include <stack>
 
-QuadTree::QuadTree(QuadTreeBoundary* boundary) : _boundary(boundary)
+QuadTree::QuadTree(QuadTreeBoundary boundary) : _boundary(boundary)
 {
 	_root = nullptr;
 }
@@ -17,12 +17,12 @@ QuadTree::~QuadTree()
 
 QuadTreeBoundary QuadTree::getBoundaryCpy()
 {
-	return *_boundary;
+	return _boundary;
 }
 
 void QuadTree::add(QuadTreeNodeData* data)
 {
-	if (!_boundary->contains(data->getX(), data->getY()))
+	if (!_boundary.contains(data->getX(), data->getY()))
 	{
 		LOG_W("Coordinates are out of boundary!");
 		return;
@@ -31,7 +31,7 @@ void QuadTree::add(QuadTreeNodeData* data)
 	if (_root == nullptr)
 		_root = new QuadTreeNode(0, _boundary, nullptr);
 
-	_root->insert(data, _boundary->insertionPath(data->getX(), data->getY(), MAX_DEPTH));
+	_root->insert(data, _boundary.getInsertionPath(data->getX(), data->getY(), MAX_DEPTH));
 }
 
 // TODO come up with a more elegant solution (don't set x and y in quad tree method)
@@ -39,7 +39,7 @@ void QuadTree::move(QuadTreeNodeData* data, double newX, double newY)
 {
 	auto prevX = data->getX();
 	auto prevY = data->getY();
-	auto path = _boundary->insertionPath(prevX, prevY, MAX_DEPTH);
+	auto path = _boundary.getInsertionPath(prevX, prevY, MAX_DEPTH);
 	auto node = search(_root, path, prevX, prevY);
 
 	if (node == nullptr)
@@ -48,7 +48,7 @@ void QuadTree::move(QuadTreeNodeData* data, double newX, double newY)
 		return;
 	}
 
-	if(!node->_boundary->contains(newX, newY))
+	if(!node->_boundary.contains(newX, newY))
 	{
 		remove(prevX, prevY);
 
@@ -66,7 +66,7 @@ void QuadTree::move(QuadTreeNodeData* data, double newX, double newY)
 
 QuadTreeNodeData* QuadTree::get(double x, double y)
 {
-	auto path = _boundary->insertionPath(x, y, MAX_DEPTH);
+	auto path = _boundary.getInsertionPath(x, y, MAX_DEPTH);
 	auto node = search(_root, path, x, y);
 
 	return node != nullptr ? node->_data : nullptr;
@@ -74,7 +74,7 @@ QuadTreeNodeData* QuadTree::get(double x, double y)
 
 QuadTreeNodeData* QuadTree::remove(double x, double y)
 {
-	auto path = _boundary->insertionPath(x, y, MAX_DEPTH);
+	auto path = _boundary.getInsertionPath(x, y, MAX_DEPTH);
 	auto current = search(_root, path, x, y);
 
 	if (current == nullptr) return nullptr;
@@ -97,19 +97,19 @@ QuadTreeNodeData* QuadTree::remove(double x, double y)
 
 		auto sibling = current->getSiblingWithData();
 		current->_parent->_data = sibling->_data;
-		current->_parent->_children = nullptr;
+		current->_parent->_children.clear();
 		current = current->_parent;
 	}
 	
 	return ret;
 }
 
-std::vector<QuadTreeNodeData*> QuadTree::getInInterval(QuadTreeBoundary* boundary)
+std::vector<QuadTreeNodeData*> QuadTree::getInInterval(const QuadTreeBoundary& boundary)
 {
 	std::vector<QuadTreeNodeData*> ret;
 	std::stack<QuadTreeNode*> nodes;
 
-	if (_root == nullptr || !boundary->intersects(*_boundary)) return ret;
+	if (_root == nullptr || !boundary.intersects(_boundary)) return ret;
 
 	nodes.push(_root);
 
@@ -118,16 +118,16 @@ std::vector<QuadTreeNodeData*> QuadTree::getInInterval(QuadTreeBoundary* boundar
 		auto node = nodes.top();
 		nodes.pop();
 
-		if (node->_data != nullptr && boundary->contains(node->_data->getX(), node->_data->getY()))
+		if (node->_data != nullptr && boundary.contains(node->_data->getX(), node->_data->getY()))
 			ret.push_back(node->_data);
 
-		if (node->_children == nullptr)
+		if (node->_children.empty())
 			continue;
 
-		for (auto it = node->_children->begin(); it != node->_children->end(); ++it)
+		for (auto it = node->_children.begin(); it != node->_children.end(); ++it)
 		{
 			auto child = *it;
-			if (child->_boundary->intersects(*boundary) && (child->_data != nullptr || child->_children != nullptr))
+			if (child->_boundary.intersects(boundary) && (child->_data != nullptr || !child->_children.empty()))
 				nodes.push(child);
 		}
 	}
