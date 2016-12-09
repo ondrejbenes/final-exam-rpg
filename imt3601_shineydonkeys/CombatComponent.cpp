@@ -169,8 +169,6 @@ void CombatComponent::takeDamage(const unsigned int damage)
 			_otherCombatComp->endCombat();
 		endCombat();
 		entityManager->remove(&parent);
-
-		// TODO set player to nullptr in EM?
 	}
 }
 

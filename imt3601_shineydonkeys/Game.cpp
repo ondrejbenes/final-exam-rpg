@@ -53,7 +53,5 @@ void Game::quickLoad()
 
 void Game::stop()
 {
-	// TODO cleanup?
-
 	_running = false;
 }

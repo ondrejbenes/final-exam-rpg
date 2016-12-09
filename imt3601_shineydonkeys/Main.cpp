@@ -4,6 +4,7 @@
 // TODO Check for memory leaks
 // TODO Use only necessary includes in header files
 // TODO Remove empty constructors and destructors
+// TODO move lambdas (especially blackboard callbacks) to a nicer place
 
 int main(int argc, char* argv[])
 {

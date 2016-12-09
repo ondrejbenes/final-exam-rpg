@@ -174,69 +174,14 @@ MainGame::MainGame() :
 		);
 	});
 
-	// TODO remove duplicity
 	auto bronzeKeyGateUnlockTile = entityManager->getTileAtPos(bronzeKeyUnlockTile);
-	attachTriggerCallbackToTile(bronzeKeyGateUnlockTile,
-		[](Entity* enteringEntity)
-	{
-		auto em = EntityManager::getInstance();
-		auto player = em->getLocalPlayer();
-		if (player->id != enteringEntity->id)
-			return;
-
-		auto hasKey = false;
-		for (auto item : player->getInventory())
-			if (item->getName() == "Bronze Key")
-				hasKey = true;
-
-		if(hasKey)
-		{
-			auto gateTile = dynamic_cast<Tile*>(em->getTileAtPos(bronzeKeyGateTile));
-			gateTile->changeType(168, false);
-		}
-	});
+	attachTriggerCallbackToTile(bronzeKeyGateUnlockTile, createUnlockCallback("Bronze Key", bronzeKeyGateTile));
 
 	auto silverKeyGateUnlockTile = entityManager->getTileAtPos(silverKeyUnlockTile);
-	attachTriggerCallbackToTile(silverKeyGateUnlockTile,
-		[](Entity* enteringEntity)
-	{
-		auto em = EntityManager::getInstance();
-		auto player = em->getLocalPlayer();
-		if (player->id != enteringEntity->id)
-			return;
-
-		auto hasKey = false;
-		for (auto item : player->getInventory())
-			if (item->getName() == "Silver Key")
-				hasKey = true;
-
-		if (hasKey)
-		{
-			auto gateTile = dynamic_cast<Tile*>(em->getTileAtPos(silverKeyGateTile));
-			gateTile->changeType(168, false);
-		}
-	});
+	attachTriggerCallbackToTile(silverKeyGateUnlockTile, createUnlockCallback("Silver Key", silverKeyGateTile));
 
 	auto goldKeyGateUnlockTile = entityManager->getTileAtPos(goldKeyUnlockTile);
-	attachTriggerCallbackToTile(goldKeyGateUnlockTile,
-		[](Entity* enteringEntity)
-	{
-		auto em = EntityManager::getInstance();
-		auto player = em->getLocalPlayer();
-		if (player->id != enteringEntity->id)
-			return;
-
-		auto hasKey = false;
-		for (auto item : player->getInventory())
-			if (item->getName() == "Gold Key")
-				hasKey = true;
-
-		if (hasKey)
-		{
-			auto gateTile = dynamic_cast<Tile*>(em->getTileAtPos(goldKeyGateTile));
-			gateTile->changeType(168, false);
-		}
-	});
+	attachTriggerCallbackToTile(goldKeyGateUnlockTile, createUnlockCallback("Gold Key", goldKeyGateTile));
 
 	Blackboard::getInstance()->leaveCallback(
 		AUDIO,
@@ -323,6 +268,28 @@ void MainGame::render(std::shared_ptr<sf::RenderWindow> window)
 	}
 	
 	GamePhase::render(window);
+}
+
+std::function<void(Entity*)> MainGame::createUnlockCallback(const std::string& keyName, const sf::Vector2f& gatePosition) 
+{
+	return [keyName, gatePosition](Entity* enteringEntity)
+	{
+		auto em = EntityManager::getInstance();
+		auto player = em->getLocalPlayer();
+		if (player->id != enteringEntity->id)
+			return;
+
+		auto hasKey = false;
+		for (auto item : player->getInventory())
+			if (item->getName() == keyName)
+				hasKey = true;
+
+		if (hasKey)
+		{
+			auto gateTile = dynamic_cast<Tile*>(em->getTileAtPos(gatePosition));
+			gateTile->changeType(168, false);
+		}
+	};
 }
 
 void MainGame::attachTriggerCallbackToTile(Tile* tile, std::function<void(Entity*)> callback)
@@ -519,6 +486,8 @@ void MainGame::returnToMainMenu() {
 		}
 		);
 	}
+
+	EntityManager::getInstance()->setLocalPlayer(nullptr);
 }
 
 Controls MainGame::CONTROLS = Controls();

@@ -114,4 +114,6 @@ GraphicsComponent::SpriteWrapper::SpriteWrapper(std::string name, sf::Sprite spr
 				spriteHeight);
 		}
 	}
+
+	sprite.setTextureRect(texRecCashe[1001]);
 }
