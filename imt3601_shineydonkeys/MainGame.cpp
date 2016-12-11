@@ -127,7 +127,8 @@ MainGame::MainGame() :
 	entityManager->add(donkey);
 
 #ifdef  _DEBUG
-	loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
+	//loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
+	loadLevel("Resources/Images/tiles.png", "Resources/Levels/THISFinalExamMap.csv");
 #else
 	loadLevel("Resources/Images/tiles.png", "Resources/Levels/FinalExamMap_v2.csv");
 #endif

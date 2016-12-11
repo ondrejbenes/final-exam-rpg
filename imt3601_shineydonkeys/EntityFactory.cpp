@@ -164,9 +164,17 @@ Npc* EntityFactory::createNpcFromXml(const tinyxml2::XMLElement& element, const 
 Player* EntityFactory::createPlayerFromXml(const tinyxml2::XMLElement& element) 
 {
 
-	// create instance
+	CharacterStats stats;
 
-	// load stats
+	auto positionX = std::stof(element.FirstChildElement("Position")->Attribute("x"));
+	auto positionY = std::stof(element.FirstChildElement("Position")->Attribute("y"));
+
+
+	stats.max_hitpoints = std::stoi(element.FirstChildElement("Hitpoints")->GetText());
+	stats.current_hitpoints = stats.max_hitpoints;
+
+	auto player = new Player(stats);
+	player->setPosition(sf::Vector2f(positionX, positionY));
 
 	// create weapon
 
@@ -179,6 +187,8 @@ Player* EntityFactory::createPlayerFromXml(const tinyxml2::XMLElement& element)
 	// create components (consider moving to constructor)
 
 	// set position
+
+
 
 	return nullptr;
 }

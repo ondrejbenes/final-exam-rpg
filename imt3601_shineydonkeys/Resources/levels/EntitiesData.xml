@@ -27,77 +27,81 @@
 	</Player>
 	<NPCs>
 		<NPC>
-			<Position>250, 230</Position>
+			<Position x="250" y="230"/>
 			<Sprite link="Resources/Images/Npc1.png"/>
 			<HitPoints>150</HitPoints>
+			<Inventory>
+				<Item name="Axe"/>
+			</Inventory>
+			<UsedWeapon name="NPC_Common"/>
 		</NPC>
 		<NPC>
-			<Position>1000,1000</Position>
+			<Position x="1000" y="1000"/>
 			<Sprite link="Resources/Images/Npc2.png"/>
 			<HitPoints>200</HitPoints>
 		</NPC>
 		<NPC>
-			<Position>2000,1500</Position>
+			<Position x="2000" y="1500"/>
 			<Sprite link="Resources/Images/Npc3.png"/>
 			<HitPoints>300</HitPoints>
 		</NPC>
 		<NPC>
-			<Position>2000,750</Position>
+			<Position x="" y="">2000,750</Position>
 			<Sprite link="Resources/Images/Npc4.png"/>
 			<HitPoints>700</HitPoints>
 		</NPC>
 		<NPC>
-			<Position>2500,800</Position>
+			<Position x="2500" y="800"/>
 			<Sprite link="Resources/Images/BossDeamon.png"/>
 			<HitPoints>1500</HitPoints>
 		</NPC>
 	</NPCs>
 	<Items>
 		<Weapons>
-			<Weapon name = "Scimitar">
+			<Weapon name="Scimitar">
 				<MinimumDamage>10</MinimumDamage>
 				<MaximumDamage>25</MaximumDamage>
 				<Speed>1000</Speed>
 				<Image link="Resources/Images/Weapons/Scimitar.png"/>
 			</Weapon>
-			<Weapon name = "Sword">
+			<Weapon name="Sword">
 				<MinimumDamage>15</MinimumDamage>
 				<MaximumDamage>40</MaximumDamage>
 				<Speed>1500</Speed>
 				<Image link="Resources/Images/Weapons/Sword.png"/>
 			</Weapon>
-			<Weapon name = "Axe">
+			<Weapon name="Axe">
 				<MinimumDamage>50</MinimumDamage>
 				<MaximumDamage>100</MaximumDamage>
 				<Speed>2000</Speed>
 				<Image link="Resources/Images/Weapons/Axe.png"/>
 			</Weapon>
-			<Weapon name = "NPC_Common">
+			<Weapon name="NPC_Common">
 				<MinimumDamage>7</MinimumDamage>
 				<MaximumDamage>14</MaximumDamage>
 				<AttackSpeed>750</AttackSpeed>
 			</Weapon>
-			<Weapon name = "NPC_FirstMiniBoss">
+			<Weapon name="NPC_FirstMiniBoss">
 				<MinimumDamage>10</MinimumDamage>
 				<MaximumDamage>20</MaximumDamage>
 				<AttackSpeed>1100</AttackSpeed>
 			</Weapon>
-			<Weapon name = "NPC_SecondMiniBoss">
+			<Weapon name="NPC_SecondMiniBoss">
 				<MinimumDamage>10</MinimumDamage>
 				<MaximumDamage>20</MaximumDamage>
 				<AttackSpeed>1500</AttackSpeed>
 			</Weapon>
-			<Weapon name = "NPC_ThirdMiniBoss">
+			<Weapon name="NPC_ThirdMiniBoss">
 				<MinimumDamage>5</MinimumDamage>
 				<MaximumDamage>50</MaximumDamage>
 				<AttackSpeed>750</AttackSpeed>
 			</Weapon>
-			<Weapon name = "NPC_DeamonDog">
+			<Weapon name="NPC_DeamonDog">
 				<MinimumDamage>3</MinimumDamage>
 				<MaximumDamage>5</MaximumDamage>
 				<AttackSpeed>2100</AttackSpeed>
 			</Weapon>
-			<Weapon name = "NPC_FinalBoss">
+			<Weapon name="NPC_FinalBoss">
 				<MinimumDamage>25</MinimumDamage>
 				<MaximumDamage>45</MaximumDamage>
 				<AttackSpeed>500</AttackSpeed>
