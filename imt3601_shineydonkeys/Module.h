@@ -14,12 +14,11 @@ class Module
 
 public:
 	explicit Module(ModuleType moduleType);
-	virtual ~Module();
 
 	virtual bool initialize() = 0;
-	virtual void update();
+	virtual void update() = 0;
 
-	ModuleType getModuleType() { return moduleType; }
+	ModuleType getModuleType() const { return moduleType; }
 protected:
 	ModuleType moduleType;
 };

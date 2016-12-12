@@ -127,10 +127,9 @@ MainGame::MainGame() :
 	entityManager->add(donkey);
 
 #ifdef  _DEBUG
-	//loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
-	loadLevel("Resources/Images/tiles.png", "Resources/Levels/THISFinalExamMap.csv");
+	loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
 #else
-	loadLevel("Resources/Images/tiles.png", "Resources/Levels/FinalExamMap_v2.csv");
+	loadLevel("Resources/Images/tiles.png", "Resources/Levels/THISFinalExamMap.csv");
 #endif
 
 	loadControls();
@@ -175,14 +174,14 @@ MainGame::MainGame() :
 		);
 	});
 
-	auto bronzeKeyGateUnlockTile = entityManager->getTileAtPos(bronzeKeyUnlockTile);
-	attachTriggerCallbackToTile(bronzeKeyGateUnlockTile, createUnlockCallback("Bronze Key", bronzeKeyGateTile));
+	auto bronzeKeyGateTile = entityManager->getTileAtPos(bronzeKeyGateTilePos);
+	attachTriggerCallbackToTile(bronzeKeyGateTile, createUnlockCallback("Bronze Key", bronzeKeyGateTilePos));
 
-	auto silverKeyGateUnlockTile = entityManager->getTileAtPos(silverKeyUnlockTile);
-	attachTriggerCallbackToTile(silverKeyGateUnlockTile, createUnlockCallback("Silver Key", silverKeyGateTile));
+	auto silverKeyGateTile = entityManager->getTileAtPos(silverKeyGateTilePos);
+	attachTriggerCallbackToTile(silverKeyGateTile, createUnlockCallback("Silver Key", silverKeyGateTilePos));
 
-	auto goldKeyGateUnlockTile = entityManager->getTileAtPos(goldKeyUnlockTile);
-	attachTriggerCallbackToTile(goldKeyGateUnlockTile, createUnlockCallback("Gold Key", goldKeyGateTile));
+	auto goldKeyGateTile = entityManager->getTileAtPos(goldKeyGateTilePos);
+	attachTriggerCallbackToTile(goldKeyGateTile, createUnlockCallback("Gold Key", goldKeyGateTilePos));
 
 	Blackboard::getInstance()->leaveCallback(
 		AUDIO,
@@ -296,7 +295,9 @@ std::function<void(Entity*)> MainGame::createUnlockCallback(const std::string& k
 void MainGame::attachTriggerCallbackToTile(Tile* tile, std::function<void(Entity*)> callback)
 {
 	auto tilePc = tile->getComponent<PhysicsComponent>();
-	auto boundary = sf::FloatRect(tilePc->getCollider());
+	auto offset = Tilemap::TILE_HEIGHT / 2;
+	auto& col = tilePc->getCollider();
+	auto boundary = sf::FloatRect(col.left - offset, col.top - offset, col.width * 2, col.height * 2);
 	auto trigger = std::make_shared<Trigger>(boundary);
 	trigger->setOnTriggerEnter(std::make_shared<std::function<void(Entity*)>>(callback));
 	tilePc->getTriggers().push_back(trigger);
@@ -493,17 +494,11 @@ void MainGame::returnToMainMenu() {
 
 Controls MainGame::CONTROLS = Controls();
 
-// TODO remove unlock tiles, change trigger areas
 sf::Vector2f MainGame::arenaTunnelEntrance = sf::Vector2f(3200, 3296);
 sf::Vector2f MainGame::arenaTunnelExit = sf::Vector2f(6016, 4288);
 
-sf::Vector2f MainGame::bronzeKeyUnlockTile = sf::Vector2f(3200, 2752);
-sf::Vector2f MainGame::bronzeKeyGateTile = sf::Vector2f(3200, 2784);
-
-sf::Vector2f MainGame::silverKeyUnlockTile = sf::Vector2f(3200, 2912);
-sf::Vector2f MainGame::silverKeyGateTile = sf::Vector2f(3200, 2944);
-
-sf::Vector2f MainGame::goldKeyUnlockTile = sf::Vector2f(3200, 3168);
-sf::Vector2f MainGame::goldKeyGateTile = sf::Vector2f(3200, 3200);
+sf::Vector2f MainGame::bronzeKeyGateTilePos = sf::Vector2f(3200, 2784);
+sf::Vector2f MainGame::silverKeyGateTilePos = sf::Vector2f(3200, 2944);
+sf::Vector2f MainGame::goldKeyGateTilePos = sf::Vector2f(3200, 3200);
 
 bool MainGame::donkeyTextShown = false;

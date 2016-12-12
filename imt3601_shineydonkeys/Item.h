@@ -4,6 +4,5 @@
 
 class Item : public Entity
 {
-public:
-	Item();
+
 };

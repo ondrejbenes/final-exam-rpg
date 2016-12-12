@@ -23,7 +23,6 @@ public:
 	*/
 	static std::shared_ptr<EntityManager> getInstance();
 
-	// TODO remove raw pointers (from quadtree methods as well)
 	/* Returns the player */
 	Player* getLocalPlayer() const { return _localPlayer; }
 

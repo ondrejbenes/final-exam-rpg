@@ -26,14 +26,9 @@ public:
 	static sf::Vector2f arenaTunnelEntrance;
 	static sf::Vector2f arenaTunnelExit;
 
-	static sf::Vector2f bronzeKeyUnlockTile;
-	static sf::Vector2f bronzeKeyGateTile;
-
-	static sf::Vector2f silverKeyUnlockTile;
-	static sf::Vector2f silverKeyGateTile;
-
-	static sf::Vector2f goldKeyUnlockTile;
-	static sf::Vector2f goldKeyGateTile;
+	static sf::Vector2f bronzeKeyGateTilePos;
+	static sf::Vector2f silverKeyGateTilePos;
+	static sf::Vector2f goldKeyGateTilePos;
 
 	virtual ~MainGame();
 

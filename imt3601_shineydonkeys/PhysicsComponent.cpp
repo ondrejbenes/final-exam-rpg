@@ -80,12 +80,11 @@ void PhysicsComponent::move()
 	else if (_velocity.y < 0)
 		_direction = Up;
 
-	// TODO better way to look for tiles (and characters) to check
-	auto radius = 32;
+	auto radius = Tilemap::TILE_HEIGHT;
 	auto boundary = QuadTreeBoundary(newPosition.x - radius, newPosition.x + radius, newPosition.y - radius, newPosition.y + radius);
 	const auto& tilesToCheck = EntityManager::getInstance()->getTilesInInterval(boundary);
 
-	radius = 128;
+	radius *= 4;
 	boundary = QuadTreeBoundary(newPosition.x - radius, newPosition.x + radius, newPosition.y - radius, newPosition.y + radius);
 	const auto& charactersToCheck = EntityManager::getInstance()->getCharactersInInterval(boundary);
 
@@ -93,7 +92,7 @@ void PhysicsComponent::move()
 
 	if(hasCollision(newPosition, tilesToCheck, charactersToCheck))
 	{
-		_velocity = sf::Vector2f(0, 0);
+		_velocity = ZERO_VELOCITY;
 		return;
 	}
 	EntityManager::getInstance()->move(&parent, newPosition);

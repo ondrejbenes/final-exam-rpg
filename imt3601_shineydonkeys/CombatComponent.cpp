@@ -27,11 +27,6 @@ _otherCombatComp(nullptr)
 
 }
 
-CombatComponent::~CombatComponent()
-{
-
-}
-
 void CombatComponent::update()
 {
 	if (!_inCombat)

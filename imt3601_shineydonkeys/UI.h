@@ -8,7 +8,6 @@ class UI
 {
 public:
 	UI();
-	virtual ~UI();
 
 	void addElement(std::shared_ptr<UiElement> element);
 	void removeElement(std::shared_ptr<UiElement> element);

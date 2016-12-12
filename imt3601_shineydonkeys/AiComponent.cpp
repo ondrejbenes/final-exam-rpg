@@ -9,11 +9,6 @@ CurrentState(nullptr)
 
 }
 
-AiComponent::~AiComponent()
-{
-	
-}
-
 void AiComponent::ChangeState(AiState* newState)
 {
 	CurrentState = newState;

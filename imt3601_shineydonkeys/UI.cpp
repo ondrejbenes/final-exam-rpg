@@ -6,10 +6,6 @@ _focusedElement(nullptr)
 
 }
 
-UI::~UI(){
-
-}
-
 void UI::addElement(std::shared_ptr<UiElement> element)
 {
 	_elements.push_back(element);

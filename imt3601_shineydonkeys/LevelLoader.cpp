@@ -117,7 +117,7 @@ void LevelLoader::load(const std::string& definitionXml) const
 	X = SpecialTile->Attribute("x");
 	Y = SpecialTile->Attribute("y");
 
-	MainGame::bronzeKeyGateTile = sf::Vector2f(std::stoi(X), std::stoi(Y));
+	MainGame::bronzeKeyGateTilePos = sf::Vector2f(std::stoi(X), std::stoi(Y));
 
 	//Silver Key
 	SpecialTile = SpecialTile->NextSiblingElement("Silver");
@@ -125,7 +125,7 @@ void LevelLoader::load(const std::string& definitionXml) const
 	X = SpecialTile->Attribute("x");
 	Y = SpecialTile->Attribute("y");
 
-	MainGame::silverKeyGateTile = sf::Vector2f(std::stoi(X), std::stoi(Y));
+	MainGame::silverKeyGateTilePos = sf::Vector2f(std::stoi(X), std::stoi(Y));
 
 
 	//Gold key
@@ -134,7 +134,7 @@ void LevelLoader::load(const std::string& definitionXml) const
 	X = SpecialTile->Attribute("x");
 	Y = SpecialTile->Attribute("y");
 
-	MainGame::goldKeyGateTile = sf::Vector2f(std::stoi(X), std::stoi(Y));
+	MainGame::goldKeyGateTilePos = sf::Vector2f(std::stoi(X), std::stoi(Y));
 
 	//Inventory keys
 	auto Items = doc.FirstChildElement("Level")->FirstChildElement("Items")->

@@ -5,16 +5,6 @@
 #include "EntityFactory.h"
 #include "EntityManager.h"
 
-GameStateLoader::GameStateLoader()
-{
-
-}
-
-GameStateLoader::~GameStateLoader()
-{
-
-}
-
 void GameStateLoader::quickLoad()
 {
 	std::ifstream ifs("quickSave.txt");

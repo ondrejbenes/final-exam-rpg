@@ -5,16 +5,6 @@
 #include "TimeUtilities.h"
 #include "EntityManager.h"
 
-GameStateSaver::GameStateSaver()
-{
-
-}
-
-GameStateSaver::~GameStateSaver()
-{
-
-}
-
 void GameStateSaver::quickSave()
 {
 	std::stringstream ss;

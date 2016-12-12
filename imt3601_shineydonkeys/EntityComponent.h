@@ -6,17 +6,12 @@ class Entity;
 
 class EntityComponent
 {
-
 public:
 	explicit EntityComponent(Entity& parent);
-	virtual ~EntityComponent();
 
-	virtual void update();
-
+	virtual void update() = 0;
 
 	Entity& getParent() const{return parent;} 
-
 protected:
 	Entity& parent;
-
 };

@@ -9,7 +9,6 @@ public:
 	static const std::string COMBAT_SPRITE_NAME;
 
 	explicit CombatComponent(Entity& parent);
-	virtual ~CombatComponent();
 
 	void update() override;
 
