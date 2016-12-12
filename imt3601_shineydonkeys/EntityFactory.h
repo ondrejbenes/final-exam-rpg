@@ -51,11 +51,11 @@ inline Npc* EntityFactory::create<Npc>()
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
 
-	auto weapon = std::make_shared<Weapon>(25, 50, 1000);
-	npc->setEquipedWeapon(weapon);
+	/*auto weapon = std::make_shared<Weapon>(25, 50, 1000);
+	npc->setEquipedWeapon(weapon);*/
 	// npc->getInventory().push_back(weapon);
 
-	auto key = createInventoryItem("Resources/Images/Keys/BronzeKey.png");
+	/*auto key = createInventoryItem("Resources/Images/Keys/BronzeKey.png");
 	key->setName("Bronze Key");
 	npc->getInventory().push_back(key);
 	auto skey = createInventoryItem("Resources/Images/Keys/SilverKey.png");
@@ -63,11 +63,11 @@ inline Npc* EntityFactory::create<Npc>()
 	npc->getInventory().push_back(skey);
 	auto gkey = createInventoryItem("Resources/Images/Keys/GoldKey.png");
 	gkey->setName("Gold Key");
-	npc->getInventory().push_back(gkey);
+	npc->getInventory().push_back(gkey);*/
 
 	auto gc = new GraphicsComponent(*npc);
-	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite, sf::Vector2u(4, 4));
-	gc->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
+	//gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite, sf::Vector2u(4, 4));
+	//gc->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
 	npc->addComponent(gc);
 
 	if (!Network::isMultiplayer() || Network::isServer())
@@ -91,8 +91,8 @@ template <>
 inline Player* EntityFactory::create<Player>()
 {
 	CharacterStats stats;
-	stats.max_hitpoints = 500;
-	stats.current_hitpoints = 500;
+	stats.max_hitpoints = 5000;
+	stats.current_hitpoints = 5000;
 
 	auto player = new Player(stats);
 
@@ -117,14 +117,14 @@ inline Player* EntityFactory::create<Player>()
 	sf::Sprite combatSprite;
 	combatSprite.setTexture(*combatTexture);
 	
-	auto sword = std::make_shared<Weapon>(25, 50, 1000);
+	auto sword = std::make_shared<Weapon>(10, 25, 1000);
 	initWeapon(sword, "Resources/Images/Weapons/Sword.png");
 	player->setEquipedWeapon(sword);
 	player->getInventory().push_back(sword);
 
-	auto axe = std::make_shared<Weapon>(75, 125, 1500);
-	initWeapon(axe, "Resources/Images/Weapons/Axe.png");
-	player->getInventory().push_back(axe);
+	//auto axe = std::make_shared<Weapon>(75, 125, 1500);
+	//initWeapon(axe, "Resources/Images/Weapons/Axe.png");
+	//player->getInventory().push_back(axe);
 
 	//player->getInventory().push_back(createInventoryItem("Resources/Images/Keys/SilverKey.png"));
 	//player->getInventory().push_back(createInventoryItem("Resources/Images/Keys/GoldKey.png"));

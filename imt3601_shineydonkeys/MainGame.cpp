@@ -41,46 +41,209 @@ MainGame::MainGame() :
 
 	EntityFactory factory;
 	auto player = factory.create<Player>();
-
 	auto entityManager = EntityManager::getInstance();
 	entityManager->clearCharacters();
-
 	entityManager->add(player);
-	player->setPosition(sf::Vector2f(600, 600));
+	player->setPosition(sf::Vector2f(562, 1807));
 	entityManager->setLocalPlayer(player);
 
+
+	//Normal Npc
+	
 	auto npc1 = factory.create<Npc>();
-	auto pos = sf::Vector2f(250, 230);
+	auto weapon = std::make_shared<Weapon>(7, 14, 1250);
+	npc1->setEquipedWeapon(weapon);
+	auto sword = std::make_shared<Weapon>(15, 25, 750);
+	factory.initWeapon(sword, "Resources/Images/Weapons/Scimitar.png");
+	npc1->getInventory().push_back(sword);
+
+	auto texture = ResourceLoader::getInstance()->getTexture("Resources/Images/Npc1.png");
+	sf::Sprite sprite;
+	sprite.setTexture(*texture);
+
+	npc1->getComponent<GraphicsComponent>()->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite, sf::Vector2u(4, 4));
+	npc1->getComponent<GraphicsComponent>()->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
+
+	auto pos = sf::Vector2f(633, 491);
 	npc1->setPosition(pos);
 	auto ac = npc1->getComponent<AiComponent>();
-
 	if (!Network::isMultiplayer() || Network::isServer())
-		ac->ChangeState(new AiIdle(ac, 200));
-
+		ac->ChangeState(new AiIdle(ac, 500));
 	entityManager->add(npc1);
 
-	auto npc2 = factory.create<Npc>();
-	pos = sf::Vector2f(450, 250);
-	npc2->setPosition(pos);
-	ac = npc2->getComponent<AiComponent>();
+	npc1->getStats().max_hitpoints = 100;
+	npc1->getStats().current_hitpoints = 100;
 
+
+	//First mini boss
+	auto npc_firstMiniBoss = factory.create<Npc>();
+
+	auto weapon2 = std::make_shared<Weapon>(10, 20, 1100);
+	npc_firstMiniBoss->setEquipedWeapon(weapon2);
+	auto key = factory.createInventoryItem("Resources/Images/Keys/BronzeKey.png");
+	key->setName("Bronze Key");
+	npc_firstMiniBoss->getInventory().push_back(key);
+	
+	ac = npc_firstMiniBoss->getComponent<AiComponent>();
 	if (!Network::isMultiplayer() || Network::isServer())
 		ac->ChangeState(new AiPatrol(ac, pos, 500));
+	entityManager->add(npc_firstMiniBoss);
 
-	entityManager->add(npc2);
-	/*
-	auto npc3 = factory.create<Npc>();
-	pos = sf::Vector2f(750, 230);
-	npc3->setPosition(pos);
-	ac = npc3->getComponent<AiComponent>();
+	texture = ResourceLoader::getInstance()->getTexture("Resources/Images/Npc2.png");
+	sf::Sprite sprite2;
+	sprite2.setTexture(*texture);
 
+	npc_firstMiniBoss->getComponent<GraphicsComponent>()->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite2, sf::Vector2u(4, 4));
+	npc_firstMiniBoss->getComponent<GraphicsComponent>()->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
+	pos = sf::Vector2f(1388, 3400);
+	npc_firstMiniBoss->setPosition(pos);
 	if (!Network::isMultiplayer() || Network::isServer())
 		ac->ChangeState(new AiPatrol(ac, pos, 500));
+	entityManager->add(npc_firstMiniBoss);
 
-	entityManager->add(npc3);*/
+	npc_firstMiniBoss->getStats().max_hitpoints = 150;
+	npc_firstMiniBoss->getStats().current_hitpoints = 150;
+
+
+
+	//Second mini boss
+	auto npc_secondMiniBoss = factory.create<Npc>();
+	auto weapon3 = std::make_shared<Weapon>(10, 20, 800);
+	npc_secondMiniBoss->setEquipedWeapon(weapon3);
+	auto skey = factory.createInventoryItem("Resources/Images/Keys/SilverKey.png");
+	skey->setName("Silver Key");
+	npc_secondMiniBoss->getInventory().push_back(skey);
+
+	texture = ResourceLoader::getInstance()->getTexture("Resources/Images/Npc3.png");
+	sf::Sprite sprite3;
+	sprite3.setTexture(*texture);
+
+	npc_secondMiniBoss->getComponent<GraphicsComponent>()->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite3, sf::Vector2u(4, 4));
+	npc_secondMiniBoss->getComponent<GraphicsComponent>()->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
+
+	pos = sf::Vector2f(3618, 1282);
+	npc_secondMiniBoss->setPosition(pos);
+	ac = npc_secondMiniBoss->getComponent<AiComponent>();
+	if (!Network::isMultiplayer() || Network::isServer())
+		ac->ChangeState(new AiPatrol(ac, pos, 500));
+	entityManager->add(npc_secondMiniBoss);
+
+	npc_secondMiniBoss->getStats().max_hitpoints = 200;
+	npc_secondMiniBoss->getStats().current_hitpoints = 200;
+
+
+
+	//Third mini boss
+	auto npc_thirdMiniBoss = factory.create<Npc>();
+
+	auto weapon4 = std::make_shared<Weapon>(5, 50, 750);
+	npc_thirdMiniBoss->setEquipedWeapon(weapon4);
+	auto gkey = factory.createInventoryItem("Resources/Images/Keys/GoldKey.png");
+	gkey->setName("Gold Key");
+	npc_thirdMiniBoss->getInventory().push_back(gkey);
+	auto axe = std::make_shared<Weapon>(50, 100, 500);
+	factory.initWeapon(axe, "Resources/Images/Weapons/Axe.png");
+	npc_thirdMiniBoss->getInventory().push_back(axe);
+
+	texture = ResourceLoader::getInstance()->getTexture("Resources/Images/Npc4.png");
+	sf::Sprite sprite4;
+	sprite4.setTexture(*texture);
+
+	npc_thirdMiniBoss->getComponent<GraphicsComponent>()->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite4, sf::Vector2u(4, 4));
+	npc_thirdMiniBoss->getComponent<GraphicsComponent>()->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
+
+	pos = sf::Vector2f(4304, 3359);
+	npc_thirdMiniBoss->setPosition(pos);
+	ac = npc_thirdMiniBoss->getComponent<AiComponent>();
+	if (!Network::isMultiplayer() || Network::isServer())
+		ac->ChangeState(new AiPatrol(ac, pos, 500));
+	entityManager->add(npc_thirdMiniBoss);
+
+	npc_thirdMiniBoss->getStats().max_hitpoints = 300;
+	npc_thirdMiniBoss->getStats().current_hitpoints = 300;
+
+
+
+
+	//DeamonDog1
+	auto npc_deamonDog = factory.create<Npc>();
+
+	auto weapon_DD = std::make_shared<Weapon>(3, 5, 350);
+	npc_deamonDog->setEquipedWeapon(weapon4);
+
+	texture = ResourceLoader::getInstance()->getTexture("Resources/Images/SmallDeamon.png");
+	sf::Sprite sprite_DD;
+	sprite_DD.setTexture(*texture);
+
+	npc_deamonDog->getComponent<GraphicsComponent>()->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite_DD, sf::Vector2u(4, 4));
+	npc_deamonDog->getComponent<GraphicsComponent>()->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
+
+	pos = sf::Vector2f(7168, 4096);
+	npc_deamonDog->setPosition(pos);
+	ac = npc_deamonDog->getComponent<AiComponent>();
+	if (!Network::isMultiplayer() || Network::isServer())
+		ac->ChangeState(new AiPatrol(ac, pos, 100));
+	entityManager->add(npc_deamonDog);
+
+	npc_deamonDog->getStats().max_hitpoints = 700;
+	npc_deamonDog->getStats().current_hitpoints = 700;
+
+
+
+//DeamonDog2
+	auto npc_deamonDog_2 = factory.create<Npc>();
+
+	auto weapon_DD2 = std::make_shared<Weapon>(3, 5, 350);
+	npc_deamonDog_2->setEquipedWeapon(weapon_DD2);
+	
+	texture = ResourceLoader::getInstance()->getTexture("Resources/Images/SmallDeamon.png");
+	sf::Sprite sprite_DD2;
+	sprite_DD2.setTexture(*texture);
+
+	npc_deamonDog_2->getComponent<GraphicsComponent>()->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite_DD2, sf::Vector2u(4, 4));
+	npc_deamonDog_2->getComponent<GraphicsComponent>()->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
+
+	pos = sf::Vector2f(7392, 4096);
+	npc_deamonDog_2->setPosition(pos);
+	ac = npc_deamonDog_2->getComponent<AiComponent>();
+	if (!Network::isMultiplayer() || Network::isServer())
+		ac->ChangeState(new AiPatrol(ac, pos, 100));
+	entityManager->add(npc_deamonDog_2);
+
+	npc_deamonDog_2->getStats().max_hitpoints = 700;
+	npc_deamonDog_2->getStats().current_hitpoints = 700;
+
+///Boss
+	auto npc_Boss_2 = factory.create<Npc>();
+
+	auto weapon_Boss = std::make_shared<Weapon>(30, 80, 2500);
+	npc_Boss_2->setEquipedWeapon(weapon_Boss);
+
+	texture = ResourceLoader::getInstance()->getTexture("Resources/Images/BossDeamon.png");
+	sf::Sprite sprite_Boss;
+	sprite_Boss.setTexture(*texture);
+
+	npc_Boss_2->getComponent<GraphicsComponent>()->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite_Boss, sf::Vector2u(4, 4));
+	npc_Boss_2->getComponent<GraphicsComponent>()->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
+
+	pos = sf::Vector2f(7264, 4416);
+	npc_Boss_2->setPosition(pos);
+	ac = npc_Boss_2->getComponent<AiComponent>();
+	if (!Network::isMultiplayer() || Network::isServer())
+		ac->ChangeState(new AiPatrol(ac, pos, 250));
+	entityManager->add(npc_Boss_2);
+
+	npc_Boss_2->getStats().max_hitpoints = 1500;
+	npc_Boss_2->getStats().current_hitpoints = 1500;
+
+
+
+
+
+
 
 	auto donkey = factory.createDonkey();
-	donkey->setPosition(sf::Vector2f(900, 600));
+	donkey->setPosition(sf::Vector2f(724, 1555));
 	donkey->setName("donkey");
 
 	auto boundaryPos = donkey->getPosition() - sf::Vector2f(100, 100);
@@ -494,11 +657,11 @@ void MainGame::returnToMainMenu() {
 
 Controls MainGame::CONTROLS = Controls();
 
-sf::Vector2f MainGame::arenaTunnelEntrance = sf::Vector2f(3200, 3296);
-sf::Vector2f MainGame::arenaTunnelExit = sf::Vector2f(6016, 4288);
+sf::Vector2f MainGame::arenaTunnelEntrance = sf::Vector2f(3200, 3328);
+sf::Vector2f MainGame::arenaTunnelExit = sf::Vector2f(7232, 3968);
 
 sf::Vector2f MainGame::bronzeKeyGateTilePos = sf::Vector2f(3200, 2784);
-sf::Vector2f MainGame::silverKeyGateTilePos = sf::Vector2f(3200, 2944);
+sf::Vector2f MainGame::silverKeyGateTilePos = sf::Vector2f(3200, 3040);
 sf::Vector2f MainGame::goldKeyGateTilePos = sf::Vector2f(3200, 3200);
 
 bool MainGame::donkeyTextShown = false;
