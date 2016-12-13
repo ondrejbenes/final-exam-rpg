@@ -88,15 +88,6 @@ MainGame::MainGame() :
 	auto key = factory.createInventoryItem("Resources/Images/Keys/BronzeKey.png");
 	key->setName("Bronze Key");
 	npc_firstMiniBoss->getInventory().push_back(key);
-	
-	if (!Network::isMultiplayer() || Network::isServer())
-	{
-		auto ac = npc_firstMiniBoss->getComponent<AiComponent>();
-		ac->ChangeState(new AiPatrol(ac, pos, 500));
-
-	}
-		
-	entityManager->add(npc_firstMiniBoss);
 
 	texture = ResourceLoader::getInstance()->getTexture("Resources/Images/Npc2.png");
 	sf::Sprite sprite2;
@@ -104,9 +95,17 @@ MainGame::MainGame() :
 
 	npc_firstMiniBoss->getComponent<GraphicsComponent>()->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite2, sf::Vector2u(4, 4));
 	npc_firstMiniBoss->getComponent<GraphicsComponent>()->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
-	pos = sf::Vector2f(1388, 3400);
-	npc_firstMiniBoss->setPosition(pos);	
+	pos = sf::Vector2f(1400, 3200);
+	npc_firstMiniBoss->setPosition(pos);
+
+	if (!Network::isMultiplayer() || Network::isServer())
+	{
+		auto ac = npc_firstMiniBoss->getComponent<AiComponent>();
+		ac->ChangeState(new AiPatrol(ac, pos, 300));
+
+	}
 	
+	entityManager->add(npc_firstMiniBoss);
 
 	npc_firstMiniBoss->getStats().max_hitpoints = 150;
 	npc_firstMiniBoss->getStats().current_hitpoints = 150;
