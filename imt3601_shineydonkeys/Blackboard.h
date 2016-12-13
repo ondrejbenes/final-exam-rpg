@@ -28,6 +28,8 @@ class Entity;
 class Blackboard
 {
 public:
+	typedef std::function<void(Module*)> BlackboardCallback;
+
 	/**
 	 * \brief Gets the unique instance of this class.
 	 * \return the unique instance
@@ -39,7 +41,7 @@ public:
 	 * \param moduleType Type of the module that is supposed to call the callback.
 	 * \param callback The callback
 	 */
-	void leaveCallback(ModuleType moduleType, std::function<void(Module*)> callback);
+	void leaveCallback(ModuleType moduleType, BlackboardCallback callback);
 	
 	/**
 	 * \brief Gets callbacks left for a module type. 
@@ -47,7 +49,7 @@ public:
 	 * \param moduleType Usually the module from which this method is called
 	 * \return Vector of callbacks
 	 */
-	std::vector<std::function<void(Module*)>> getCallbacks(ModuleType moduleType);
+	std::vector<BlackboardCallback> getCallbacks(ModuleType moduleType);
 
 	/**
 	 * \brief Push an event to the queue, usually to be picked up by a GamePhase
@@ -65,6 +67,6 @@ protected:
 	Blackboard() {}
 private:
 	static std::shared_ptr<Blackboard> instance;
-	std::map<ModuleType, std::vector<std::function<void(Module*)>>> _allCallbacks;
+	std::map<ModuleType, std::vector<BlackboardCallback>> _allCallbacks;
 	std::queue<sf::Event> _windowEvents;
 };

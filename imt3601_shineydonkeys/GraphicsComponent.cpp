@@ -28,25 +28,6 @@ void GraphicsComponent::draw(std::shared_ptr<sf::RenderWindow> window) const
 		window->draw(colliderDrawing);
 	}
 
-	if (typeid(parent) == typeid(Npc))
-	{
-		if (parent.getComponent<CombatComponent>()->isInCombat())
-		{
-			auto fullHpRect = sf::RectangleShape(sf::Vector2f(sprite.getGlobalBounds().width, 4));
-			fullHpRect.setFillColor(sf::Color::Red);
-			fullHpRect.setPosition(parent.getPosition().x, parent.getPosition().y - 10);
-
-			auto parentAsChar = dynamic_cast<Character*>(&parent);
-			auto stats = parentAsChar->getStats();
-			auto percentage = stats.current_hitpoints / float(stats.max_hitpoints);
-			auto currentHpRect = sf::RectangleShape(sf::Vector2f(sprite.getGlobalBounds().width * percentage, 4));
-			currentHpRect.setFillColor(sf::Color::Green);
-			currentHpRect.setPosition(parent.getPosition().x, parent.getPosition().y - 10);
-
-			window->draw(fullHpRect);
-			window->draw(currentHpRect);
-		}
-	}
 }
 
 void GraphicsComponent::update()
@@ -101,9 +82,9 @@ GraphicsComponent::SpriteWrapper::SpriteWrapper(std::string name, sf::Sprite spr
 	auto spriteWidth = sprite.getTexture()->getSize().x / cellsCount.x;
 	auto spriteHeight = sprite.getTexture()->getSize().y / cellsCount.y;
 
-	for(auto y = 0; y < cellsCount.x; y++)
+	for(auto y = 0; y < cellsCount.y; y++)
 	{
-		for (auto x = 0; x < cellsCount.y; x++)
+		for (auto x = 0; x < cellsCount.x; x++)
 		{
 			auto coord = x + 1000 * y;
 
@@ -115,5 +96,7 @@ GraphicsComponent::SpriteWrapper::SpriteWrapper(std::string name, sf::Sprite spr
 		}
 	}
 
-	sprite.setTextureRect(texRecCashe[1001]);
+	// fixes the issue when a full combat spritesheet would show up
+	if(cellsCount.x > 1)
+		this->sprite.setTextureRect(texRecCashe[1001]);
 }

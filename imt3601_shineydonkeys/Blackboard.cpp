@@ -9,14 +9,14 @@ std::shared_ptr<Blackboard> Blackboard::getInstance()
 	return instance;
 }
 
-void Blackboard::leaveCallback(ModuleType moduleType, std::function<void(Module*)> callback)
+void Blackboard::leaveCallback(ModuleType moduleType, BlackboardCallback callback)
 {
 	_allCallbacks[moduleType].push_back(callback);
 }
 
-std::vector<std::function<void(Module*)>> Blackboard::getCallbacks(ModuleType moduleType)
+std::vector<Blackboard::BlackboardCallback> Blackboard::getCallbacks(ModuleType moduleType)
 {
-	std::vector<std::function<void(Module*)>> callbacks;
+	std::vector<BlackboardCallback> callbacks;
 	copy(_allCallbacks[moduleType].begin(), _allCallbacks[moduleType].end(), std::back_inserter(callbacks));
 	_allCallbacks[moduleType].clear();
 

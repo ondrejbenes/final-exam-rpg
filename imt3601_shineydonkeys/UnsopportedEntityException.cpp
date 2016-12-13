@@ -2,6 +2,8 @@
 #include <string>
 #include <sstream>
 
+// TODO remove after XML load finished
+
 UnsopportedEntityException::UnsopportedEntityException(std::string entityType) : entityType(entityType)
 {
 	std::string str = "Entity type " + entityType + " is not supported";

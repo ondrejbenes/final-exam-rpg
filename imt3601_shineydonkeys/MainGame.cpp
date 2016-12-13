@@ -54,6 +54,7 @@ MainGame::MainGame() :
 	auto weapon = std::make_shared<Weapon>(7, 14, 1250);
 	npc1->setEquipedWeapon(weapon);
 	auto sword = std::make_shared<Weapon>(15, 25, 750);
+	sword->setName("Scimitar");
 	factory.initWeapon(sword, "Resources/Images/Weapons/Scimitar.png");
 	npc1->getInventory().push_back(sword);
 
@@ -143,6 +144,7 @@ MainGame::MainGame() :
 	npc_thirdMiniBoss->getInventory().push_back(gkey);
 	auto axe = std::make_shared<Weapon>(50, 100, 500);
 	factory.initWeapon(axe, "Resources/Images/Weapons/Axe.png");
+	axe->setName("Axe");
 	npc_thirdMiniBoss->getInventory().push_back(axe);
 
 	texture = ResourceLoader::getInstance()->getTexture("Resources/Images/Npc4.png");
@@ -338,13 +340,13 @@ MainGame::MainGame() :
 	});
 
 	auto bronzeKeyGateTile = entityManager->getTileAtPos(bronzeKeyGateTilePos);
-	attachTriggerCallbackToTile(bronzeKeyGateTile, createUnlockCallback("Bronze Key", bronzeKeyGateTilePos));
+	attachTriggerCallbackToTile(bronzeKeyGateTile, createUnlockCallback("Bronze Key", bronzeKeyGateTilePos, 168)); // TODO new tile type in XML
 
 	auto silverKeyGateTile = entityManager->getTileAtPos(silverKeyGateTilePos);
-	attachTriggerCallbackToTile(silverKeyGateTile, createUnlockCallback("Silver Key", silverKeyGateTilePos));
+	attachTriggerCallbackToTile(silverKeyGateTile, createUnlockCallback("Silver Key", silverKeyGateTilePos, 59)); // TODO new tile type in XML
 
 	auto goldKeyGateTile = entityManager->getTileAtPos(goldKeyGateTilePos);
-	attachTriggerCallbackToTile(goldKeyGateTile, createUnlockCallback("Gold Key", goldKeyGateTilePos));
+	attachTriggerCallbackToTile(goldKeyGateTile, createUnlockCallback("Gold Key", goldKeyGateTilePos, 59)); // TODO new tile type in XML
 
 	Blackboard::getInstance()->leaveCallback(
 		AUDIO,
@@ -389,8 +391,9 @@ void MainGame::update()
 	for (auto it = _tilesToUpdate.begin(); it != _tilesToUpdate.end(); ++it)
 		(*it)->update();
 
-	//if (characters.size() == 2 && !_levelComplete) // 2 - player, donkey
-	//	handleLevelComplete();
+	// TODO find out why first mini boss does not get removed
+	if (characters.size() == 3 && !_levelComplete) // 2 - player, donkey
+		handleLevelComplete();
 
 	if (_escapePressed)
 		returnToMainMenu();
@@ -427,15 +430,40 @@ void MainGame::render(std::shared_ptr<sf::RenderWindow> window)
 	{
 		auto graphicsComponent = (*it)->getComponent<GraphicsComponent>();
 		if (graphicsComponent != nullptr)
+		{
 			graphicsComponent->draw(window);
+			
+			if (typeid(**it) == typeid(Npc))
+			{
+				if ((*it)->getComponent<CombatComponent>()->isInCombat())
+				{
+					auto& sprite = graphicsComponent->getActiveSprite();
+					auto x = sprite.getPosition().x;
+					auto y = sprite.getPosition().y - 10;
+					auto fullHpRect = sf::RectangleShape(sf::Vector2f(sprite.getGlobalBounds().width, 4));
+					fullHpRect.setFillColor(sf::Color::Red);
+					fullHpRect.setPosition(x, y);
+
+					auto parentAsChar = dynamic_cast<Character*>(*it);
+					auto stats = parentAsChar->getStats();
+					auto percentage = stats.current_hitpoints / float(stats.max_hitpoints);
+					auto currentHpRect = sf::RectangleShape(sf::Vector2f(sprite.getGlobalBounds().width * percentage, 4));
+					currentHpRect.setFillColor(sf::Color::Green);
+					currentHpRect.setPosition(x, y);
+
+					window->draw(fullHpRect);
+					window->draw(currentHpRect);
+				}
+			}
+		}
 	}
 	
 	GamePhase::render(window);
 }
 
-std::function<void(Entity*)> MainGame::createUnlockCallback(const std::string& keyName, const sf::Vector2f& gatePosition) 
+std::function<void(Entity*)> MainGame::createUnlockCallback(const std::string& keyName, const sf::Vector2f& gatePosition, unsigned newTileType) 
 {
-	return [keyName, gatePosition](Entity* enteringEntity)
+	return [keyName, gatePosition, newTileType](Entity* enteringEntity)
 	{
 		auto em = EntityManager::getInstance();
 		auto player = em->getLocalPlayer();
@@ -450,7 +478,7 @@ std::function<void(Entity*)> MainGame::createUnlockCallback(const std::string& k
 		if (hasKey)
 		{
 			auto gateTile = dynamic_cast<Tile*>(em->getTileAtPos(gatePosition));
-			gateTile->changeType(168, false);
+			gateTile->changeType(newTileType, false);
 		}
 	};
 }
@@ -637,6 +665,9 @@ void MainGame::loadControls()
 }
 
 void MainGame::returnToMainMenu() {
+	if (EntityManager::getInstance()->getLocalPlayer()->getStats().current_hitpoints == 0 || _levelComplete)
+		return;
+
 	GamePhaseManager::getInstance()->popPhase();
 
 	if (Network::isServer())

@@ -15,6 +15,8 @@ public:
 	virtual void update() = 0;
 
 	UI& getUi();
+
+	virtual ~GamePhase() {} ;
 protected:
 	UI _ui;
 

@@ -91,8 +91,8 @@ template <>
 inline Player* EntityFactory::create<Player>()
 {
 	CharacterStats stats;
-	stats.max_hitpoints = 5000;
-	stats.current_hitpoints = 5000;
+	stats.max_hitpoints = 2000;
+	stats.current_hitpoints = 2000;
 
 	auto player = new Player(stats);
 

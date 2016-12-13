@@ -95,7 +95,6 @@ void CombatComponent::takeDamage(const unsigned int damage)
 		);
 	}
 
-	std::stringstream ss;
 	auto parent = getParent();
 
 	auto& stats = dynamic_cast<Character*>(&getParent())->getStats(); 

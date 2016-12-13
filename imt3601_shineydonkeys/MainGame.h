@@ -50,7 +50,7 @@ private:
 	std::vector<Tile*> _prevTiles;
 	sf::Vector2f _prevPlayerPos;
 
-	std::function<void(Entity*)> createUnlockCallback(const std::string& keyName, const sf::Vector2f& gatePosition);
+	std::function<void(Entity*)> createUnlockCallback(const std::string& keyName, const sf::Vector2f& gatePosition, unsigned newTileType);
 	void attachTriggerCallbackToTile(Tile* tile, std::function<void(Entity*)> callback);
 	void broadcastGameOverMessage();
 	void handleInput();
