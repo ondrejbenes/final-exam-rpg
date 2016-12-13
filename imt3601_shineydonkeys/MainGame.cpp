@@ -67,9 +67,13 @@ MainGame::MainGame() :
 
 	auto pos = sf::Vector2f(633, 491);
 	npc1->setPosition(pos);
-	auto ac = npc1->getComponent<AiComponent>();
 	if (!Network::isMultiplayer() || Network::isServer())
+	{
+		auto ac = npc1->getComponent<AiComponent>();
 		ac->ChangeState(new AiIdle(ac, 500));
+
+
+	}
 	entityManager->add(npc1);
 
 	npc1->getStats().max_hitpoints = 100;
@@ -85,9 +89,13 @@ MainGame::MainGame() :
 	key->setName("Bronze Key");
 	npc_firstMiniBoss->getInventory().push_back(key);
 	
-	ac = npc_firstMiniBoss->getComponent<AiComponent>();
 	if (!Network::isMultiplayer() || Network::isServer())
+	{
+		auto ac = npc_firstMiniBoss->getComponent<AiComponent>();
 		ac->ChangeState(new AiPatrol(ac, pos, 500));
+
+	}
+		
 	entityManager->add(npc_firstMiniBoss);
 
 	texture = ResourceLoader::getInstance()->getTexture("Resources/Images/Npc2.png");
@@ -97,10 +105,8 @@ MainGame::MainGame() :
 	npc_firstMiniBoss->getComponent<GraphicsComponent>()->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite2, sf::Vector2u(4, 4));
 	npc_firstMiniBoss->getComponent<GraphicsComponent>()->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
 	pos = sf::Vector2f(1388, 3400);
-	npc_firstMiniBoss->setPosition(pos);
-	if (!Network::isMultiplayer() || Network::isServer())
-		ac->ChangeState(new AiPatrol(ac, pos, 500));
-	entityManager->add(npc_firstMiniBoss);
+	npc_firstMiniBoss->setPosition(pos);	
+	
 
 	npc_firstMiniBoss->getStats().max_hitpoints = 150;
 	npc_firstMiniBoss->getStats().current_hitpoints = 150;
@@ -124,9 +130,13 @@ MainGame::MainGame() :
 
 	pos = sf::Vector2f(3618, 1282);
 	npc_secondMiniBoss->setPosition(pos);
-	ac = npc_secondMiniBoss->getComponent<AiComponent>();
 	if (!Network::isMultiplayer() || Network::isServer())
+	{
+		auto ac = npc_secondMiniBoss->getComponent<AiComponent>();
 		ac->ChangeState(new AiPatrol(ac, pos, 500));
+
+	}
+		
 	entityManager->add(npc_secondMiniBoss);
 
 	npc_secondMiniBoss->getStats().max_hitpoints = 200;
@@ -156,9 +166,13 @@ MainGame::MainGame() :
 
 	pos = sf::Vector2f(4304, 3359);
 	npc_thirdMiniBoss->setPosition(pos);
-	ac = npc_thirdMiniBoss->getComponent<AiComponent>();
 	if (!Network::isMultiplayer() || Network::isServer())
+	{
+		auto ac = npc_thirdMiniBoss->getComponent<AiComponent>();
 		ac->ChangeState(new AiPatrol(ac, pos, 500));
+
+
+	}
 	entityManager->add(npc_thirdMiniBoss);
 
 	npc_thirdMiniBoss->getStats().max_hitpoints = 300;
@@ -182,9 +196,13 @@ MainGame::MainGame() :
 
 	pos = sf::Vector2f(7168, 4096);
 	npc_deamonDog->setPosition(pos);
-	ac = npc_deamonDog->getComponent<AiComponent>();
 	if (!Network::isMultiplayer() || Network::isServer())
+	{
+		
+		auto ac = npc_deamonDog->getComponent<AiComponent>();
 		ac->ChangeState(new AiPatrol(ac, pos, 100));
+
+	}
 	entityManager->add(npc_deamonDog);
 
 	npc_deamonDog->getStats().max_hitpoints = 700;
@@ -207,9 +225,13 @@ MainGame::MainGame() :
 
 	pos = sf::Vector2f(7392, 4096);
 	npc_deamonDog_2->setPosition(pos);
-	ac = npc_deamonDog_2->getComponent<AiComponent>();
 	if (!Network::isMultiplayer() || Network::isServer())
+	{
+		auto ac = npc_deamonDog_2->getComponent<AiComponent>();
 		ac->ChangeState(new AiPatrol(ac, pos, 100));
+
+
+	}
 	entityManager->add(npc_deamonDog_2);
 
 	npc_deamonDog_2->getStats().max_hitpoints = 700;
@@ -230,9 +252,13 @@ MainGame::MainGame() :
 
 	pos = sf::Vector2f(7264, 4416);
 	npc_Boss_2->setPosition(pos);
-	ac = npc_Boss_2->getComponent<AiComponent>();
+	
 	if (!Network::isMultiplayer() || Network::isServer())
+	{
+		auto ac = npc_Boss_2->getComponent<AiComponent>();
 		ac->ChangeState(new AiPatrol(ac, pos, 250));
+
+	}
 	entityManager->add(npc_Boss_2);
 
 	npc_Boss_2->getStats().max_hitpoints = 1500;
@@ -392,7 +418,7 @@ void MainGame::update()
 		(*it)->update();
 
 	// TODO find out why first mini boss does not get removed
-	if (characters.size() == 3 && !_levelComplete) // 2 - player, donkey
+	if (characters.size() == 2 && !_levelComplete) // 2 - player, donkey
 		handleLevelComplete();
 
 	if (_escapePressed)

@@ -46,7 +46,7 @@
 			<HitPoints>300</HitPoints>
 		</NPC>
 		<NPC>
-			<Position x="" y="">2000,750</Position>
+			<Position x="2000" y="750"/>
 			<Sprite link="Resources/Images/Npc4.png"/>
 			<HitPoints>700</HitPoints>
 		</NPC>
