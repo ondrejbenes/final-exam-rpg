@@ -14,12 +14,12 @@
 #include "Minimap.h"
 #include "ChatBoard.h"
 #include "Inventory.h"
+#include "PlayerHealthBar.h"
 
 #include <sstream>
 #include <codecvt>
 
 #include <SFML/Network/IpAddress.hpp>
-#include "PlayerHealthBar.h"
 
 MainGame* GamePhaseFactory::createMainGame()
 {
@@ -266,7 +266,6 @@ Menu* GamePhaseFactory::createOptions()
 
 	auto appearance = _uiElementFactory.createLabel(L"./Config/options.ini", L"appearance");
 
-	// TODO res loader
 	auto currSpriteNumber = ConfigIO::readInt(L"player", L"sprite", 1);
 	std::stringstream ss;
 	ss << "Resources/Images/Player" << currSpriteNumber << "_single.png";

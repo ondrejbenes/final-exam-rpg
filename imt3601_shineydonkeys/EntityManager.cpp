@@ -139,4 +139,19 @@ void EntityManager::clearTiles()
 	_tiles = QuadTree(QuadTreeBoundary(0.0, Tilemap::MAP_WIDTH, 0, Tilemap::MAP_HEIGHT));
 }
 
+void EntityManager::addItem(std::shared_ptr<Item> item) 
+{
+	if (item->getName() == "")
+		throw std::exception("Item needs to have a name");
+	_items[item->getName()] = item;
+}
+
 std::shared_ptr<EntityManager> EntityManager::_instance = nullptr;
+
+std::shared_ptr<Item>& EntityManager::getItemByName(const std::string& itemName) 
+{
+	if (_items.count(itemName))
+		return _items[itemName];
+
+	throw std::exception("Item was not found.");
+}

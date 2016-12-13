@@ -2,11 +2,14 @@
 
 #include <regex>
 #include "LevelLoader.h"
+#include "EntityManager.h"
+#include "AiPatrol.h"
+#include "AiIdle.h"
 
 // TODO use XML instead?
 Entity* EntityFactory::createFromToString(std::string str)
 {
-	std::regex entityRegEx("Type: class ([[:w:]]+), Id: .*, Pos: ([[:d:]]+\.?[[:d:]]*);([[:d:]]+\.?[[:d:]]*)");
+	/*std::regex entityRegEx("Type: class ([[:w:]]+), Id: .*, Pos: ([[:d:]]+\.?[[:d:]]*);([[:d:]]+\.?[[:d:]]*)");
 	std::smatch match;
 
 	Entity* entity = nullptr;
@@ -25,14 +28,13 @@ Entity* EntityFactory::createFromToString(std::string str)
 		else
 			LOG_D("Unknown entity type");
 	}
-	return entity;
+	return entity;*/
+	return nullptr;
 }
 
-void EntityFactory::initWeapon(std::shared_ptr<Item> weapon, const std::string& texturePath)
+void EntityFactory::addWeaponInventorySprite(std::shared_ptr<Item> weapon, const std::string& texturePath)
 {
-	auto texture = new sf::Texture();
-	if (!texture->loadFromFile(texturePath))
-		LOG_E("Error loading item icon texture");
+	auto texture = ResourceLoader::getInstance()->getTexture(texturePath);
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
 
@@ -46,9 +48,7 @@ std::shared_ptr<Item> EntityFactory::createInventoryItem(const std::string& text
 {
 	auto item = std::make_shared<Item>();
 
-	auto texture = new sf::Texture();
-	if (!texture->loadFromFile(texturePath))
-		LOG_E("Error loading item icon texture");
+	auto texture = ResourceLoader::getInstance()->getTexture(texturePath);
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
 
@@ -65,10 +65,7 @@ Character* EntityFactory::createDonkey()
 	CharacterStats stats{1,1};
 	auto donkey = new Character(stats);
 
-	// TODO ResLoader
-	auto texture = new sf::Texture;
-	if (!texture->loadFromFile("Resources/Images/Donkey.png"))
-		LOG_E("Error: could not load donkey image");
+	auto texture = ResourceLoader::getInstance()->getTexture("Resources/Images/Donkey.png");
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
 
@@ -84,68 +81,69 @@ Character* EntityFactory::createDonkey()
 	return donkey;
 }
 
-Npc* EntityFactory::createNpcFromXml(const tinyxml2::XMLElement& element, const std::shared_ptr<Weapon>& weaponName)
-{
+Npc* EntityFactory::createNpcFromXml(const tinyxml2::XMLElement& element)
+{		
+	// load stats
 	CharacterStats stats;
-	
-	
+	stats.max_hitpoints = std::stoi(element.FirstChildElement("HitPoints")->GetText());
+	stats.current_hitpoints = std::stoi(element.FirstChildElement("HitPoints")->GetText());
+
+	auto npc = new Npc(stats);
+
 	auto positionX = std::stof(element.FirstChildElement("Position")->Attribute("x"));
 	auto positionY = std::stof(element.FirstChildElement("Position")->Attribute("y"));
 	//auto usedWeapon = element.FirstChildElement("UsedWeapon")->Attribute("name");
 
-	// load stats
-	stats.max_hitpoints = std::stoi(element.FirstChildElement("Hitpoints")->GetText());
-	stats.current_hitpoints = stats.max_hitpoints;
-
-	auto NPCspriteLoc = element.FirstChildElement("Sprite")->Attribute("link");
-
-	auto npc = new Npc(stats);
-
 	// set position
 	npc->setPosition(sf::Vector2f(positionX, positionY));
 
-	// load texture
-	auto texture = new sf::Texture;
-	if (!texture->loadFromFile(NPCspriteLoc))
-		LOG_E("Error: could not load player image");
-	sf::Sprite sprite;
-	sprite.setTexture(*texture);
-
-	npc->setEquipedWeapon(weaponName);
-
-	//TODO: put AI state in XML 
-
-	auto aiState = element.FirstChildElement("StartingAiState")->Attribute("Type");
-
-	if (aiState == "1") {}
-		//Change state to whatever
-
+	auto usedWeapon = element.FirstChildElement("UsedWeapon")->Attribute("name");
+	auto entityManager = EntityManager::getInstance();
+	npc->setEquipedWeapon(std::dynamic_pointer_cast<Weapon>(entityManager->getItemByName(usedWeapon)));
 	
-
-	
-
-
-
-	
-
-	
-
-	
-
-
-
 	// set inventory items
+	auto inventory = element.FirstChildElement("Inventory");
+	if(inventory != nullptr)
+	{
+		for (auto itemXml = inventory->FirstChildElement("Item"); itemXml; itemXml = itemXml->NextSiblingElement("Item"))
+		{
+			auto itemName = itemXml->Attribute("name");
+			auto& item = entityManager->getItemByName(itemName);
+			npc->getInventory().push_back(item);
+		}		
+	}
 
+	// create components (consider moving to constructor)
+	npc->addComponent(new AnimationComponent(*npc));
+
+	// load texture
+	auto NPCspriteLoc = element.FirstChildElement("Sprite")->Attribute("link");
+	auto texture = ResourceLoader::getInstance()->getTexture(NPCspriteLoc);
 
 	// create sprite
+	sf::Sprite sprite;
+	sprite.setTexture(*texture);
 	auto gc = new GraphicsComponent(*npc);
 	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite, sf::Vector2u(4, 4));
 	gc->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
 	npc->addComponent(gc);
 
-	// create components (consider moving to constructor)
 	if (!Network::isMultiplayer() || Network::isServer())
-		npc->addComponent(new AiComponent(*npc));
+	{
+		auto ac = new AiComponent(*npc);
+		npc->addComponent(ac);
+		auto aiStateXml = element.FirstChildElement("AiState");
+		std::string aiState = aiStateXml->Attribute("type");
+		auto radius = aiStateXml->Attribute("radius");
+		if(aiState == "Patrol")
+		{
+			ac->ChangeState(new AiPatrol(ac, npc->getPosition(), std::stof(radius)));
+		} 
+		else
+		{
+			ac->ChangeState(new AiIdle(ac, std::stof(radius)));			
+		}
+	}
 
 	npc->addComponent(new CombatComponent(*npc));
 
@@ -156,39 +154,74 @@ Npc* EntityFactory::createNpcFromXml(const tinyxml2::XMLElement& element, const 
 	pc->setCollider(colliderRect);
 	npc->addComponent(pc);
 
-	npc->addComponent(new AnimationComponent(*npc));
-
 	return npc;
 }
 
 Player* EntityFactory::createPlayerFromXml(const tinyxml2::XMLElement& element) 
 {
-
+	// load stats
 	CharacterStats stats;
+	stats.max_hitpoints = std::stoi(element.FirstChildElement("HitPoints")->GetText());
+	stats.current_hitpoints = std::stoi(element.FirstChildElement("HitPoints")->GetText());
+
+	auto player = new Player(stats);
 
 	auto positionX = std::stof(element.FirstChildElement("Position")->Attribute("x"));
 	auto positionY = std::stof(element.FirstChildElement("Position")->Attribute("y"));
-
-
-	stats.max_hitpoints = std::stoi(element.FirstChildElement("Hitpoints")->GetText());
-	stats.current_hitpoints = stats.max_hitpoints;
-
-	auto player = new Player(stats);
-	player->setPosition(sf::Vector2f(positionX, positionY));
-
-	// create weapon
-
-	// create inventory items
-
-	// load textures (move, combat)
-
-	// create sprites (move, combat)
-
-	// create components (consider moving to constructor)
+	//auto usedWeapon = element.FirstChildElement("UsedWeapon")->Attribute("name");
 
 	// set position
+	player->setPosition(sf::Vector2f(positionX, positionY));
+
+	auto usedWeapon = element.FirstChildElement("UsedWeapon")->Attribute("name");
+	auto entityManager = EntityManager::getInstance();
+	player->setEquipedWeapon(std::dynamic_pointer_cast<Weapon>(entityManager->getItemByName(usedWeapon)));
+
+	// set inventory items
+	auto inventory = element.FirstChildElement("Inventory");
+	if (inventory != nullptr)
+	{
+		for (auto itemXml = inventory->FirstChildElement("Item"); itemXml; itemXml = itemXml->NextSiblingElement("Item"))
+		{
+			auto itemName = itemXml->Attribute("name");
+			auto& item = entityManager->getItemByName(itemName);
+			player->getInventory().push_back(item);
+		}
+	}
+
+	// create components (consider moving to constructor)
+	player->addComponent(new AnimationComponent(*player));
+
+	auto currSpriteNumber = ConfigIO::readInt(L"player", L"sprite", 1);
+	std::stringstream ss;
+	ss << "Resources/Images/Char_Animations/Player" << currSpriteNumber << ".png";
+
+	auto texture = ResourceLoader::getInstance()->getTexture(ss.str());
+	sf::Sprite sprite;
+	sprite.setTexture(*texture);
+
+	ss.seekp(-4, ss.cur);
+	ss << "_Battle.png";
+
+	auto combatTexture = ResourceLoader::getInstance()->getTexture(ss.str());
+	sf::Sprite combatSprite;
+	combatSprite.setTexture(*combatTexture);
+
+	auto gc = new GraphicsComponent(*player);
+	gc->addSprite(PhysicsComponent::MOVE_SPRITE_NAME, sprite, sf::Vector2u(4, 4));
+	gc->addSprite(CombatComponent::COMBAT_SPRITE_NAME, combatSprite, sf::Vector2u(4, 4));
+	gc->setActiveSprite(PhysicsComponent::MOVE_SPRITE_NAME);
+	player->addComponent(gc);
+
+	player->addComponent(new CombatComponent(*player));
+
+	auto pc = new PhysicsComponent(*player);
+	auto colliderRect = sf::FloatRect(sprite.getGlobalBounds());
+	colliderRect.width /= 4;
+	colliderRect.height /= 4;
+	pc->setCollider(colliderRect);
+	player->addComponent(pc);
 
 
-
-	return nullptr;
+	return player;
 }

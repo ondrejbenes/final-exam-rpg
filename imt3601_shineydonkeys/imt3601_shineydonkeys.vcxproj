@@ -223,7 +223,6 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="UiElement.cpp" />
     <ClCompile Include="UiElementFactory.cpp" />
-    <ClCompile Include="UnsopportedEntityException.cpp" />
     <ClCompile Include="VectorUtilities.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
@@ -308,7 +307,6 @@ XCOPY "$(SolutionDir)Config" "$(TargetDir)Config" /s /i /y </Command>
     <ClInclude Include="UI.h" />
     <ClInclude Include="UiElement.h" />
     <ClInclude Include="UiElementFactory.h" />
-    <ClInclude Include="UnsopportedEntityException.h" />
     <ClInclude Include="VectorUtilities.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>

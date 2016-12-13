@@ -3,10 +3,12 @@
 #include "Tilemap.h"
 #include "Network.h"
 #include "Blackboard.h"
+#include "PhysicsComponent.h"
 
-Tile::Tile() : tileType(-1), _blocking(false)
+Tile::Tile(int tileType, bool blocking) : tileType(tileType), blocking(blocking)
 {
-
+	addComponent(new GraphicsComponent(*this));
+	addComponent(new PhysicsComponent(*this, true));
 }
 
 void Tile::changeType(unsigned newType, bool blocking) 
@@ -21,7 +23,7 @@ void Tile::changeType(unsigned newType, bool blocking)
 
 	sprite.setTextureRect(sf::IntRect(tileMapColumn * Tilemap::TILE_WIDTH, tileMapRow * Tilemap::TILE_HEIGHT, Tilemap::TILE_WIDTH, Tilemap::TILE_HEIGHT));
 
-	_blocking = blocking;
+	blocking = blocking;
 
 	auto id = this->id;
 

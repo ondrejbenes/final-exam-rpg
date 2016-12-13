@@ -31,12 +31,6 @@
     <Filter Include="Source Files\Entity\Character">
       <UniqueIdentifier>{f46a2e09-0c54-4ac7-a0bb-a798dc006055}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Exception">
-      <UniqueIdentifier>{9f27251e-d3ac-456c-bf89-daac8f5beb22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Exception">
-      <UniqueIdentifier>{9a136569-9b3d-4360-a6b4-30d02a7e5613}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Utility">
       <UniqueIdentifier>{edabf83d-293e-4a69-9e5a-2be487562601}</UniqueIdentifier>
     </Filter>
@@ -143,9 +137,6 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Entity\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="UnsopportedEntityException.cpp">
-      <Filter>Source Files\Exception</Filter>
     </ClCompile>
     <ClCompile Include="TimeUtilities.cpp">
       <Filter>Source Files\Utility</Filter>
@@ -383,9 +374,6 @@
     </ClInclude>
     <ClInclude Include="Character.h">
       <Filter>Header Files\Entity\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="UnsopportedEntityException.h">
-      <Filter>Header Files\Exception</Filter>
     </ClInclude>
     <ClInclude Include="Logger.h">
       <Filter>Header Files\Utility</Filter>

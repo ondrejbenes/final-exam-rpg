@@ -36,7 +36,6 @@ public:
 	void render(std::shared_ptr<sf::RenderWindow> window) override;
 
 	void handlePlayerDeath();
-	bool loadLevel(const std::string& textureDefinitionFileName, const std::string& levelDefinitionFileName);
 
 protected:
 	MainGame();
@@ -50,6 +49,7 @@ private:
 	std::vector<Tile*> _prevTiles;
 	sf::Vector2f _prevPlayerPos;
 
+	std::function<void(Entity*)> createTeleportCallback();
 	std::function<void(Entity*)> createUnlockCallback(const std::string& keyName, const sf::Vector2f& gatePosition, unsigned newTileType);
 	void attachTriggerCallbackToTile(Tile* tile, std::function<void(Entity*)> callback);
 	void broadcastGameOverMessage();

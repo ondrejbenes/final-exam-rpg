@@ -8,7 +8,6 @@
 #include "GamePhaseManager.h"
 #include "ConfigIO.h"
 #include "Console.h"
-#include "AiPatrol.h"
 #include "windows.h"
 #include "Network.h"
 #include "PacketFactory.h"
@@ -20,7 +19,6 @@
 #include "Scheduler.h"
 
 #include <memory>
-#include "AiIdle.h"
 
 using namespace std::chrono_literals;
 
@@ -32,22 +30,7 @@ MainGame::MainGame() :
 	auto cursor = GetCursor();
 	SetCursor(LoadCursor(nullptr, IDC_WAIT));
 
-
-	// TODO load from XML
-	Tilemap::MAP_WIDTH = 8000;
-	Tilemap::MAP_HEIGHT = 8000;
-
-	Entity::nextId = 0;
-
-	EntityFactory factory;
-	auto player = factory.create<Player>();
-	auto entityManager = EntityManager::getInstance();
-	entityManager->clearCharacters();
-	entityManager->add(player);
-	player->setPosition(sf::Vector2f(562, 1807));
-	entityManager->setLocalPlayer(player);
-
-
+	/*
 	//Normal Npc
 	
 	auto npc1 = factory.create<Npc>();
@@ -261,124 +244,33 @@ MainGame::MainGame() :
 	entityManager->add(npc_Boss_2);
 
 	npc_Boss_2->getStats().max_hitpoints = 1500;
-	npc_Boss_2->getStats().current_hitpoints = 1500;
+	npc_Boss_2->getStats().current_hitpoints = 1500;	
 
+	*/
 
-
-
-
-
-
-	auto donkey = factory.createDonkey();
-	donkey->setPosition(sf::Vector2f(724, 1555));
-	donkey->setName("donkey");
-
-	auto boundaryPos = donkey->getPosition() - sf::Vector2f(100, 100);
-	auto donkeySpriteBounds = donkey->getComponent<GraphicsComponent>()->getActiveSprite().getGlobalBounds();
-	auto boundarySize = sf::Vector2f(donkeySpriteBounds.width + 200, donkeySpriteBounds.height + 200);
-	auto donkeyTextTrigger = std::make_shared<Trigger>(sf::FloatRect(boundaryPos, boundarySize));
-	auto callback = std::make_shared<std::function<void(Entity*)>>(
-		[](Entity* enteringEntity)
-	{
-		if (typeid(*enteringEntity) != typeid(Player))
-			return;
-
-		if (MainGame::donkeyTextShown)
-			return;
-
-		MainGame::donkeyTextShown = true;
-
-		auto mainGame = GamePhaseManager::getInstance()->getCurrentPhase();
-
-		auto chatBoard = mainGame->getUi().getElementByName<ChatBoard>("chatBoard");
-
-		chatBoard->addMessage("Shiny Donkey", "Hi. I'm the Shiney Donkey");
-
-		Blackboard::getInstance()->leaveCallback(
-			SCHEDULER,
-			[chatBoard](Module* target)
-		{
-			auto scheduler = dynamic_cast<Scheduler*>(target);
-			auto msg1 = [chatBoard]() {chatBoard->addMessage("Shiny Donkey", "You won't believe it, but I have a quest for you."); };
-			scheduler->schedule(msg1, NOW + 2s);
-			auto msg2 = [chatBoard]() {chatBoard->addMessage("Shiny Donkey", "You need to explore the island and look for keys."); };
-			scheduler->schedule(msg2, NOW + 4s);
-			auto msg3 = [chatBoard]() {chatBoard->addMessage("Shiny Donkey", "The keys will unlock the gate to the east of here."); };
-			scheduler->schedule(msg3, NOW + 6s);
-			auto msg4 = [chatBoard]() {chatBoard->addMessage("Shiny Donkey", "Then I need you to enter the tunnel."); };
-			scheduler->schedule(msg4, NOW + 8s);
-			auto msg5 = [chatBoard]() {chatBoard->addMessage("Shiny Donkey", "You will know what to do when you exit on the other side."); };
-			scheduler->schedule(msg5, NOW + 10s);
-		}
-		);
-	});
-	donkeyTextTrigger->setOnTriggerEnter(callback);
-	donkey->getComponent<PhysicsComponent>()->getTriggers().push_back(donkeyTextTrigger);
-	entityManager->add(donkey);
-
-#ifdef  _DEBUG
-	loadLevel("Resources/Images/tilesTESTING.png", "Resources/Levels/FinalExamTileMapTESTING.csv");
-#else
-	loadLevel("Resources/Images/tiles.png", "Resources/Levels/THISFinalExamMap.csv");
-#endif
-
+	LevelLoader levelLoader;
+	levelLoader.load("Resources/Levels/EntitiesData.xml");
+	
 	loadControls();
 	SetCursor(cursor);
 
 #ifndef _DEBUG
+	auto entityManager = EntityManager::getInstance();
 	auto arenaTeleportTile = entityManager->getTileAtPos(arenaTunnelEntrance);
-	attachTriggerCallbackToTile(arenaTeleportTile,
-		[](Entity* enteringEntity)
-	{
-		auto player = EntityManager::getInstance()->getLocalPlayer();
-		if (player->id != enteringEntity->id)
-			return;
-
-		Blackboard::getInstance()->leaveCallback(
-			RENDERER,
-			[](Module* target)
-		{
-			dynamic_cast<Renderer*>(target)->fadeOut(sf::seconds(3), "You found a tunnel and gathered the courage to go forward...");
-		}
-		);
-
-		Blackboard::getInstance()->leaveCallback(
-			SCHEDULER,
-			[](Module* target)
-		{
-			auto lambda = []()
-			{
-				Blackboard::getInstance()->leaveCallback(
-					RENDERER,
-					[](Module* target)
-				{
-					dynamic_cast<Renderer*>(target)->fadeIn(sf::seconds(3), "The tunnel lead you to an arena filled with deamons!");
-					auto entityManager = EntityManager::getInstance();
-					auto player = entityManager->getLocalPlayer();
-					entityManager->move(player, arenaTunnelExit);
-					player->setPosition(arenaTunnelExit);
-				});
-			};
-			dynamic_cast<Scheduler*>(target)->schedule(lambda, NOW + 2900ms);
-		}
-		);
-	});
+	attachTriggerCallbackToTile(arenaTeleportTile, createTeleportCallback());
 
 	auto bronzeKeyGateTile = entityManager->getTileAtPos(bronzeKeyGateTilePos);
-	attachTriggerCallbackToTile(bronzeKeyGateTile, createUnlockCallback("Bronze Key", bronzeKeyGateTilePos, 168)); // TODO new tile type in XML
+	attachTriggerCallbackToTile(bronzeKeyGateTile, createUnlockCallback("Bronze Key", bronzeKeyGateTilePos, 168));
 
 	auto silverKeyGateTile = entityManager->getTileAtPos(silverKeyGateTilePos);
-	attachTriggerCallbackToTile(silverKeyGateTile, createUnlockCallback("Silver Key", silverKeyGateTilePos, 59)); // TODO new tile type in XML
+	attachTriggerCallbackToTile(silverKeyGateTile, createUnlockCallback("Silver Key", silverKeyGateTilePos, 59));
 
 	auto goldKeyGateTile = entityManager->getTileAtPos(goldKeyGateTilePos);
-	attachTriggerCallbackToTile(goldKeyGateTile, createUnlockCallback("Gold Key", goldKeyGateTilePos, 59)); // TODO new tile type in XML
+	attachTriggerCallbackToTile(goldKeyGateTile, createUnlockCallback("Gold Key", goldKeyGateTilePos, 59));
 
 	Blackboard::getInstance()->leaveCallback(
-		AUDIO,
-		[](Module* target)
-	{
-		dynamic_cast<Audio*>(target)->playMusic(Audio::THEME_SONG);
-	}
+		AUDIO, 
+		[](Module* target) { dynamic_cast<Audio*>(target)->playMusic(Audio::THEME_SONG); }
 	);
 #endif // notdef _DEBUG
 
@@ -387,8 +279,7 @@ MainGame::MainGame() :
 		[](Module* target)
 	{
 		dynamic_cast<Renderer*>(target)->fadeIn(sf::seconds(4), "You wake up on a beach, not remembering how you got there.");
-	}
-	);
+	});
 }
 
 MainGame::~MainGame()
@@ -416,7 +307,6 @@ void MainGame::update()
 	for (auto it = _tilesToUpdate.begin(); it != _tilesToUpdate.end(); ++it)
 		(*it)->update();
 
-	// TODO find out why first mini boss does not get removed
 	if (characters.size() == 2 && !_levelComplete) // 2 - player, donkey
 		handleLevelComplete();
 
@@ -484,6 +374,40 @@ void MainGame::render(std::shared_ptr<sf::RenderWindow> window)
 	}
 	
 	GamePhase::render(window);
+}std::function<void(Entity*)> MainGame::createTeleportCallback()
+{
+	return [](Entity* enteringEntity)
+	{
+		auto player = EntityManager::getInstance()->getLocalPlayer();
+		if (player->id != enteringEntity->id)
+			return;
+
+		Blackboard::getInstance()->leaveCallback(
+			RENDERER,
+			[](Module* target) { dynamic_cast<Renderer*>(target)->fadeOut(sf::seconds(3), "You found a tunnel and gathered the courage to go forward..."); }
+		);
+
+		Blackboard::getInstance()->leaveCallback(
+			SCHEDULER,
+			[](Module* target)
+		{
+			auto lambda = []()
+			{
+				Blackboard::getInstance()->leaveCallback(
+					RENDERER,
+					[](Module* target)
+				{
+					dynamic_cast<Renderer*>(target)->fadeIn(sf::seconds(3), "The tunnel lead you to an arena filled with deamons!");
+					auto entityManager = EntityManager::getInstance();
+					auto player = entityManager->getLocalPlayer();
+					entityManager->move(player, arenaTunnelExit);
+					player->setPosition(arenaTunnelExit);
+				});
+			};
+			dynamic_cast<Scheduler*>(target)->schedule(lambda, NOW + 2900ms);
+		}
+		);
+	};
 }
 
 std::function<void(Entity*)> MainGame::createUnlockCallback(const std::string& keyName, const sf::Vector2f& gatePosition, unsigned newTileType) 
@@ -666,19 +590,6 @@ void MainGame::handleMovement()
 
 	if(newVelocity != physicsComponent->getVelocity())
 		physicsComponent->setVelocity(newVelocity);
-}
-
-bool MainGame::loadLevel(const std::string& textureFileName, const std::string& levelDefinitionFileName)
-{
-	auto tilemap = new Tilemap();
-	//LevelLoader();
-	if (!tilemap->loadFromFile(textureFileName, levelDefinitionFileName))
-	{
-		LOG_E("Failed to load level");
-		return  false;
-	}
-
-	return true;;
 }
 
 void MainGame::loadControls()

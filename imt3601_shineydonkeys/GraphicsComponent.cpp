@@ -17,7 +17,7 @@ void GraphicsComponent::draw(std::shared_ptr<sf::RenderWindow> window) const
 
 	if (DRAW_COLLIDERS)
 	{
-		if(typeid(parent) == typeid(Tile) && !dynamic_cast<Tile*>(&parent)->isBlocking())
+		if(typeid(parent) == typeid(Tile) && !dynamic_cast<Tile*>(&parent)->blocking)
 			return;
 
 		auto collider = parent.getComponent<PhysicsComponent>()->getCollider();

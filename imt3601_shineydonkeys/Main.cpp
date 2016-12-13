@@ -1,9 +1,6 @@
 #include "Logger.h"
 #include "Engine.h"
 
-// TODO Check for memory leaks
-// TODO move lambdas (especially blackboard callbacks) to a nicer place
-
 int main(int argc, char* argv[])
 {
 	LOG_I("Starting main function");

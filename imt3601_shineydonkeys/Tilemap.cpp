@@ -5,33 +5,29 @@
 #include "ResourceLoader.h"
 
 #include <fstream>
+#include <set>
 
 bool Tilemap::loadFromFile(const std::string& textureFileName, const std::string& levelDefinitionFileName)
 {
+	EntityFactory factory;
 	auto entityManager = EntityManager::getInstance();
 	entityManager->clearTiles();
-	
-	EntityFactory factory;
 
 	auto tileMap = ResourceLoader::getInstance()->getTexture(textureFileName);
-
 	auto tilesPerRow = tileMap->getSize().x / TILE_HEIGHT;
-
 	std::ifstream input(levelDefinitionFileName);
 	auto row = 0;
-	auto column = 0;
+
 	for (std::string line; getline(input, line); row++)
 	{
 		auto types = StringUtilities::split(line, ',');
-		for(column = 0; column < types.size(); column++)
+		for(auto column = 0; column < types.size(); column++)
 		{
-			auto tile = factory.create<Tile>();
 			auto type = stoi(types[column]);
-
-			tile->tileType = type;
+			auto tile = new Tile(type);
 
 			if (find(begin(BLOCKING_TILES), end(BLOCKING_TILES), type) != end(BLOCKING_TILES))
-				tile->_blocking = true;
+				tile->blocking = true;
 
 			auto x = column * TILE_WIDTH;
 			auto y = row * TILE_HEIGHT;
@@ -60,9 +56,6 @@ bool Tilemap::loadFromFile(const std::string& textureFileName, const std::string
 			entityManager->add(tile);
 		}
 	}
-	// TODO need to load map size from XML file before we add tiles to EM
-	MAP_WIDTH = TILE_WIDTH * --column;
-	MAP_HEIGHT = TILE_HEIGHT * --row;
 
 	input.close();
 
@@ -77,9 +70,4 @@ unsigned int Tilemap::TILE_HEIGHT = 32;
 unsigned int Tilemap::MAP_WIDTH = 0;
 unsigned int Tilemap::MAP_HEIGHT = 0;
 
-
-#ifdef  _DEBUG
-std::vector<unsigned> Tilemap::BLOCKING_TILES = { 73, 163, 48, 49, 64, 65 };
-#else
-std::vector<unsigned> Tilemap::BLOCKING_TILES = { 96, 73,98, 486, 485, 462 };
-#endif
+std::set<unsigned> Tilemap::BLOCKING_TILES = {};

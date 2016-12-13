@@ -9,12 +9,9 @@ class Tile : public Entity
 	friend EntityFactory;
 public:
 	int tileType;
-	bool  _blocking;
+	bool  blocking;
 
-	bool isBlocking() const { return _blocking; }
+	explicit Tile(int tilyType, bool blocking = false);
 
 	void changeType(unsigned int newType, bool blocking);
-
-protected:
-	Tile();
 };

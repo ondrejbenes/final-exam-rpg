@@ -110,7 +110,7 @@ bool PhysicsComponent::hasCollision(const sf::Vector2f& newPosition, const std::
 	{
 		auto pc = tile->getComponent<PhysicsComponent>();
 
-		if (tile != nullptr && tile->isBlocking())
+		if (tile != nullptr && tile->blocking)
 		{
 			auto tileCollider = pc->getCollider();
 			if (collCpy.intersects(tileCollider))

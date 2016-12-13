@@ -9,215 +9,238 @@
 #include "MainGame.h"
 #include "EntityFactory.h"
 #include "Weapon.h"
+#include "EntityManager.h"
+#include "Scheduler.h"
+#include "Blackboard.h"
+#include "ChatBoard.h"
+#include "GamePhaseManager.h"
 
 using namespace tinyxml2;
-
-LevelLoader::LevelLoader()
-{
-	/*XMLDocument doc;
-	auto gameData = doc.LoadFile("Resources/levels/EntitiesData.xml");
-	XMLElement* titleElement = doc.FirstChildElement("Level")->
-		FirstChildElement("Weapons")->FirstChildElement("Weapons_player")->
-		FirstChildElement("Weapon_Basic")->FirstChildElement("MinimumDamage");
-
-
-
-	const char* HP = titleElement->GetText();
-	printf(" %s ", HP);
-	XMLElement* title2 = titleElement->NextSiblingElement();
-	const char* HP1 = title2->GetText();
-	printf(" %s ", HP1);
-	auto* nextElement = titleElement->NextSiblingElement()->GetText();
-	printf(" %s ", nextElement);
-
-
-	XMLElement* titleElement2 = doc.FirstChildElement("Level")->FirstChildElement("NPCs")->FirstChildElement();
-*/
-
-
-
-
-
-
-
-
-	/*auto* titleElement2 = doc.FirstChildElement("Level")->FirstChildElement("NPCs")->
-		LastChildElement("NPC")->FirstChildElement("Sprite");
-
-	auto* titleElement2Value = titleElement2->FirstAttribute()->Value();
-	printf(" 2Name of play : %s", titleElement2Value);
-*/
-/*auto* nextElement2 = titleElement2->NextSiblingElement();
-auto* titleElement3Value = nextElement2->FirstAttribute()->Value();
-printf(" 3Name of play : %s", titleElement3Value);*/
-
-
-
-
-	auto a = 0;
-
-
-}
+using namespace std::chrono_literals;
 
 void LevelLoader::load(const std::string& definitionXml) const
 {
+	auto entityManager = EntityManager::getInstance();
+	Entity::nextId = 0;
 
 	XMLDocument doc;
-	EntityFactory Factory;
-	auto gameData = doc.LoadFile(definitionXml.c_str());
-	auto TileMapElement = doc.FirstChildElement("Level")->FirstChildElement("TileMap");
+	doc.LoadFile(definitionXml.c_str());
 
-	auto* SizeXML = TileMapElement->
-		FirstChildElement("Size");
+	loadMap(doc);
+	loadKeys(doc);
+	loadWeapons(doc);
+
+	entityManager->clearCharacters();
+	loadPlayer(doc);
+	loadNpcs(doc);
+	loadDonkey();
+}
+
+void LevelLoader::loadMap(const XMLDocument& doc) const {
+	auto tileMapElement = doc.FirstChildElement("Level")->FirstChildElement("TileMap");
+
+	auto* sizeXML = tileMapElement->FirstChildElement("Size");
 
 	// loads map size
-	auto MapsizeXML = SizeXML->FirstChildElement("MapSize");
-	Tilemap::MAP_WIDTH = std::stoi(MapsizeXML->Attribute("Width"));
-	Tilemap::MAP_HEIGHT = std::stoi(MapsizeXML->Attribute("Height"));
+	auto mapsizeXML = sizeXML->FirstChildElement("MapSize");
+	Tilemap::MAP_WIDTH = std::stoi(mapsizeXML->Attribute("Width"));
+	Tilemap::MAP_HEIGHT = std::stoi(mapsizeXML->Attribute("Height"));
 	// loads tile size
-	auto TilesizeXML = SizeXML->FirstChildElement("TileSize");
-	Tilemap::TILE_WIDTH = std::stoi(TilesizeXML->Attribute("Width"));
-	Tilemap::TILE_HEIGHT = std::stoi(TilesizeXML->Attribute("Height"));
+	auto tilesizeXML = sizeXML->FirstChildElement("TileSize");
+	Tilemap::TILE_WIDTH = std::stoi(tilesizeXML->Attribute("Width"));
+	Tilemap::TILE_HEIGHT = std::stoi(tilesizeXML->Attribute("Height"));
 
-	auto* BlockingXML = TileMapElement->
-		FirstChildElement("BlockingTilesID");
+	auto* blockingXML = tileMapElement->FirstChildElement("BlockingTilesID");
 
 	//loads blocking tiles
-	auto Tokens = StringUtilities::split(BlockingXML->GetText(), ',');
-	for (auto Token : Tokens)
+	auto Tokens = StringUtilities::split(blockingXML->GetText(), ',');
+	for (auto token : Tokens)
 	{
-		Tilemap::BLOCKING_TILES.push_back(std::stoi(Token));
+		Tilemap::BLOCKING_TILES.insert(stoi(token));
 	}
 
 	// load tiles and add them to EntityManager
-	auto MapCSV = TileMapElement->FirstChildElement("Tiles")->Attribute("definition");
-	auto TilePNG = TileMapElement->FirstChildElement("Tiles")->Attribute("tiles");
+	auto mapCsv = tileMapElement->FirstChildElement("Tiles")->Attribute("definition");
+	auto tilePNG = tileMapElement->FirstChildElement("Tiles")->Attribute("tiles");
 
-	Tilemap::loadFromFile(TilePNG, MapCSV);
+	Tilemap::loadFromFile(tilePNG, mapCsv);
 
-	auto SpecialTile = TileMapElement->FirstChildElement("SpecialTiles")->FirstChildElement("arenaTunnelEntrance");
+	auto specialTile = tileMapElement->FirstChildElement("SpecialTiles")->FirstChildElement("arenaTunnelEntrance");
 
 	//ArenaEntrance
-	auto X = SpecialTile->Attribute("x");
-	auto Y = SpecialTile->Attribute("y");
+	auto x = specialTile->Attribute("x");
+	auto y = specialTile->Attribute("y");
 
-	MainGame::arenaTunnelEntrance = sf::Vector2f(std::stoi(X), std::stoi(Y));
+	MainGame::arenaTunnelEntrance = sf::Vector2f(std::stoi(x), std::stoi(y));
 
 	//arenaExit
-	SpecialTile = SpecialTile->NextSiblingElement("arenaTunnelExit");
+	specialTile = specialTile->NextSiblingElement("arenaTunnelExit");
 
-	X = SpecialTile->Attribute("x");
-	Y = SpecialTile->Attribute("y");
+	x = specialTile->Attribute("x");
+	y = specialTile->Attribute("y");
 
-	MainGame::arenaTunnelExit = sf::Vector2f(std::stoi(X), std::stoi(Y));
+	MainGame::arenaTunnelExit = sf::Vector2f(std::stoi(x), std::stoi(y));
 
 	//bronze key
-	SpecialTile = SpecialTile->NextSiblingElement("Bronze");
+	specialTile = specialTile->NextSiblingElement("Bronze");
 
-	X = SpecialTile->Attribute("x");
-	Y = SpecialTile->Attribute("y");
+	x = specialTile->Attribute("x");
+	y = specialTile->Attribute("y");
 
-	MainGame::bronzeKeyGateTilePos = sf::Vector2f(std::stoi(X), std::stoi(Y));
+	MainGame::bronzeKeyGateTilePos = sf::Vector2f(std::stoi(x), std::stoi(y));
 
 	//Silver Key
-	SpecialTile = SpecialTile->NextSiblingElement("Silver");
+	specialTile = specialTile->NextSiblingElement("Silver");
 
-	X = SpecialTile->Attribute("x");
-	Y = SpecialTile->Attribute("y");
+	x = specialTile->Attribute("x");
+	y = specialTile->Attribute("y");
 
-	MainGame::silverKeyGateTilePos = sf::Vector2f(std::stoi(X), std::stoi(Y));
+	MainGame::silverKeyGateTilePos = sf::Vector2f(std::stoi(x), std::stoi(y));
 
 
 	//Gold key
-	SpecialTile = SpecialTile->NextSiblingElement("Gold");
+	specialTile = specialTile->NextSiblingElement("Gold");
 
-	X = SpecialTile->Attribute("x");
-	Y = SpecialTile->Attribute("y");
+	x = specialTile->Attribute("x");
+	y = specialTile->Attribute("y");
 
-	MainGame::goldKeyGateTilePos = sf::Vector2f(std::stoi(X), std::stoi(Y));
-
-	//Inventory keys
-	auto Items = doc.FirstChildElement("Level")->FirstChildElement("Items")->
-		FirstChildElement("Keys");
-
-	auto Keys = Items->FirstChildElement("Bronze");
-	auto name = Keys->Attribute("name");
-	auto image = Keys->Attribute("image");
-
-	auto BronzeKey = Factory.createInventoryItem(image);
-	BronzeKey->setName(name);
-
-	Keys = Keys->NextSiblingElement("Silver");
-	name = Keys->Attribute("name");
-	image = Keys->Attribute("image");
-
-	auto SilverKey = Factory.createInventoryItem(image);
-	SilverKey->setName(name);
-
-	Keys = Keys->NextSiblingElement("Gold");
-	name = Keys->Attribute("name");
-	image = Keys->Attribute("image");
-
-	auto GoldKey = Factory.createInventoryItem(image);
-	GoldKey->setName(name);
-
-	auto Weapons = doc.FirstChildElement("Level")->FirstChildElement("Items")->FirstChildElement("Weapons");
-
-	// auto Weapon = Weapons->FirstChildElement("Weapon");
-
-	std::map<std::string, std::shared_ptr<Weapon>> weaponsMap;
-
-	for (auto weapon = Weapons->FirstChild(); weapon; weapon->NextSibling())
-	{
-		auto Name = weapon->FirstChildElement("Weapon")->Attribute("name");
-		auto MinimumDamage = std::stoi(weapon->FirstChildElement("MinimumDamage")->GetText());
-		auto MaximumDamage = std::stoi(weapon->FirstChildElement("MaximumDamage")->GetText());
-		auto Speed = std::stoi(weapon->FirstChildElement("Speed")->GetText());
-		auto Image = weapon->FirstChildElement("Image");		
-		auto  weaponItem = std::make_shared<Weapon>(MinimumDamage, MaximumDamage, Speed);
-		weaponsMap[Name] = weaponItem;
-
-		if (Image != nullptr)
-		{
-			auto LinkToImage = Image->Attribute("link");
-			Factory.initWeapon(weaponItem, LinkToImage);
-		}
-
-	}
-
-
-	//TODO: Needs a loop	
-	auto* PlayerXML = doc.FirstChildElement("Level")->FirstChildElement("Player");
-	auto* EnemyXML = doc.FirstChildElement("Level")->FirstChildElement("NPCs");
-
-	// load npcs
-	auto usedWeapon = EnemyXML->FirstChildElement("UsedWeapon")->Attribute("name");
-	Factory.createNpcFromXml(*EnemyXML, weaponsMap[usedWeapon]);
-
-
-
-
-
-
-
-	// load player
-	Factory.createPlayerFromXml(*PlayerXML);
-
-	//
-
-
-
-
-
-	// create donkey
-
-
-
-
-
-
-
-	
-	
+	MainGame::goldKeyGateTilePos = sf::Vector2f(std::stoi(x), std::stoi(y));
 }
 
+void LevelLoader::loadKeys(const XMLDocument& doc) const {
+	EntityFactory factory;
+	auto entityManager = EntityManager::getInstance();
+
+	auto items = doc.FirstChildElement("Level")->FirstChildElement("Items")->
+		FirstChildElement("Keys");
+
+	// TODO remove duplication
+	auto keys = items->FirstChildElement("Bronze");
+	auto name = keys->Attribute("name");
+	auto image = keys->Attribute("image");
+
+	auto bronzeKey = factory.createInventoryItem(image);
+	bronzeKey->setName(name);
+	entityManager->addItem(bronzeKey);
+
+	keys = keys->NextSiblingElement("Silver");
+	name = keys->Attribute("name");
+	image = keys->Attribute("image");
+
+	auto silverKey = factory.createInventoryItem(image);
+	silverKey->setName(name);
+	entityManager->addItem(silverKey);
+
+	keys = keys->NextSiblingElement("Gold");
+	name = keys->Attribute("name");
+	image = keys->Attribute("image");
+
+	auto goldKey = factory.createInventoryItem(image);
+	goldKey->setName(name);
+	entityManager->addItem(goldKey);
+}
+
+void LevelLoader::loadWeapons(const XMLDocument& doc) const {
+	EntityFactory factory;
+	auto entityManager = EntityManager::getInstance();
+
+	auto weapons = doc.FirstChildElement("Level")->FirstChildElement("Items")->FirstChildElement("Weapons");
+
+	for (auto weapon = weapons->FirstChild(); weapon; weapon = weapon->NextSibling())
+	{
+		auto weaponName = weapon->ToElement()->Attribute("name");
+		auto minimumDamage = std::stoi(weapon->FirstChildElement("MinimumDamage")->GetText());
+		auto maximumDamage = std::stoi(weapon->FirstChildElement("MaximumDamage")->GetText());
+		auto speed = std::stoi(weapon->FirstChildElement("Speed")->GetText());
+		auto weaponImage = weapon->FirstChildElement("Image");
+		auto  weaponItem = std::make_shared<Weapon>(minimumDamage, maximumDamage, speed);
+		weaponItem->setName(weaponName);
+
+		if (weaponImage != nullptr)
+		{
+			auto LinkToImage = weaponImage->Attribute("link");
+			factory.addWeaponInventorySprite(weaponItem, LinkToImage);
+		}
+
+		entityManager->addItem(weaponItem);
+	}
+}
+
+void LevelLoader::loadPlayer(const XMLDocument& doc) const
+{
+	EntityFactory factory;
+	auto entityManager = EntityManager::getInstance();
+
+	// load player
+	auto* playerXml = doc.FirstChildElement("Level")->FirstChildElement("Player");
+	auto player = factory.createPlayerFromXml(*playerXml);
+	entityManager->add(player);
+	entityManager->setLocalPlayer(player);
+}
+
+void LevelLoader::loadNpcs(const XMLDocument& doc) const 
+{
+	EntityFactory factory;
+	auto entityManager = EntityManager::getInstance();
+
+	auto npcs = doc.FirstChildElement("Level")->FirstChildElement("NPCs");
+
+	for (auto npcXml = npcs->FirstChildElement("NPC"); npcXml; npcXml = npcs->NextSiblingElement("NPC"))
+	{
+		auto npc = factory.createNpcFromXml(*npcXml);
+		entityManager->add(npc);
+	}
+}
+
+void LevelLoader::loadDonkey() const 
+{
+	EntityFactory factory;
+	auto entityManager = EntityManager::getInstance();
+
+	auto donkey = factory.createDonkey();
+	donkey->setPosition(sf::Vector2f(724, 1555));
+	donkey->setName("donkey");
+
+	auto boundaryPos = donkey->getPosition() - sf::Vector2f(100, 100);
+	auto donkeySpriteBounds = donkey->getComponent<GraphicsComponent>()->getActiveSprite().getGlobalBounds();
+	auto boundarySize = sf::Vector2f(donkeySpriteBounds.width + 200, donkeySpriteBounds.height + 200);
+	auto donkeyTextTrigger = std::make_shared<Trigger>(sf::FloatRect(boundaryPos, boundarySize));
+	auto callback = std::make_shared<std::function<void(Entity*)>>(
+		[](Entity* enteringEntity)
+	{
+		if (typeid(*enteringEntity) != typeid(Player))
+			return;
+
+		if (MainGame::donkeyTextShown)
+			return;
+
+		MainGame::donkeyTextShown = true;
+
+		auto mainGame = GamePhaseManager::getInstance()->getCurrentPhase();
+
+		auto chatBoard = mainGame->getUi().getElementByName<ChatBoard>("chatBoard");
+
+		chatBoard->addMessage("Shiny Donkey", "Hi. I'm the Shiney Donkey");
+
+		Blackboard::getInstance()->leaveCallback(
+			SCHEDULER,
+			[chatBoard](Module* target)
+		{
+			auto scheduler = dynamic_cast<Scheduler*>(target);
+			auto msg1 = [chatBoard]() {chatBoard->addMessage("Shiny Donkey", "You won't believe it, but I have a quest for you."); };
+			scheduler->schedule(msg1, NOW + 2s);
+			auto msg2 = [chatBoard]() {chatBoard->addMessage("Shiny Donkey", "You need to explore the island and look for keys."); };
+			scheduler->schedule(msg2, NOW + 4s);
+			auto msg3 = [chatBoard]() {chatBoard->addMessage("Shiny Donkey", "The keys will unlock the gate to the east of here."); };
+			scheduler->schedule(msg3, NOW + 6s);
+			auto msg4 = [chatBoard]() {chatBoard->addMessage("Shiny Donkey", "Then I need you to enter the tunnel."); };
+			scheduler->schedule(msg4, NOW + 8s);
+			auto msg5 = [chatBoard]() {chatBoard->addMessage("Shiny Donkey", "You will know what to do when you exit on the other side."); };
+			scheduler->schedule(msg5, NOW + 10s);
+		}
+		);
+	});
+	donkeyTextTrigger->setOnTriggerEnter(callback);
+	donkey->getComponent<PhysicsComponent>()->getTriggers().push_back(donkeyTextTrigger);
+	entityManager->add(donkey);
+}

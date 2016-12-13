@@ -6,8 +6,8 @@
 			<MapSize Width="8000" Height="4800"/>
 			<TileSize Width="32" Height="32"/>
 		</Size>
-		<BlockingTilesID>486,287,310,312,335,244,311,288</BlockingTilesID>
-		<Tiles definition="Resources/Levels/DONTUSETHISFinalExamMap.csv" tiles="Resources/Images/tiles.png"/>
+		<BlockingTilesID>96,73,98,486,485,462 <!--486,287,310,312,335,244,311,288--></BlockingTilesID>
+		<Tiles definition="Resources/Levels/THISFinalExamMap.csv" tiles="Resources/Images/tiles.png"/>
 		<SpecialTiles>
 			<arenaTunnelEntrance x="3200" y="3328"/>
 			<arenaTunnelExit x="7232" y="4096"/>
@@ -17,43 +17,51 @@
 		</SpecialTiles>
 	</TileMap>
 	<Player>
+		<Position x="562" y="1807"/>
 		<Inventory>
-			<Item/>
+			<Item name="Sword"/>
 		</Inventory>
-		<Position>600,600</Position>
 		<HitPoints>1000</HitPoints>
-		<MinimumDamage>10</MinimumDamage>
-		<MaximumDamage>20</MaximumDamage>
+		<UsedWeapon name="Sword"/>
 	</Player>
 	<NPCs>
 		<NPC>
-			<Position x="250" y="230"/>
+			<Position x="633" y="491"/>
 			<Sprite link="Resources/Images/Npc1.png"/>
 			<HitPoints>150</HitPoints>
 			<Inventory>
 				<Item name="Axe"/>
 			</Inventory>
 			<UsedWeapon name="NPC_Common"/>
+			<AiState type="Patrol" radius="500" />
 		</NPC>
 		<NPC>
 			<Position x="1000" y="1000"/>
 			<Sprite link="Resources/Images/Npc2.png"/>
 			<HitPoints>200</HitPoints>
+			<UsedWeapon name="NPC_Common"/>
+			<AiState type="Idle" radius="300" />
 		</NPC>
 		<NPC>
 			<Position x="2000" y="1500"/>
 			<Sprite link="Resources/Images/Npc3.png"/>
 			<HitPoints>300</HitPoints>
+			<UsedWeapon name="NPC_Common"/>
+			<AiState type="Idle" radius="300" />
 		</NPC>
 		<NPC>
 			<Position x="2000" y="750"/>
 			<Sprite link="Resources/Images/Npc4.png"/>
 			<HitPoints>700</HitPoints>
+			<UsedWeapon name="NPC_Common"/>
+			<AiState type="Idle" radius="300" />
 		</NPC>
 		<NPC>
 			<Position x="2500" y="800"/>
 			<Sprite link="Resources/Images/BossDeamon.png"/>
 			<HitPoints>1500</HitPoints>
+			<UsedWeapon name="NPC_Common"/>
+			<AiState type="Idle" radius="300" />
 		</NPC>
 	</NPCs>
 	<Items>
@@ -79,32 +87,32 @@
 			<Weapon name="NPC_Common">
 				<MinimumDamage>7</MinimumDamage>
 				<MaximumDamage>14</MaximumDamage>
-				<AttackSpeed>750</AttackSpeed>
+				<Speed>750</Speed>
 			</Weapon>
 			<Weapon name="NPC_FirstMiniBoss">
 				<MinimumDamage>10</MinimumDamage>
 				<MaximumDamage>20</MaximumDamage>
-				<AttackSpeed>1100</AttackSpeed>
+				<Speed>1100</Speed>
 			</Weapon>
 			<Weapon name="NPC_SecondMiniBoss">
 				<MinimumDamage>10</MinimumDamage>
 				<MaximumDamage>20</MaximumDamage>
-				<AttackSpeed>1500</AttackSpeed>
+				<Speed>1500</Speed>
 			</Weapon>
 			<Weapon name="NPC_ThirdMiniBoss">
 				<MinimumDamage>5</MinimumDamage>
 				<MaximumDamage>50</MaximumDamage>
-				<AttackSpeed>750</AttackSpeed>
+				<Speed>750</Speed>
 			</Weapon>
 			<Weapon name="NPC_DeamonDog">
 				<MinimumDamage>3</MinimumDamage>
 				<MaximumDamage>5</MaximumDamage>
-				<AttackSpeed>2100</AttackSpeed>
+				<Speed>2100</Speed>
 			</Weapon>
 			<Weapon name="NPC_FinalBoss">
 				<MinimumDamage>25</MinimumDamage>
 				<MaximumDamage>45</MaximumDamage>
-				<AttackSpeed>500</AttackSpeed>
+				<Speed>500</Speed>
 			</Weapon>
 		</Weapons>
 		<Keys>

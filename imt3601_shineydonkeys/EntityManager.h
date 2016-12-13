@@ -86,6 +86,10 @@ public:
 
 	/* Celars the underlaying QuadTree, all Tiles will be removed. */
 	void clearTiles();
+
+	void addItem(std::shared_ptr<Item> item);
+
+	std::shared_ptr<Item>& getItemByName(const std::string& itemName);
 protected:
 	EntityManager();
 private:
@@ -96,4 +100,5 @@ private:
 	QuadTree _tiles;
 
 	std::map<unsigned int, Entity*> _entityById;
+	std::map<std::string, std::shared_ptr<Item>> _items;
 };
