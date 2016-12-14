@@ -18,7 +18,6 @@ Installation
  
 4. Configure SFML in project settings (follow instructions from SFML page) - steps a - d should now be a part of the repo, but check anyway
 
-
 5. Switch to All Configurations
 
 6. Add additional include directories (C:\Program Files\SFML\include)
