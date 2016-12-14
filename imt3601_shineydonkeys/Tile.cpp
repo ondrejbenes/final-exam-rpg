@@ -23,7 +23,7 @@ void Tile::changeType(unsigned newType, bool blocking)
 
 	sprite.setTextureRect(sf::IntRect(tileMapColumn * Tilemap::TILE_WIDTH, tileMapRow * Tilemap::TILE_HEIGHT, Tilemap::TILE_WIDTH, Tilemap::TILE_HEIGHT));
 
-	blocking = blocking;
+	this->blocking = blocking;
 
 	auto id = this->id;
 

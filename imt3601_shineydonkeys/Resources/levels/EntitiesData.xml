@@ -6,7 +6,7 @@
 			<MapSize Width="8000" Height="4800"/>
 			<TileSize Width="32" Height="32"/>
 		</Size>
-		<BlockingTilesID>96,73,98,486,485,462 <!--486,287,310,312,335,244,311,288--></BlockingTilesID>
+		<BlockingTilesID>96,73,98,486,485,462</BlockingTilesID>
 		<Tiles definition="Resources/Levels/THISFinalExamMap.csv" tiles="Resources/Images/tiles.png"/>
 		<SpecialTiles>
 			<arenaTunnelEntrance x="3200" y="3328"/>
@@ -28,60 +28,84 @@
 		<NPC>
 			<Position x="633" y="491"/>
 			<Sprite link="Resources/Images/Npc1.png"/>
-			<HitPoints>150</HitPoints>
+			<HitPoints>100</HitPoints>
 			<Inventory>
-				<Item name="Axe"/>
+				<Item name="Scimitar"/>
 			</Inventory>
 			<UsedWeapon name="NPC_Common"/>
 			<AiState type="Patrol" radius="500" />
 		</NPC>
 		<NPC>
-			<Position x="1000" y="1000"/>
+			<Position x="1400" y="3200"/>
 			<Sprite link="Resources/Images/Npc2.png"/>
-			<HitPoints>200</HitPoints>
-			<UsedWeapon name="NPC_Common"/>
-			<AiState type="Idle" radius="300" />
+			<HitPoints>150</HitPoints>
+			<Inventory>
+				<Item name="Bronze Key"/>
+			</Inventory>
+			<UsedWeapon name="NPC_FirstMiniBoss"/>
+			<AiState type="Patrol" radius="300" />
 		</NPC>
 		<NPC>
-			<Position x="2000" y="1500"/>
+			<Position x="3618" y="1282"/>
 			<Sprite link="Resources/Images/Npc3.png"/>
-			<HitPoints>300</HitPoints>
-			<UsedWeapon name="NPC_Common"/>
-			<AiState type="Idle" radius="300" />
+			<HitPoints>200</HitPoints>
+			<Inventory>
+				<Item name="Silver Key"/>
+			</Inventory>
+			<UsedWeapon name="NPC_SecondMiniBoss"/>
+			<AiState type="Patrol" radius="500" />
 		</NPC>
 		<NPC>
-			<Position x="2000" y="750"/>
+			<Position x="4304" y="3359"/>
 			<Sprite link="Resources/Images/Npc4.png"/>
-			<HitPoints>700</HitPoints>
-			<UsedWeapon name="NPC_Common"/>
-			<AiState type="Idle" radius="300" />
+			<HitPoints>300</HitPoints>
+			<Inventory>
+				<Item name="Axe"/>
+				<Item name="Gold Key"/>
+			</Inventory>
+			<UsedWeapon name="NPC_ThirdMiniBoss"/>
+			<AiState type="Patrol" radius="500" />
 		</NPC>
 		<NPC>
-			<Position x="2500" y="800"/>
+			<Position x="7168" y="4096"/>
+			<Sprite link="Resources/Images/SmallDeamon.png"/>
+			<HitPoints>700</HitPoints>
+			<UsedWeapon name="NPC_DeamonDog"/>
+			<AiState type="Patrol" radius="100" />
+		</NPC>
+		<NPC>
+			<Position x="7392" y="4096"/>
+			<Sprite link="Resources/Images/SmallDeamon.png"/>
+			<HitPoints>700</HitPoints>
+			<UsedWeapon name="NPC_DeamonDog"/>
+			<AiState type="Patrol" radius="100" />
+		</NPC>
+		<NPC>
+			<Position x="7264" y="4416"/>
 			<Sprite link="Resources/Images/BossDeamon.png"/>
 			<HitPoints>1500</HitPoints>
-			<UsedWeapon name="NPC_Common"/>
-			<AiState type="Idle" radius="300" />
+			<UsedWeapon name="NPC_FinalBoss"/>
+			<AiState type="Patrol" radius="50" />
 		</NPC>
 	</NPCs>
 	<Items>
 		<Weapons>
 			<Weapon name="Scimitar">
-				<MinimumDamage>10</MinimumDamage>
-				<MaximumDamage>25</MaximumDamage>
-				<Speed>1000</Speed>
+				<MinimumDamage>25</MinimumDamage>
+				<MaximumDamage>45</MaximumDamage>
+				<Speed>750</Speed>
 				<Image link="Resources/Images/Weapons/Scimitar.png"/>
 			</Weapon>
 			<Weapon name="Sword">
 				<MinimumDamage>15</MinimumDamage>
-				<MaximumDamage>40</MaximumDamage>
-				<Speed>1500</Speed>
+				<MaximumDamage>25</MaximumDamage>
+				<Speed>1200</Speed>
 				<Image link="Resources/Images/Weapons/Sword.png"/>
 			</Weapon>
 			<Weapon name="Axe">
 				<MinimumDamage>50</MinimumDamage>
 				<MaximumDamage>100</MaximumDamage>
-				<Speed>2000</Speed>
+				<Speed>500</Speed>
 				<Image link="Resources/Images/Weapons/Axe.png"/>
 			</Weapon>
 			<Weapon name="NPC_Common">
@@ -97,7 +121,7 @@
 			<Weapon name="NPC_SecondMiniBoss">
 				<MinimumDamage>10</MinimumDamage>
 				<MaximumDamage>20</MaximumDamage>
-				<Speed>1500</Speed>
+				<Speed>800</Speed>
 			</Weapon>
 			<Weapon name="NPC_ThirdMiniBoss">
 				<MinimumDamage>5</MinimumDamage>
@@ -107,12 +131,12 @@
 			<Weapon name="NPC_DeamonDog">
 				<MinimumDamage>3</MinimumDamage>
 				<MaximumDamage>5</MaximumDamage>
-				<Speed>2100</Speed>
+				<Speed>350</Speed>
 			</Weapon>
 			<Weapon name="NPC_FinalBoss">
-				<MinimumDamage>25</MinimumDamage>
-				<MaximumDamage>45</MaximumDamage>
-				<Speed>500</Speed>
+				<MinimumDamage>30</MinimumDamage>
+				<MaximumDamage>80</MaximumDamage>
+				<Speed>2500</Speed>
 			</Weapon>
 		</Weapons>
 		<Keys>

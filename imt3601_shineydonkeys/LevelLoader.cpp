@@ -185,7 +185,9 @@ void LevelLoader::loadNpcs(const XMLDocument& doc) const
 
 	auto npcs = doc.FirstChildElement("Level")->FirstChildElement("NPCs");
 
-	for (auto npcXml = npcs->FirstChildElement("NPC"); npcXml; npcXml = npcs->NextSiblingElement("NPC"))
+
+	
+	for (auto npcXml = npcs->FirstChildElement("NPC"); npcXml; npcXml = npcXml->NextSiblingElement("NPC"))
 	{
 		auto npc = factory.createNpcFromXml(*npcXml);
 		entityManager->add(npc);
