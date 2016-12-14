@@ -18,17 +18,17 @@ Installation
  
 4) Configure SFML in project settings (follow instructions from SFML page) - steps a - d should now be a part of the repo, but check anyway
 
-5) Switch to All Configurations
+a) Switch to All Configurations
 
-6) Add additional include directories (C:\Program Files\SFML\include)
+b) Add additional include directories (C:\Program Files\SFML\include)
  
-7) Add additional library directories (C:\Program Files\SFML\lib)
+c) Add additional library directories (C:\Program Files\SFML\lib)
 
-8) Add dependencies for both debug and release (switch configurations)
+d) Add dependencies for both debug and release (switch configurations)
 
   * "sfml-graphics-d.lib"; "sfml-window-d.lib"; "sfml-system-d.lib"; "sfml-audio-d.lib"; "sfml-network-d.lib"; "sfml-main-d.lib"
   * "sfml-graphics.lib"; "sfml-window.lib"; "sfml-system.lib"; "sfml-audio.lib"; "sfml-network.lib"; "sfml-main.lib"
 
-9) Build solution for both Debug and Release
+5) Build solution for both Debug and Release
 
-10) Copy dlls from SFML/bin to .../Debug and .../Release*
+6) Copy dlls from SFML/bin to .../Debug and .../Release*
