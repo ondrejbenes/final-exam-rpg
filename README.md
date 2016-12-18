@@ -1,4 +1,4 @@
-Report: https://bitbucket.org/Ondrejb/imt3601_shineydonkeys/src/08695a352fc102414fe314a686a79dd75c832a7e/Report/FinalExamreport.pdf?at=master
+Report: https://bitbucket.org/Ondrejb/imt3601_shineydonkeys/raw/08695a352fc102414fe314a686a79dd75c832a7e/Report/FinalExamreport.pdf
 
 Requirements
 
