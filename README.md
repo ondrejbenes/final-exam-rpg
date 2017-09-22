@@ -2,7 +2,7 @@ RPG game developed by Shiney Donkeys studio as part of the NTNU's Game Programmi
 
 ![Image](https://i.imgur.com/4myaatB.jpg)
 
-“Final Exam” is a survival RPG single player game. The player's goal is to kill the final boss. The game has a “spectator mode” multiplayer.
+“Final Exam” is a survival RPG game. The player's goal is to kill the final boss. The game has a “spectator mode” multiplayer.
 
 The player has no way of restoring any hitpoints he lost. Therefore, he needs to play around how much he stays in combat to have as much health as he can when he faces the final boss of the game. So in this game, players health is his surviving resource and can determine between winning and losing.
 
