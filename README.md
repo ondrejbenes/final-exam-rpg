@@ -19,10 +19,8 @@ Installation
     1. Switch to All Configurations
     2. Add additional include directories (C:\Program Files\SFML\include)
     3. Add additional library directories (C:\Program Files\SFML\lib)
-    4. Add dependencies for both debug and release (switch configurations)
-    
-> "sfml-graphics-d.lib"; "sfml-window-d.lib"; "sfml-system-d.lib"; "sfml-audio-d.lib"; "sfml-network-d.lib"; "sfml-main-d.lib"
-> "sfml-graphics.lib"; "sfml-window.lib"; "sfml-system.lib"; "sfml-audio.lib"; "sfml-network.lib"; "sfml-main.lib"
-
+    4. Add dependencies for both debug and release (switch configurations)    
+        * "sfml-graphics-d.lib"; "sfml-window-d.lib"; "sfml-system-d.lib"; "sfml-audio-d.lib"; "sfml-network-d.lib"; "sfml-main-d.lib"
+        * "sfml-graphics.lib"; "sfml-window.lib"; "sfml-system.lib"; "sfml-audio.lib"; "sfml-network.lib"; "sfml-main.lib"
 5. Build solution for both Debug and Release
 6. Copy dlls from SFML/bin to .../Debug and .../Release*
